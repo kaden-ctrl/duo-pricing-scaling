@@ -1,0 +1,644 @@
+<title>Duo Price Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+  :root {
+    --paper:      #F4F6F8;
+    --surface:    #FFFFFF;
+    --surface-2:  #EDF0F4;
+    --ink:        #131820;
+    --muted:      #5A6472;
+    --rule:       #DFE4EA;
+    --rule-firm:  #C3CBD5;
+    --accent:     #24457F;
+    --accent-soft:#E4EAF4;
+    --critical:   #A32B22;
+    --critical-bg:#F7E7E5;
+    --warn:       #8F6008;
+    --warn-bg:    #F8EEDC;
+    --good:       #1E6E52;
+    --good-bg:    #E1F0E9;
+    --shadow:     0 1px 2px rgba(19,24,32,.06), 0 8px 24px -12px rgba(19,24,32,.18);
+
+    --f-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --f-body:    "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --f-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #10131A;
+      --surface:    #171B23;
+      --surface-2:  #1E232D;
+      --ink:        #E7EBF0;
+      --muted:      #99A3B2;
+      --rule:       #282E39;
+      --rule-firm:  #3A4252;
+      --accent:     #8FADDE;
+      --accent-soft:#1D2738;
+      --critical:   #E58B82;
+      --critical-bg:#33201E;
+      --warn:       #DCA948;
+      --warn-bg:    #2E2617;
+      --good:       #6CC49E;
+      --good-bg:    #172A23;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #10131A;
+    --surface:    #171B23;
+    --surface-2:  #1E232D;
+    --ink:        #E7EBF0;
+    --muted:      #99A3B2;
+    --rule:       #282E39;
+    --rule-firm:  #3A4252;
+    --accent:     #8FADDE;
+    --accent-soft:#1D2738;
+    --critical:   #E58B82;
+    --critical-bg:#33201E;
+    --warn:       #DCA948;
+    --warn-bg:    #2E2617;
+    --good:       #6CC49E;
+    --good-bg:    #172A23;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    padding-inline: 20px;
+    padding-block: 0 72px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 940px; margin-inline: auto; }
+  .prose { max-width: 68ch; }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    padding-block: 56px 36px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    line-height: 1.04;
+    letter-spacing: -.02em;
+    text-wrap: balance;
+    margin: 0 0 18px;
+  }
+  .standfirst {
+    font-family: var(--f-display);
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 60ch;
+    margin: 0 0 32px;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 32px;
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .meta b { color: var(--ink); font-weight: 500; }
+
+  /* ---------- sections ---------- */
+  section { padding-block: 44px 0; }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .sec-num {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    padding-top: 4px;
+  }
+  h2 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0;
+  }
+  h3 {
+    font-family: var(--f-body);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: -.005em;
+    margin: 32px 0 10px;
+  }
+  p { margin: 0 0 16px; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  strong { font-weight: 600; }
+
+  .lede {
+    font-size: 1.06rem;
+    color: var(--muted);
+    max-width: 64ch;
+    margin-bottom: 26px;
+  }
+
+  /* ---------- decision panel ---------- */
+  .decisions {
+    background: var(--surface);
+    border: 1px solid var(--rule-firm);
+    border-top: 3px solid var(--accent);
+    box-shadow: var(--shadow);
+    padding: 28px 30px 30px;
+    margin-top: 36px;
+  }
+  .decisions h2 { font-size: 1.35rem; margin-bottom: 6px; }
+  .decisions > p { color: var(--muted); font-size: .94rem; max-width: 62ch; }
+  ol.asks { list-style: none; counter-reset: ask; padding: 0; margin: 20px 0 0; display: grid; gap: 0; }
+  ol.asks li {
+    counter-increment: ask;
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    gap: 4px 14px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+  }
+  ol.asks li::before {
+    content: "D" counter(ask);
+    font-family: var(--f-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .ask-t { font-weight: 500; }
+  .ask-d { grid-column: 2; font-size: .9rem; color: var(--muted); }
+  .owner {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    grid-row: 1;
+    grid-column: 3;
+  }
+
+  /* ---------- tables ---------- */
+  .tbl-wrap { overflow-x: auto; margin: 22px 0 8px; border: 1px solid var(--rule); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: .88rem; min-width: 520px; }
+  caption {
+    caption-side: top;
+    text-align: left;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface-2);
+  }
+  th, td { padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  thead th {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tbody tr.total td { background: var(--surface-2); font-weight: 600; border-top: 1px solid var(--rule-firm); }
+  .src { font-size: .8rem; color: var(--muted); margin: 8px 0 0; font-style: italic; }
+
+  /* ---------- chips ---------- */
+  .chip {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .chip.bad  { background: var(--critical-bg); color: var(--critical); }
+  .chip.warn { background: var(--warn-bg);     color: var(--warn); }
+  .chip.ok   { background: var(--good-bg);     color: var(--good); }
+
+  /* ---------- margin bars ---------- */
+  .bars { display: grid; gap: 22px; margin: 26px 0 10px; }
+  .bar-row { display: grid; gap: 8px; }
+  .bar-label { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .bar-name { font-weight: 600; font-size: .94rem; }
+  .bar-name span { font-weight: 400; color: var(--muted); font-size: .85rem; }
+  .bar-out { font-family: var(--f-mono); font-size: .84rem; font-variant-numeric: tabular-nums; }
+  .bar-track { display: flex; height: 34px; border: 1px solid var(--rule-firm); overflow: hidden; }
+  .seg { display: flex; align-items: center; justify-content: center; font-family: var(--f-mono); font-size: 10px; font-weight: 600; letter-spacing: .04em; overflow: hidden; white-space: nowrap; }
+  .seg-plat { background: var(--critical); color: #fff; }
+  .seg-lab  { background: var(--surface-2); color: var(--muted); border-right: 1px solid var(--rule-firm); border-left: 1px solid var(--rule-firm); }
+  .seg-marg { background: var(--good); color: #fff; }
+  :root[data-theme="dark"] .seg-plat, :root[data-theme="dark"] .seg-marg { color: #10131A; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .seg-plat,
+    :root:not([data-theme="light"]) .seg-marg { color: #10131A; }
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-family: var(--f-mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }
+  .sw-plat { background: var(--critical); }
+  .sw-lab  { background: var(--surface-2); border: 1px solid var(--rule-firm); }
+  .sw-marg { background: var(--good); }
+
+  /* ---------- callout ---------- */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 16px 20px;
+    margin: 24px 0;
+    font-size: .95rem;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout .k {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .formula {
+    font-family: var(--f-mono);
+    font-size: .9rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 14px 18px;
+    margin: 18px 0;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* ---------- tier cards ---------- */
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin: 26px 0 8px; }
+  .tier { background: var(--surface); border: 1px solid var(--rule); padding: 22px 20px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .tier.lead { border-color: var(--accent); box-shadow: var(--shadow); }
+  .tier-n { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .tier-p { font-family: var(--f-display); font-size: 2rem; font-weight: 700; line-height: 1; letter-spacing: -.02em; }
+  .tier-p small { font-family: var(--f-body); font-size: .8rem; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+  .tier ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; font-size: .87rem; }
+  .tier ul li { padding-left: 16px; position: relative; color: var(--ink); }
+  .tier ul li::before { content: ""; position: absolute; left: 0; top: .52em; width: 6px; height: 1px; background: var(--rule-firm); }
+  .tier dl { margin: 0; padding-top: 12px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 1fr auto; gap: 5px 10px; font-size: .8rem; }
+  .tier dt { color: var(--muted); }
+  .tier dd { margin: 0; font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+
+  /* ---------- timeline ---------- */
+  .phases { display: grid; gap: 0; margin: 24px 0 8px; }
+  .phase { display: grid; grid-template-columns: 96px 1fr; gap: 6px 20px; padding: 18px 0; border-top: 1px solid var(--rule); }
+  .phase:last-child { border-bottom: 1px solid var(--rule); }
+  .phase-when { font-family: var(--f-mono); font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); padding-top: 3px; }
+  .phase-t { font-weight: 600; margin-bottom: 4px; }
+  .phase ul { margin: 0; padding-left: 18px; font-size: .9rem; color: var(--muted); display: grid; gap: 4px; }
+
+  ul.plain { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 10px; }
+  ul.plain > li { padding-left: 20px; position: relative; }
+  ul.plain > li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px; background: var(--accent); }
+
+  footer { margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--rule); font-size: .82rem; color: var(--muted); }
+  footer p { margin-bottom: 8px; }
+
+  @media (max-width: 560px) {
+    ol.asks li { grid-template-columns: 26px 1fr; }
+    .owner { grid-column: 2; grid-row: 3; }
+    .phase { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Internal · For management approval</p>
+    <h1>Duo Price Book</h1>
+    <p class="standfirst">We sell the same AiR engagement at six different prices between $550 and $2,200 a month. This is the proposal to replace that with one published price book, a hard margin floor, and a rule for who may discount what.</p>
+    <div class="meta">
+      <span><b>Prepared by</b> Kaden Myers, Operations</span>
+      <span><b>Decision owner</b> Lance</span>
+      <span><b>Date</b> 9 September 2026</span>
+    </div>
+  </header>
+
+  <div class="decisions">
+    <h2>What we need decided</h2>
+    <p>Five decisions. Everything else in this document is evidence for them or mechanics that follow from them.</p>
+    <ol class="asks">
+      <li><span class="ask-t">Adopt three published AiR tiers at $1,200 / $1,500 / $2,500 per location.</span><span class="owner">Lance</span><span class="ask-d">Replaces the current practice of pricing each deal from scratch.</span></li>
+      <li><span class="ask-t">Adopt a hard gross-margin floor of 50%, with list prices set to clear 60%.</span><span class="owner">Lance</span><span class="ask-d">Uses the benchmark already in our own team-margin model. Below-floor deals need written sign-off.</span></li>
+      <li><span class="ask-t">Stop bundling ad spend into the monthly fee.</span><span class="owner">Lance · Kaden</span><span class="ask-d">Restore the 2024 campaign equation: management fee quoted separately from media, always.</span></li>
+      <li><span class="ask-t">Tie included build work to a minimum term.</span><span class="owner">Lance · Max</span><span class="ask-d">No free website on a 7-day-out agreement. 12 months where a site is included.</span></li>
+      <li><span class="ask-t">Retire the four undefined discount names and publish a discount authority matrix.</span><span class="owner">Lance</span><span class="ask-d">Two programs survive: multi-location and annual prepay.</span></li>
+    </ol>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>The same product, six prices</h2></div>
+    <p class="lede">Every AiR agreement signed this year was priced independently. None of them reference a rate card, because the rate card has not been updated since June 2024 and no longer describes what we sell.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption>AiR engagements signed or proposed, 2026</caption>
+        <thead>
+          <tr><th>Client</th><th>Signed</th><th class="num">Per month</th><th>What is included</th><th>Stated reason for the price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Lawn Doctor <span style="color:var(--muted)">(multi-loc, prepaid)</span></td><td>Jan</td><td class="num">$550</td><td>Dashboard + rep</td><td>Multi-location and prepay stacked</td></tr>
+          <tr><td>Lawn Doctor <span style="color:var(--muted)">(multi-loc)</span></td><td>Jan</td><td class="num">$600</td><td>Dashboard + rep</td><td>Multi-location</td></tr>
+          <tr><td>Lawn Doctor</td><td>Jan</td><td class="num">$650</td><td>Dashboard + rep</td><td>“Partner discount” — active client</td></tr>
+          <tr><td><em>Stated list price</em></td><td>—</td><td class="num">$750</td><td>Dashboard + rep</td><td>“Packages typically start at…”</td></tr>
+          <tr><td>CIS Office Furniture</td><td>Jul</td><td class="num">$1,200</td><td>Dashboard + company video</td><td>“Neighbor partner rate”</td></tr>
+          <tr><td>Kobico</td><td>May</td><td class="num">$1,500</td><td>Dashboard + 2 signal sessions</td><td>None given</td></tr>
+          <tr><td>CMP <span style="color:var(--muted)">(proposed, 1 office)</span></td><td>Aug</td><td class="num">$1,500</td><td>Dashboard + signal build + <b>website</b></td><td>Base rate</td></tr>
+          <tr><td>Mill Forest Dental</td><td>Aug</td><td class="num">$2,200</td><td>Dashboard + 2 sessions + 2 social + <b>website</b></td><td>None given</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">Source: client services agreements and proposals in Drive, January–August 2026.</p>
+
+    <p>Read the two ends of that table together. Lawn Doctor pays <b>$550</b> for a dashboard and a dedicated rep. Mill Forest pays <b>$2,200</b> for a dashboard, a dedicated rep, two strategy sessions a month, two managed social channels, and a custom website. That is a <b>4x price spread</b> — but nothing like 4x the work separates the cheapest engagement from the most expensive.</p>
+
+    <p>The pattern runs the wrong way. The lower the price, the more we tend to promise relative to what the price can fund, because discounting happens on the number while the scope stays whole.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Why $650 cannot work</h2></div>
+    <p class="lede">Every AiR dashboard costs us $225 a month before anyone touches the account. At the bottom of our price range that platform fee alone consumes 41% of revenue.</p>
+
+    <p>Our team-margin model sets a mid-level Digital Strategist at <b>$5,500 a month</b> carrying <b>8 accounts</b>, and marks <b>60% gross margin</b> as the threshold at which we can afford to hire. Those are our numbers, not benchmarks borrowed from outside. Put the $225 platform cost against them and the arithmetic is unforgiving.</p>
+
+    <div class="formula">accounts per rep needed  =  $5,500 ÷ ( 0.40 × price − $225 )</div>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption>Caseload required to reach 60% gross margin</caption>
+        <thead>
+          <tr><th class="num">Price / mo</th><th class="num">Platform</th><th class="num">Left for labour at 60% GM</th><th class="num">Accounts per rep</th><th>Against our 8-account model</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">$550</td><td class="num">$225</td><td class="num">−$5</td><td class="num">—</td><td><span class="chip bad">Impossible at any caseload</span></td></tr>
+          <tr><td class="num">$600</td><td class="num">$225</td><td class="num">$15</td><td class="num">367</td><td><span class="chip bad">Not achievable</span></td></tr>
+          <tr><td class="num">$650</td><td class="num">$225</td><td class="num">$35</td><td class="num">158</td><td><span class="chip bad">Not achievable</span></td></tr>
+          <tr><td class="num">$750</td><td class="num">$225</td><td class="num">$75</td><td class="num">74</td><td><span class="chip bad">Not achievable</span></td></tr>
+          <tr><td class="num">$1,000</td><td class="num">$225</td><td class="num">$175</td><td class="num">32</td><td><span class="chip warn">Only if fully self-serve</span></td></tr>
+          <tr><td class="num">$1,200</td><td class="num">$225</td><td class="num">$255</td><td class="num">22</td><td><span class="chip warn">Needs a light-touch model</span></td></tr>
+          <tr><td class="num">$1,500</td><td class="num">$225</td><td class="num">$375</td><td class="num">15</td><td><span class="chip ok">Reachable</span></td></tr>
+          <tr><td class="num">$2,200</td><td class="num">$225</td><td class="num">$655</td><td class="num">9</td><td><span class="chip ok">Matches the model</span></td></tr>
+          <tr><td class="num">$2,500</td><td class="num">$225</td><td class="num">$775</td><td class="num">8</td><td><span class="chip ok">Matches the model</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="k">The finding</span>
+      <p>At <b>$550 a month there is no caseload that reaches 60% gross margin</b> — the platform fee exceeds the entire 40% cost allowance before a single hour of work. At $650 a rep would need 158 dashboards. Our agreements at these prices promise a dedicated representative who “actively monitors your dashboard, identifies opportunities, tracks progress, and provides clear next steps.” One monthly call spends more than the price supports.</p>
+    </div>
+
+    <h3>The same delivery at two prices</h3>
+    <p>Holding caseload constant at 15 accounts per rep — so the work is identical in both rows — only the price changes:</p>
+
+    <div class="bars">
+      <div class="bar-row">
+        <div class="bar-label">
+          <span class="bar-name">Lawn Doctor at $650 <span>· dashboard + rep</span></span>
+          <span class="bar-out">margin <b style="color:var(--critical)">9.0%</b></span>
+        </div>
+        <div class="bar-track" role="img" aria-label="At $650: platform cost 34.6%, delivery labour 56.4%, gross margin 9.0%">
+          <div class="seg seg-plat" style="width:34.6%">$225 platform</div>
+          <div class="seg seg-lab"  style="width:56.4%">$367 delivery</div>
+          <div class="seg seg-marg" style="width:9.0%">$58</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">
+          <span class="bar-name">Kobico at $1,500 <span>· dashboard + rep + 2 sessions</span></span>
+          <span class="bar-out">margin <b style="color:var(--good)">60.6%</b></span>
+        </div>
+        <div class="bar-track" role="img" aria-label="At $1,500: platform cost 15.0%, delivery labour 24.4%, gross margin 60.6%">
+          <div class="seg seg-plat" style="width:15.0%">$225</div>
+          <div class="seg seg-lab"  style="width:24.4%">$367 delivery</div>
+          <div class="seg seg-marg" style="width:60.6%">$908 gross margin</div>
+        </div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="sw-plat"></i>AiR platform cost</span>
+      <span><i class="sw-lab"></i>Delivery labour at 15 accounts / rep</span>
+      <span><i class="sw-marg"></i>Gross margin</span>
+    </div>
+    <p class="src">Kobico is the best-shaped deal we signed this year. It is not a better client — it is the same work at a price that clears the floor.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Three problems the price book has to fix</h2></div>
+
+    <h3>Discount names nobody defined</h3>
+    <p>Four different labels appear in 2026 agreements: <b>“partner discount,”</b> <b>“Neighbor partner rate,”</b> <b>“active client”</b> pricing, and <b>multi-location</b> pricing. None is defined anywhere, none has a size, and none has an approval step. In practice a discount name is written after the number has already been agreed, to explain it.</p>
+
+    <h3>Build work given away on a seven-day contract</h3>
+    <p>Two agreements a week apart handled the same risk in opposite ways. The <b>CMP proposal</b> includes a full website and sets a <b>six-month initial term</b>, explicitly because signal work compounds. The <b>Mill Forest agreement</b> includes a full website with hosting and is <b>month-to-month, terminable on seven days' notice</b>.</p>
+    <p>A website is a $4,000 build on our own rate card. Under Mill Forest's terms a client can take delivery of that asset and leave in month two having paid $4,400. We have no clause that recovers it.</p>
+
+    <div class="callout">
+      <span class="k">Live deal · act before signature</span>
+      <p>The CMP proposal's single-office tier prices AiR <em>plus a full website</em> at $1,500 a month against a six-month term. Amortising the build across that term puts the engagement at roughly <b>36% gross margin</b> — below the 45% line our own model marks as “cannot hire.” The two- and three-office tiers carry the build across more revenue and hold up. <b>The single-office tier should be repriced or the website removed from it before this goes out.</b></p>
+    </div>
+
+    <h3>Media buying folded into the fee</h3>
+    <p>Our proposal template reads “<em>$____ per month, inclusive of any ad spend and full management</em>.” Santiam Hospital is contracted at <b>$22,698 a month</b> with roughly <b>$4,220 of monthly media</b> — Google, LinkedIn and Meta — paid out of that figure. Lawn Doctor's campaigns are quoted “starting at $1,000/month (includes ad spend).”</p>
+    <p>Under that structure every dollar the client asks us to add to a campaign comes straight out of our margin, and there is no point at which we can say a budget increase costs more to manage. We already solved this. The 2024 rate card carries a campaign equation that separates the two and nobody uses it:</p>
+
+    <div class="formula">M = $1,500 + $250 × ( (T − $3,000) ÷ $1,000 )      A = T − M</div>
+    <p class="src">M = account optimisation fee, A = ad spend, T = total paid by client. From the June 2024 Duo Pricing Sheet.</p>
+    <p>It is a sound structure — a declining percentage fee that never reaches zero: 50% of a $3,000 total, 40% at $5,000, 32.5% at $10,000. The recommendation is not to invent something. It is to publish this, quote fee and media as two lines on every agreement, and stop absorbing budget increases.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>The proposed price book</h2></div>
+    <p class="lede">Three tiers, priced per location. Each tier is sized to a caseload a rep can actually carry, which is what makes it repeatable — the price and the staffing model are the same decision.</p>
+
+    <div class="tiers">
+      <div class="tier">
+        <span class="tier-n">AiR Core</span>
+        <span class="tier-p">$1,200<small> /mo</small></span>
+        <ul>
+          <li>AiR dashboard, ~170-prompt set</li>
+          <li>Citation, sentiment and prominence tracking</li>
+          <li>Quarterly prompt refresh</li>
+          <li>Monthly written scorecard</li>
+          <li>Quarterly review call</li>
+        </ul>
+        <dl>
+          <dt>Hard floor</dt><dd>$1,000</dd>
+          <dt>Delivery cap</dt><dd>5 hrs/mo</dd>
+          <dt>Caseload</dt><dd>20–22</dd>
+          <dt>Term</dt><dd>Monthly</dd>
+        </dl>
+      </div>
+      <div class="tier lead">
+        <span class="tier-n">AiR Signal · default</span>
+        <span class="tier-p">$1,500<small> /mo</small></span>
+        <ul>
+          <li>Everything in Core</li>
+          <li>Two signal sessions a month</li>
+          <li>Signal content build</li>
+          <li>Citation and profile corrections</li>
+          <li>Schema and structured data</li>
+          <li>Dedicated AiR rep</li>
+        </ul>
+        <dl>
+          <dt>Hard floor</dt><dd>$1,200</dd>
+          <dt>Delivery cap</dt><dd>8 hrs/mo</dd>
+          <dt>Caseload</dt><dd>14–15</dd>
+          <dt>Term</dt><dd>6 months</dd>
+        </dl>
+      </div>
+      <div class="tier">
+        <span class="tier-n">AiR Complete</span>
+        <span class="tier-p">$2,500<small> /mo</small></span>
+        <ul>
+          <li>Everything in Signal</li>
+          <li>Custom website build + hosting</li>
+          <li>Two managed social platforms</li>
+          <li>Google Business Profile</li>
+          <li>Ongoing site content updates</li>
+        </ul>
+        <dl>
+          <dt>Hard floor</dt><dd>$1,850</dd>
+          <dt>Delivery cap</dt><dd>16 hrs/mo</dd>
+          <dt>Caseload</dt><dd>8</dd>
+          <dt>Term</dt><dd>12 months</dd>
+        </dl>
+      </div>
+    </div>
+
+    <p>The floors are derived, not chosen: each is the price at which that tier's platform cost plus its delivery cap still leaves 50% gross margin. List prices sit above them so that a normal deal clears 60%.</p>
+
+    <p><b>Two tiers are close to what the market has already accepted.</b> Kobico signed Signal scope at $1,500 and Mill Forest signed Complete scope at $2,200. Core at $1,200 matches what CIS accepted. The change is not a price rise across the board — it is the removal of the sub-$1,000 band, which we cannot deliver profitably at any volume.</p>
+
+    <h3>Discounts</h3>
+    <ul class="plain">
+      <li><b>Multi-location.</b> 15% off the second location, 25% off the third and beyond. Never below the tier floor. The $225 platform cost repeats per dashboard, so this discount comes out of account-management efficiency only.</li>
+      <li><b>Annual prepay.</b> 8% off, paid in advance for twelve months.</li>
+      <li>These two stack to a maximum of <b>30%</b>. “Partner,” “Neighbor” and “active client” rates are retired.</li>
+    </ul>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption>Discount authority</caption>
+        <thead><tr><th>Discount</th><th>Approver</th><th>Requirement</th></tr></thead>
+        <tbody>
+          <tr><td>Published programs only (multi-location, prepay)</td><td>Max</td><td>Applied from the price book, no approval needed</td></tr>
+          <tr><td>Up to 10% off list, above floor</td><td>Max</td><td>Logged with a one-line reason</td></tr>
+          <tr><td>Any price below the tier floor</td><td><b>Lance</b></td><td>Written justification and an end date</td></tr>
+          <tr><td>Scope added without a price change</td><td><b>Lance</b></td><td>Treated as a discount and logged as one</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">This matches how the sales structure already assigns authority — Lance approves discounts and pricing adjustments. The change is that it now applies to scope as well as to price.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Rollout</h2></div>
+    <p class="lede">Ninety days, structured so that nothing new goes out below floor from week one, and existing clients are handled last and slowly.</p>
+
+    <div class="phases">
+      <div class="phase">
+        <span class="phase-when">Days 1–15</span>
+        <div>
+          <div class="phase-t">Approve and freeze</div>
+          <ul>
+            <li>Lance signs off the tiers, floors and discount matrix</li>
+            <li>No new agreement goes out below floor without written approval, effective immediately</li>
+            <li>Reprice or rescope the CMP single-office tier before it is sent</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <span class="phase-when">Days 16–30</span>
+        <div>
+          <div class="phase-t">Build the instruments</div>
+          <ul>
+            <li>Rebuild the proposal template around a tier selection rather than a blank line</li>
+            <li>Andrew builds the pricing calculator: tier, locations, discounts, resulting margin, floor check</li>
+            <li>Split fee from media on every new media agreement using the campaign equation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <span class="phase-when">Days 31–60</span>
+        <div>
+          <div class="phase-t">Audit the book of business</div>
+          <ul>
+            <li>Score every active account against its tier floor</li>
+            <li>Sort into hold, re-scope, or re-price</li>
+            <li>Where an account is below floor, decide whether to lift the price or cut the promise — both are valid</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <span class="phase-when">Days 61–90</span>
+        <div>
+          <div class="phase-t">Renewal conversations</div>
+          <ul>
+            <li>Staggered, not simultaneous — protect the 99% retention target</li>
+            <li>Lead with scope changes rather than price rises where the client is sensitive</li>
+            <li>Add a 4% annual escalator to every renewed agreement</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>What this model still needs</h2></div>
+    <p class="lede">Three inputs would materially sharpen these numbers. None of them blocks the five decisions.</p>
+    <ul class="plain">
+      <li><b>Current wage data.</b> The $5,500 monthly figure and the 8-account caseload come from our team-margin sheet, which was last updated in 2023. Every floor in this document moves if that number has moved. This is the single input most worth refreshing.</li>
+      <li><b>Actual hours per account.</b> The delivery caps above are budgets, not measurements — I found no time tracking against clients. Until we know what a signal session really costs us end to end, the caps are our best estimate rather than an observed figure.</li>
+      <li><b>A complete revenue list.</b> This analysis is built from the eight agreements I could locate. A full MRR list by client would let us size how much revenue currently sits below floor, which is the number that determines how aggressive the day 31–90 phase should be.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Sources: Duo Pricing Sheet (June 2024) · Duo Team Margins &amp; Utilisation Rates · Quarterly Goals 2025 · monthly budget sheets, June–September 2026 · client services agreements for Santiam Hospital &amp; Clinics, Mill Forest Dental Group, Kobico, CIS Office Furniture · Lawn Doctor 2026 options breakdown · CMP AiR proposal.</p>
+    <p>All cost figures are Duo's own recorded costs. Margin thresholds of 60% and 45% are taken from our existing team-margin benchmarks; the 25% net profit target is from the 2025 goals document.</p>
+  </footer>
+
+</div>
