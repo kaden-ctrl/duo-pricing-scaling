@@ -8,7 +8,6 @@
     --duo-blue-d: #0176A0;
     --air-purple: #9A76D6;
     --white:      #FEFEFE;
-    --black:      #000000;
 
     --paper:      #EFF4F7;
     --surface:    #FEFEFE;
@@ -18,13 +17,7 @@
     --muted:      #5F717C;
     --rule:       #D6E2E9;
     --rule-firm:  #B4C6D1;
-
     --good:       #12795A;
-    --good-bg:    #DDF0E8;
-    --warn:       #9A6608;
-    --warn-bg:    #FAEEDA;
-    --bad:        #B32D1F;
-    --bad-bg:     #FAE4E1;
 
     --shadow: 0 1px 2px rgba(11,17,22,.05), 0 10px 30px -14px rgba(11,17,22,.25);
     --f: "Avenir Next LT Pro", "Avenir Next", Avenir, Mulish, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -43,11 +36,6 @@
       --rule:       #232F38;
       --rule-firm:  #384854;
       --good:       #5CC49E;
-      --good-bg:    #123026;
-      --warn:       #E0AC4C;
-      --warn-bg:    #2E2513;
-      --bad:        #EE8A7C;
-      --bad-bg:     #341B17;
       --shadow: 0 1px 2px rgba(0,0,0,.5), 0 10px 30px -14px rgba(0,0,0,.8);
     }
   }
@@ -64,11 +52,6 @@
     --rule:       #232F38;
     --rule-firm:  #384854;
     --good:       #5CC49E;
-    --good-bg:    #123026;
-    --warn:       #E0AC4C;
-    --warn-bg:    #2E2513;
-    --bad:        #EE8A7C;
-    --bad-bg:     #341B17;
     --shadow: 0 1px 2px rgba(0,0,0,.5), 0 10px 30px -14px rgba(0,0,0,.8);
   }
 
@@ -88,7 +71,7 @@
   .wrap { max-width: 1120px; margin-inline: auto; }
 
   /* ---------- masthead ---------- */
-  header.top { padding-block: 40px 26px; border-bottom: 3px solid var(--duo-blue); }
+  header.top { padding-block: 40px 24px; border-bottom: 3px solid var(--duo-blue); }
   .wordmark {
     display: inline-flex; align-items: baseline; gap: 9px;
     font-weight: 800; font-size: 1.45rem; letter-spacing: -.03em; margin-bottom: 20px;
@@ -102,24 +85,34 @@
     font-weight: 800; font-size: clamp(1.9rem, 4.6vw, 2.9rem); line-height: 1.06;
     letter-spacing: -.032em; margin: 0 0 14px; text-wrap: balance;
   }
-  .sub { color: var(--muted); font-size: 1.02rem; max-width: 62ch; margin: 0; }
+  .sub { color: var(--muted); font-size: 1.02rem; max-width: 60ch; margin: 0; }
   .sub b { color: var(--ink-2); font-weight: 600; }
 
+  /* ---------- presets ---------- */
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-top: 24px; }
+  .presets-lbl { font-size: .69rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+  .preset {
+    font-family: var(--f); font-size: .8rem; font-weight: 600;
+    padding: 7px 13px; border: 1px solid var(--rule-firm); background: var(--surface);
+    color: var(--ink-2); cursor: pointer; transition: all .13s;
+  }
+  .preset:hover { border-color: var(--duo-blue); color: var(--duo-blue); }
+
   /* ---------- layout ---------- */
-  .cols { display: grid; grid-template-columns: 1fr 352px; gap: 34px; align-items: start; padding-top: 30px; }
-  @media (max-width: 900px) { .cols { grid-template-columns: 1fr; gap: 26px; } }
+  .cols { display: grid; grid-template-columns: 1fr 340px; gap: 34px; align-items: start; padding-top: 26px; }
+  @media (max-width: 920px) { .cols { grid-template-columns: 1fr; gap: 26px; } }
 
   /* ---------- catalog ---------- */
-  .cat { margin-bottom: 26px; }
-  .cat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .cat { margin-bottom: 24px; }
+  .cat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
   .cat-bar { width: 3px; height: 15px; background: var(--duo-blue); border-radius: 1px; }
   .cat-bar.air { background: var(--air-purple); }
   .cat-name { font-weight: 700; font-size: .78rem; letter-spacing: .13em; text-transform: uppercase; }
-  .cat-note { font-size: .78rem; color: var(--muted); margin-left: auto; text-align: right; }
+  .cat-note { font-size: .77rem; color: var(--muted); margin-left: auto; text-align: right; }
 
   .rows { border: 1px solid var(--rule); background: var(--surface); }
   .row {
-    display: grid; grid-template-columns: 22px 1fr auto auto; gap: 4px 13px;
+    display: grid; grid-template-columns: 22px 1fr auto auto; gap: 3px 13px;
     align-items: center; padding: 13px 16px; border-bottom: 1px solid var(--rule);
     cursor: pointer; transition: background .12s;
   }
@@ -130,12 +123,32 @@
   .row input[type=checkbox] { width: 17px; height: 17px; accent-color: var(--duo-blue); margin: 0; cursor: pointer; }
   .row.air input[type=checkbox] { accent-color: var(--air-purple); }
   .r-name { font-weight: 600; font-size: .93rem; }
-  .r-desc { grid-column: 2; font-size: .8rem; color: var(--muted); line-height: 1.4; }
-  .r-price { font-weight: 700; font-size: .93rem; white-space: nowrap; }
-  .r-unit { display: block; font-weight: 400; font-size: .7rem; color: var(--muted); letter-spacing: .02em; }
+  .r-sub { grid-column: 2; font-size: .8rem; color: var(--muted); line-height: 1.42; }
+  .r-price { font-weight: 700; font-size: .93rem; white-space: nowrap; text-align: right; }
+  .r-unit { display: block; font-weight: 400; font-size: .69rem; color: var(--muted); }
   .r-price.once { color: var(--muted); }
 
-  .qty { display: flex; align-items: center; gap: 0; border: 1px solid var(--rule-firm); background: var(--surface); }
+  .r-more {
+    grid-column: 2; justify-self: start; margin-top: 3px;
+    font-family: var(--f); font-size: .74rem; font-weight: 700; letter-spacing: .04em;
+    color: var(--duo-blue); background: none; border: 0; padding: 2px 0; cursor: pointer;
+  }
+  .row.air .r-more { color: var(--air-purple); }
+  .r-more:hover { text-decoration: underline; }
+  .r-inc { grid-column: 2 / -1; margin: 7px 0 2px; }
+  .r-inc ul {
+    margin: 0; padding: 0; list-style: none;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 4px 20px;
+    font-size: .79rem; color: var(--ink-2);
+  }
+  .r-inc li { padding-left: 14px; position: relative; line-height: 1.42; }
+  .r-inc li::before {
+    content: ""; position: absolute; left: 0; top: .58em;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--duo-blue); opacity: .55;
+  }
+  .row.air .r-inc li::before { background: var(--air-purple); }
+
+  .qty { display: flex; align-items: center; border: 1px solid var(--rule-firm); background: var(--surface); }
   .qty button {
     width: 26px; height: 26px; border: 0; background: transparent; color: var(--ink);
     font-family: var(--f); font-size: 15px; font-weight: 700; cursor: pointer; line-height: 1;
@@ -147,7 +160,7 @@
 
   /* ---------- summary ---------- */
   .panel { position: sticky; top: 18px; background: var(--surface); border: 1px solid var(--rule-firm); box-shadow: var(--shadow); }
-  @media (max-width: 900px) { .panel { position: static; } }
+  @media (max-width: 920px) { .panel { position: static; } }
   .panel-h { background: var(--ink); color: var(--white); padding: 15px 18px; }
   :root[data-theme="dark"] .panel-h { background: var(--surface-2); color: var(--ink); }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .panel-h { background: var(--surface-2); color: var(--ink); } }
@@ -173,7 +186,7 @@
   .grand-note { font-size: .72rem; color: var(--muted); text-align: right; margin: -2px 0 0; }
 
   /* ---------- discount ladder ---------- */
-  .ladder { background: var(--surface-2); padding: 14px 16px; margin: 16px 0 0; }
+  .ladder { background: var(--surface-2); padding: 14px 16px; margin-top: 16px; }
   .ladder-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 9px; }
   .ladder-lbl { font-size: .69rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
   .ladder-pct { font-weight: 800; font-size: 1.05rem; color: var(--duo-blue); }
@@ -183,26 +196,12 @@
   .ladder-next { font-size: .77rem; color: var(--ink-2); margin: 9px 0 0; line-height: 1.4; }
   .ladder-next b { color: var(--duo-blue); font-weight: 700; }
 
-  .toggle { display: flex; align-items: flex-start; gap: 9px; padding: 13px 0 0; margin-top: 13px; border-top: 1px solid var(--rule); cursor: pointer; }
+  .toggle { display: flex; align-items: flex-start; gap: 9px; padding-top: 13px; margin-top: 13px; border-top: 1px solid var(--rule); cursor: pointer; }
   .toggle input { width: 16px; height: 16px; accent-color: var(--duo-blue); margin: 2px 0 0; cursor: pointer; }
-  .toggle-t { font-size: .84rem; font-weight: 600; }
-  .toggle-d { font-size: .74rem; color: var(--muted); line-height: 1.4; }
+  .toggle-t { font-size: .84rem; font-weight: 600; display: block; }
+  .toggle-d { font-size: .74rem; color: var(--muted); line-height: 1.4; display: block; }
 
-  /* ---------- margin meter ---------- */
-  .health { margin-top: 16px; padding: 14px 16px; border-left: 3px solid var(--rule-firm); background: var(--surface-2); }
-  .health.ok  { border-left-color: var(--good); background: var(--good-bg); }
-  .health.mid { border-left-color: var(--warn); background: var(--warn-bg); }
-  .health.low { border-left-color: var(--bad);  background: var(--bad-bg); }
-  .health-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-  .health-lbl { font-size: .69rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-  .health-val { font-weight: 800; font-size: 1.15rem; }
-  .health.ok  .health-val { color: var(--good); }
-  .health.mid .health-val { color: var(--warn); }
-  .health.low .health-val { color: var(--bad); }
-  .health-msg { font-size: .77rem; margin: 6px 0 0; line-height: 1.45; color: var(--ink-2); }
-  .health-msg b { font-weight: 700; }
-
-  .term { display: flex; justify-content: space-between; gap: 10px; font-size: .78rem; margin-top: 13px; padding-top: 12px; border-top: 1px solid var(--rule); }
+  .term { display: flex; justify-content: space-between; gap: 10px; font-size: .78rem; margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--rule); }
   .term span:first-child { color: var(--muted); }
   .term span:last-child { font-weight: 700; }
 
@@ -218,13 +217,8 @@
   .btn.ghost { background: transparent; color: var(--duo-blue); }
   .btn.ghost:hover { background: var(--surface-2); }
 
-  /* ---------- footer ---------- */
-  footer { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--rule); }
-  footer h3 { font-size: .74rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
-  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(228px, 1fr)); gap: 18px 30px; font-size: .81rem; color: var(--ink-2); line-height: 1.5; }
-  .rules p { margin: 0; }
-  .rules b { color: var(--ink); font-weight: 700; display: block; margin-bottom: 3px; }
-  .fine { font-size: .75rem; color: var(--muted); margin-top: 24px; line-height: 1.55; }
+  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: .8rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 26px; }
+  footer b { color: var(--ink-2); font-weight: 700; }
 
   :focus-visible { outline: 2px solid var(--duo-blue); outline-offset: 2px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -233,13 +227,22 @@
 <div class="wrap">
 
   <header class="top">
-    <div class="wordmark"><span class="d">duo</span><span class="tag">Marketing Group</span></div>
+    <div class="wordmark">
+      <img id="logo-img" alt="Duo Marketing Group" hidden>
+      <span id="logo-text"><span class="d">duo</span><span class="tag">Marketing Group</span></span>
+    </div>
     <h1>Build a plan</h1>
     <p class="sub">Pick the services you want. The more you add, the more comes off the monthly total — up to <b>20%</b> on the bundle, plus <b>8%</b> for paying annually.</p>
+    <div class="presets">
+      <span class="presets-lbl">Start from</span>
+      <button class="preset" type="button" data-preset="local">Local Presence</button>
+      <button class="preset" type="button" data-preset="ai">AI Visibility</button>
+      <button class="preset" type="button" data-preset="growth">Full Growth</button>
+      <button class="preset" type="button" data-preset="launch">New Launch</button>
+    </div>
   </header>
 
   <div class="cols">
-
     <div id="catalog"></div>
 
     <aside class="panel">
@@ -277,14 +280,6 @@
           </label>
         </div>
 
-        <div class="health" id="health">
-          <div class="health-top">
-            <span class="health-lbl">Gross margin</span>
-            <span class="health-val" id="h-val">—</span>
-          </div>
-          <p class="health-msg" id="h-msg">Internal check. Not shown to clients.</p>
-        </div>
-
         <div class="term"><span>Minimum term</span><span id="t-term">Month to month</span></div>
 
         <div class="acts">
@@ -293,24 +288,11 @@
         </div>
       </div>
     </aside>
-
   </div>
 
   <footer>
-    <h3>How the pricing works</h3>
-    <div class="rules">
-      <p><b>Bundle discount</b>Counts distinct monthly services: 2 earns 5%, 3 earns 10%, 4 earns 15%, 5 or more earns 20%. Quantities within one service don't add to the count.</p>
-      <p><b>Build work stays at list</b>Websites and video are one-time projects and are never discounted. They're what the bundle discount is protecting.</p>
-      <p><b>Ad spend is separate</b>Paid media prices are the management fee only. Ad budget is billed as a pass-through and never bundled into the monthly fee.</p>
-      <p><b>Minimum terms</b>Including a website or video sets a 12-month term. Signal Sessions set 6 months. Everything else is month to month.</p>
-      <p><b>Discount cap</b>Bundle and annual prepay stack to a maximum of 28%. Anything past that needs Lance's written approval.</p>
-      <p><b>The margin readout</b>Internal only. Green clears our 60% target, amber sits above the 50% floor, red is below floor and needs sign-off before it goes out.</p>
-    </div>
-    <p class="fine">
-      Service list assembled from Duo's June 2024 rate card, the AiR client agreements (Kobico, CIS, Mill Forest), the Santiam Hospital &amp; Clinics agreement, and the Lawn Doctor options breakdown. <b>duogroup.com could not be reached from this environment</b> — the site is blocked by the network egress proxy — so the catalog reflects what is actually contracted and invoiced rather than the website's marketing copy. Worth a check against the live What We Do page before this goes to clients.
-      Brand colours and typeface are Duo's own, per the Brand Guidelines doc: Duo blue #019ED0, Avenir Next LT Pro, with AiR purple #9A76D6 on the AI line. Mulish substitutes for Avenir where it isn't installed.
-      Margin figures assume a $48/hour loaded delivery rate derived from the 2023 team-margin sheet — refresh that before treating the floor as final.
-    </p>
+    <span><b>Duo Marketing Group</b> · Logan, Utah · duogroup.com</span>
+    <span>Paid media prices are the management fee. Ad spend is billed separately.</span>
   </footer>
 </div>
 
@@ -318,38 +300,135 @@
 (function () {
   "use strict";
 
-  var LOADED_RATE = 48;      // $/hr loaded delivery cost
-  var FLOOR = 0.50, TARGET = 0.60;
+  /* ------------------------------------------------------------------
+     LOGO — drop the real artwork in here.
+
+     Paste the logo as a base64 data URI between the quotes, e.g.
+       var LOGO = "data:image/png;base64,iVBORw0KGgo...";
+     or for an SVG
+       var LOGO = "data:image/svg+xml;base64,PHN2ZyB4bWxu...";
+
+     Generate it from the file in Drive (Client logos / Duo Group) with:
+       base64 -w0 Duo-Marketing-Group-Logo-2020-373px.png
+
+     External image URLs will NOT work — the artifact sandbox blocks them,
+     so the artwork has to be inlined. Leave empty to use the type-set
+     wordmark instead.
+  ------------------------------------------------------------------ */
+  var LOGO = "";
+
+  if (LOGO) {
+    var img = document.getElementById("logo-img");
+    img.src = LOGO;
+    img.hidden = false;
+    img.style.height = "34px";
+    img.style.width = "auto";
+    document.getElementById("logo-text").hidden = true;
+  }
 
   var CATALOG = [
     { cat: "AI Search Visibility", air: true, note: "AiR — Ai Results", items: [
-      { id: "air",     name: "AiR Dashboard & Tracking", desc: "Citation rate, sentiment and prominence across ChatGPT, Gemini, Perplexity and AI Overviews. Monthly scorecard.", price: 1200, cost: 225, hrs: 5, unit: "per location", qty: true },
-      { id: "signal",  name: "Signal Sessions", desc: "Two working sessions a month building the content and citations that move the answer.", price: 400, cost: 0, hrs: 4, unit: "per month", term: 6 },
-      { id: "audit",   name: "AI Visibility Audit", desc: "Baseline scan across all four engines with a ~170-prompt set. One-time.", price: 1500, cost: 0, hrs: 12, once: true }
+      { id: "air", name: "AiR Dashboard & Tracking", price: 1200, unit: "per location", qty: true,
+        sub: "Track how ChatGPT, Gemini, Perplexity and Google AI Overviews describe and recommend you.",
+        inc: ["Citation rate tracking", "Sentiment analysis", "Prominence scoring", "Competitor benchmarking",
+              "~170-prompt set per market", "Quarterly prompt refresh", "Monthly scorecard", "Dedicated AiR rep"] },
+      { id: "signal", name: "Signal Sessions", price: 400, unit: "per month", term: 6,
+        sub: "Two working sessions a month building the content and citations that move the answer.",
+        inc: ["2 sessions monthly, 45–60 min", "Personal social strategy per provider", "Signal content build",
+              "Third-party citations & profiles", "Structured data on your site", "Corrections where you're described wrong"] },
+      { id: "audit", name: "AI Visibility Audit", price: 1500, once: true,
+        sub: "A baseline scan across all four engines before anything else starts.",
+        inc: ["Full prompt-set run", "Who's being recommended instead", "Sentiment baseline", "Gap analysis", "Written findings report"] },
+      { id: "airmulti", name: "Multi-Location Reporting", price: 350, unit: "per month",
+        sub: "Roll-up view across every location with side-by-side benchmarking.",
+        inc: ["Cross-location dashboard", "League table by market", "Consolidated monthly report", "Shared prompt library"] }
     ]},
+
     { cat: "Social Media", items: [
-      { id: "social",  name: "Social Media Management", desc: "Content planning, copy, creative, scheduling, publishing and community management.", price: 750, cost: 0, hrs: 6, unit: "per platform", qty: true },
-      { id: "gbp",     name: "Google Business Profile", desc: "Listing, photo and FAQ optimisation, Bing sync, review monitoring and response.", price: 750, cost: 0, hrs: 3, unit: "per location", qty: true },
-      { id: "group",   name: "Facebook Group Management", desc: "Moderation, member and post approval, and keeping the conversation going.", price: 250, cost: 0, hrs: 1.5, unit: "per group" }
+      { id: "social", name: "Social Media Management", price: 750, unit: "per platform", qty: true,
+        sub: "Facebook, Instagram, LinkedIn, X or TikTok — fully managed.",
+        inc: ["3–4 unique posts per week", "Content planning & copywriting", "Creative and graphics", "Scheduling & publishing",
+              "Comment and message management", "Follower growth", "Monthly performance report"] },
+      { id: "gbp", name: "Google Business Profile", price: 750, unit: "per location", qty: true,
+        sub: "The listing that decides whether you show up in local search.",
+        inc: ["Listing optimisation", "Photo & FAQ optimisation", "Bing Places sync", "Website schema integration",
+              "Review monitoring & response", "Monthly posts"] },
+      { id: "shortform", name: "Short-Form Video", price: 900, unit: "per month",
+        sub: "Four edited vertical videos a month for Reels, Shorts and TikTok.",
+        inc: ["4 edited videos monthly", "Hooks and captions written", "Trending audio selection", "Vertical format delivery"] },
+      { id: "capture", name: "Content Capture Day", price: 1500, once: true,
+        sub: "An on-site day shooting photo and video to stock the content calendar.",
+        inc: ["Half-day on site", "Photography and video capture", "Team and facility b-roll", "Edited and organised library"] },
+      { id: "group", name: "Facebook Group Management", price: 250, unit: "per group",
+        sub: "Moderation and engagement for internal or community groups.",
+        inc: ["Member and post approval", "Moderation", "Question response", "Engagement prompts"] }
     ]},
+
     { cat: "Paid Media", note: "Management fee — ad spend billed separately", items: [
-      { id: "meta",    name: "Meta Ads Management", desc: "Audience research, campaign build, creative, A/B testing, conversion tracking.", price: 1500, cost: 0, hrs: 8, unit: "per account" },
-      { id: "google",  name: "Google Ads Management", desc: "Search and display, campaign build, optimisation, conversion tracking.", price: 1500, cost: 0, hrs: 8, unit: "per account" },
-      { id: "linkedin",name: "LinkedIn Ads Management", desc: "Campaign build and job-listing promotion for hiring and B2B.", price: 1500, cost: 0, hrs: 8, unit: "per account" }
+      { id: "meta", name: "Meta Ads Management", price: 1500, unit: "per account",
+        sub: "Facebook and Instagram campaigns built, tested and optimised.",
+        inc: ["Audience research & targeting", "Campaign strategy and build", "Ad creative and copy", "A/B testing",
+              "Conversion tracking", "Ongoing optimisation", "Monthly reporting"] },
+      { id: "google", name: "Google Ads Management", price: 1500, unit: "per account",
+        sub: "Search and display campaigns against the terms that convert.",
+        inc: ["Keyword research", "Search and display campaigns", "Ad copy and extensions", "Landing page guidance",
+              "Conversion tracking", "Ongoing optimisation", "Monthly reporting"] },
+      { id: "linkedin", name: "LinkedIn Ads Management", price: 1500, unit: "per account",
+        sub: "B2B and recruitment campaigns to a targeted professional audience.",
+        inc: ["Audience and firmographic targeting", "Campaign build", "Creative and copy", "Conversion tracking", "Monthly reporting"] },
+      { id: "jobs", name: "LinkedIn Job Posting", price: 400, unit: "per month",
+        sub: "Up to three live job listings posted and boosted at a time.",
+        inc: ["3 concurrent listings", "Listing copy", "Boosting to reach", "Applicant flow reporting"] },
+      { id: "retarget", name: "Retargeting & Dark Posts", price: 350, unit: "per month",
+        sub: "Unpublished ads and audience retargeting alongside the main campaigns.",
+        inc: ["Dark post creation", "Audience segment building", "Retargeting pools", "Sequenced creative"] }
     ]},
+
     { cat: "Content & Creative", items: [
-      { id: "blog",    name: "Blog Content", desc: "Two posts a month with internal and external linking to build site authority.", price: 600, cost: 0, hrs: 5, unit: "per month" },
-      { id: "email",   name: "Email Marketing", desc: "One campaign a month — strategy, build, send and reporting. Extra blasts $200 each.", price: 500, cost: 0, hrs: 3, unit: "per month" },
-      { id: "design",  name: "Design Retainer", desc: "Five hours a month of graphic design and collateral. Additional hours $125.", price: 625, cost: 0, hrs: 5, unit: "per month" },
-      { id: "video",   name: "Video Production", desc: "Pre-production, on-site shoot, professional edit. Horizontal and vertical cuts.", price: 4000, cost: 0, hrs: 40, once: true, term: 12 }
+      { id: "blog", name: "Blog Content", price: 600, unit: "per month",
+        sub: "Two posts a month written to build site authority and support search.",
+        inc: ["2 posts monthly", "Keyword-led topics", "Internal and external linking", "On-page SEO", "Publishing to your site"] },
+      { id: "email", name: "Email Marketing", price: 500, unit: "per month",
+        sub: "One campaign a month, built and sent. Extra blasts $200 each.",
+        inc: ["Campaign strategy", "Copy and design", "List segmentation", "Send and deliverability", "Open and click reporting"] },
+      { id: "design", name: "Design Retainer", price: 625, unit: "per month",
+        sub: "Five hours a month of design for collateral, print and campaign assets.",
+        inc: ["5 design hours monthly", "Print and digital collateral", "Campaign creative", "Brand-consistent templates", "Extra hours $125"] },
+      { id: "video", name: "Video Production", price: 4000, once: true, term: 12,
+        sub: "A full produced brand or company introduction video.",
+        inc: ["Pre-production planning", "On-site production day", "Professional videography", "Team interviews and b-roll",
+              "Professional edit", "Licensed music", "60–90s cut plus 30s social version", "Horizontal and vertical formats"] }
     ]},
+
     { cat: "Web & Search", items: [
-      { id: "web",     name: "Website Build", desc: "Custom design, build, content migration, launch and on-page SEO.", price: 4000, cost: 0, hrs: 45, once: true, term: 12 },
-      { id: "hosting", name: "Website Management & Hosting", desc: "Hosting, maintenance, security, performance monitoring and content updates.", price: 350, cost: 30, hrs: 2, unit: "per month" },
-      { id: "seo",     name: "SEO", desc: "Technical and on-page optimisation, keyword strategy and reporting.", price: 1500, cost: 65, hrs: 6, unit: "per month" },
-      { id: "calls",   name: "Call Tracking & Attribution", desc: "CallRail numbers, recording and source attribution. Platform included.", price: 450, cost: 263, hrs: 1, unit: "per month" }
+      { id: "web", name: "Website Build", price: 4000, once: true, term: 12,
+        sub: "A full custom site — designed, built, migrated and launched.",
+        inc: ["Custom design and development", "Mobile responsive", "Content migration", "Service and location pages",
+              "On-page SEO implementation", "Structured data", "Launch and QA"] },
+      { id: "landing", name: "Landing Page Build", price: 1200, once: true,
+        sub: "A single conversion-focused page for one campaign or offer.",
+        inc: ["Custom page design", "Copywriting", "Form and tracking setup", "Mobile responsive", "A/B variant option"] },
+      { id: "hosting", name: "Website Management & Hosting", price: 350, unit: "per month",
+        sub: "Hosting plus the ongoing upkeep that keeps the site fast and secure.",
+        inc: ["Hosting included", "Security management", "Performance monitoring", "Plugin and platform updates", "Minor content updates"] },
+      { id: "seo", name: "SEO", price: 1500, unit: "per month",
+        sub: "Technical and on-page work to earn traditional search rankings.",
+        inc: ["Technical site audit", "On-page optimisation", "Keyword strategy", "Internal linking", "Backlink development", "Monthly rank reporting"] },
+      { id: "calls", name: "Call Tracking & Attribution", price: 450, unit: "per month",
+        sub: "Know which campaign produced which phone call.",
+        inc: ["Tracking numbers", "Call recording", "Source attribution", "First-time caller flagging", "Platform cost included"] },
+      { id: "ada", name: "ADA Compliance Monitoring", price: 95, unit: "per month",
+        sub: "Ongoing accessibility scanning and remediation for your site.",
+        inc: ["Automated accessibility scanning", "Remediation widget", "Compliance statement", "Annual audit"] }
     ]}
   ];
+
+  var PRESETS = {
+    local:  { social: 2, gbp: 1, meta: 1, hosting: 1 },
+    ai:     { air: 1, signal: 1, audit: 1, social: 1 },
+    growth: { air: 1, signal: 1, social: 2, gbp: 1, meta: 1, google: 1, seo: 1, blog: 1, hosting: 1 },
+    launch: { web: 1, video: 1, social: 2, gbp: 1, hosting: 1, meta: 1 }
+  };
 
   var TIERS = [0, 0, .05, .10, .15, .20];
   var PREPAY = .08, CAP = .28;
@@ -360,7 +439,6 @@
   var $ = function (id) { return document.getElementById(id); };
   var money = function (n) { return "$" + Math.round(n).toLocaleString("en-US"); };
 
-  /* ---------- restore ---------- */
   try {
     var saved = JSON.parse(localStorage.getItem("duo-builder") || "null");
     if (saved && saved.state) {
@@ -387,12 +465,12 @@
 
     var rows = document.createElement("div");
     rows.className = "rows";
+
     g.items.forEach(function (it) {
-      var row = document.createElement("label");
+      var row = document.createElement("div");
       row.className = "row" + (g.air ? " air" : "");
-      row.setAttribute("for", "chk-" + it.id);
       row.innerHTML =
-        '<input type="checkbox" id="chk-' + it.id + '">' +
+        '<input type="checkbox" id="chk-' + it.id + '" aria-label="' + it.name + '">' +
         '<span class="r-name">' + it.name + "</span>" +
         '<span class="r-price' + (it.once ? " once" : "") + '">' + money(it.price) +
           '<span class="r-unit">' + (it.once ? "one-time" : (it.unit || "per month")) + "</span></span>" +
@@ -400,56 +478,69 @@
           ? '<span class="qty"><button type="button" data-act="dec" aria-label="Fewer">−</button>' +
             '<span id="q-' + it.id + '">1</span>' +
             '<button type="button" data-act="inc" aria-label="More">+</button></span>'
-          : '<span class="qty qty-hidden"><button type="button">−</button><span>1</span><button type="button">+</button></span>') +
-        '<span class="r-desc">' + it.desc + "</span>";
+          : '<span class="qty qty-hidden" aria-hidden="true"><button type="button" tabindex="-1">−</button><span>1</span><button type="button" tabindex="-1">+</button></span>') +
+        '<span class="r-sub">' + it.sub + "</span>" +
+        '<button class="r-more" type="button" aria-expanded="false" aria-controls="inc-' + it.id + '">What’s included</button>' +
+        '<div class="r-inc" id="inc-' + it.id + '" hidden><ul>' +
+          it.inc.map(function (x) { return "<li>" + x + "</li>"; }).join("") +
+        "</ul></div>";
 
       var chk = row.querySelector("input");
-      chk.addEventListener("change", function () {
-        state[it.id] = chk.checked ? (state[it.id] > 0 ? state[it.id] : 1) : 0;
+
+      function toggle() {
+        state[it.id] = state[it.id] > 0 ? 0 : 1;
         render();
+      }
+
+      row.addEventListener("click", function (ev) {
+        if (ev.target.closest("button")) return;      // qty steppers and the includes toggle
+        if (ev.target === chk) { state[it.id] = chk.checked ? 1 : 0; render(); return; }
+        toggle();
+      });
+
+      row.querySelector(".r-more").addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        var panel = row.querySelector(".r-inc");
+        var open = !panel.hidden;
+        panel.hidden = open;
+        this.setAttribute("aria-expanded", String(!open));
+        this.textContent = open ? "What’s included" : "Hide details";
       });
 
       if (it.qty) {
         row.querySelectorAll(".qty button").forEach(function (b) {
           b.addEventListener("click", function (ev) {
-            ev.preventDefault(); ev.stopPropagation();
+            ev.stopPropagation();
             var d = b.dataset.act === "inc" ? 1 : -1;
-            var next = Math.max(1, Math.min(20, (state[it.id] || 1) + d));
-            if (state[it.id] > 0) { state[it.id] = next; render(); }
+            if (state[it.id] > 0) {
+              state[it.id] = Math.max(1, Math.min(20, state[it.id] + d));
+              render();
+            }
           });
         });
       }
+
       rows.appendChild(row);
     });
+
     sec.appendChild(rows);
     cat.appendChild(sec);
   });
 
   /* ---------- calculate ---------- */
   function calc() {
-    var monthlyList = 0, onceList = 0, cost = 0, count = 0, minTerm = 1;
-
+    var monthlyList = 0, onceList = 0, count = 0, minTerm = 1;
     Object.keys(state).forEach(function (id) {
       var q = state[id]; if (!q) return;
       var it = byId[id];
-      if (it.once) {
-        onceList += it.price * q;
-        cost += (it.hrs * q * LOADED_RATE) / 12;   // amortised across a year
-      } else {
-        monthlyList += it.price * q;
-        cost += it.cost * q + it.hrs * q * LOADED_RATE;
-        count++;
-      }
+      if (it.once) { onceList += it.price * q; }
+      else { monthlyList += it.price * q; count++; }
       if (it.term && it.term > minTerm) minTerm = it.term;
     });
-
     var bundle = TIERS[Math.min(count, 5)];
     var total = Math.min(bundle + (prepay ? PREPAY : 0), CAP);
-    var monthly = monthlyList * (1 - total);
-    var gm = monthly > 0 ? (monthly - cost) / monthly : 0;
-
-    return { monthlyList: monthlyList, onceList: onceList, cost: cost, count: count,
-             bundle: bundle, total: total, monthly: monthly, gm: gm, minTerm: minTerm };
+    return { monthlyList: monthlyList, onceList: onceList, count: count,
+             bundle: bundle, total: total, monthly: monthlyList * (1 - total), minTerm: minTerm };
   }
 
   /* ---------- render ---------- */
@@ -458,12 +549,15 @@
 
     Object.keys(state).forEach(function (id) {
       var on = state[id] > 0;
-      var chk = $("chk-" + id); if (chk) chk.checked = on;
-      var row = chk ? chk.closest(".row") : null; if (row) row.classList.toggle("on", on);
+      var chk = $("chk-" + id); if (!chk) return;
+      chk.checked = on;
+      var row = chk.closest(".row");
+      if (row) row.classList.toggle("on", on);
       var q = $("q-" + id); if (q) q.textContent = state[id] || 1;
-      if (byId[id].qty) {
-        var btns = row ? row.querySelectorAll(".qty button") : [];
-        if (btns.length) { btns[0].disabled = !on || state[id] <= 1; btns[1].disabled = !on; }
+      if (byId[id].qty && row) {
+        var btns = row.querySelectorAll(".qty button");
+        btns[0].disabled = !on || state[id] <= 1;
+        btns[1].disabled = !on;
       }
     });
 
@@ -504,29 +598,24 @@
     var next = $("l-next");
     if (r.count === 0) next.textContent = "Add your first service to get started.";
     else if (r.count >= 5) next.innerHTML = "Top tier reached — <b>20% off</b> everything monthly.";
-    else {
-      var gain = Math.round((TIERS[r.count + 1] - TIERS[r.count]) * 100);
-      next.innerHTML = "Add <b>one more service</b> to unlock <b>" +
-        Math.round(TIERS[r.count + 1] * 100) + "% off</b> — another " + gain + " points.";
-    }
-
-    var h = $("health"), hv = $("h-val"), hm = $("h-msg");
-    h.classList.remove("ok", "mid", "low");
-    if (!any || r.monthly <= 0) {
-      hv.textContent = "—";
-      hm.textContent = "Internal check. Not shown to clients.";
-    } else {
-      hv.textContent = Math.round(r.gm * 100) + "%";
-      if (r.gm >= TARGET) { h.classList.add("ok"); hm.innerHTML = "Clears the <b>60% target</b>. Fine to send."; }
-      else if (r.gm >= FLOOR) { h.classList.add("mid"); hm.innerHTML = "Above the <b>50% floor</b> but under target. Sendable — worth trimming a discount or scope."; }
-      else { h.classList.add("low"); hm.innerHTML = "<b>Below the 50% floor.</b> Needs Lance's written approval before this goes out."; }
-    }
+    else next.innerHTML = "Add <b>one more service</b> to unlock <b>" +
+        Math.round(TIERS[r.count + 1] * 100) + "% off</b> the monthly total.";
 
     $("t-term").textContent = r.minTerm >= 12 ? "12 months" : (r.minTerm >= 6 ? "6 months" : "Month to month");
     save();
   }
 
   /* ---------- actions ---------- */
+  document.querySelectorAll(".preset").forEach(function (b) {
+    b.addEventListener("click", function () {
+      Object.keys(state).forEach(function (k) { state[k] = 0; });
+      var p = PRESETS[b.dataset.preset] || {};
+      Object.keys(p).forEach(function (k) { if (k in state) state[k] = p[k]; });
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
   $("prepay").checked = prepay;
   $("prepay").addEventListener("change", function (e) { prepay = e.target.checked; render(); });
 
@@ -536,30 +625,33 @@
   });
 
   $("copy").addEventListener("click", function () {
-    var r = calc(), out = ["DUO — PROPOSED PLAN", ""];
+    var r = calc(), out = ["DUO MARKETING GROUP — PROPOSED PLAN", ""];
     CATALOG.forEach(function (g) {
+      var head = false;
       g.items.forEach(function (it) {
         var q = state[it.id]; if (!q) return;
-        out.push("  " + it.name + (q > 1 ? " x" + q : "") +
-                 (it.once ? "  " + money(it.price * q) + " (one-time)" : "  " + money(it.price * q) + "/mo"));
+        if (!head) { out.push(g.cat.toUpperCase()); head = true; }
+        out.push("  " + it.name + (q > 1 ? " x" + q : "") + "  " +
+                 money(it.price * q) + (it.once ? " (one-time)" : "/mo"));
       });
+      if (head) out.push("");
     });
-    if (out.length === 2) { out.push("  (nothing selected)"); }
-    out.push("");
+    if (out.length === 2) out.push("  (nothing selected)", "");
+
     out.push("Monthly at list      " + money(r.monthlyList));
     if (r.total > 0) out.push("Discount             −" + money(r.monthlyList * r.total) + "  (" + Math.round(r.total * 100) + "%)");
     out.push("MONTHLY              " + money(r.monthly));
     out.push("Annual               " + money(r.monthly * 12));
     if (r.onceList > 0) out.push("One-time build       " + money(r.onceList));
     out.push("Minimum term         " + (r.minTerm >= 12 ? "12 months" : r.minTerm >= 6 ? "6 months" : "Month to month"));
-    out.push("");
-    out.push("Paid media fees exclude ad spend, billed separately as a pass-through.");
-    out.push("[internal] gross margin " + Math.round(r.gm * 100) + "%");
+    out.push("", "Paid media prices are the management fee. Ad spend is billed separately.");
 
     var text = out.join("\n"), btn = $("copy"), old = btn.textContent;
     var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = old; }, 1600); };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, function () { btn.textContent = "Press ⌘C"; setTimeout(function(){btn.textContent = old;}, 2200); });
+      navigator.clipboard.writeText(text).then(done, function () {
+        btn.textContent = "Press ⌘C"; setTimeout(function () { btn.textContent = old; }, 2200);
+      });
     } else { done(); }
   });
 

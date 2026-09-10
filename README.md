@@ -1,94 +1,85 @@
-# Duo Price Book — proposal for management
+# Duo Service Builder
 
-A plan to replace ad-hoc, per-deal pricing with one published price book, a hard
-margin floor, and a discount authority matrix — so pricing is repeatable and can
-scale with headcount.
+An à la carte service menu. Pick services, and the bundle discount grows as
+more are added.
 
-**Deliverable:** [`pricing-plan.html`](pricing-plan.html) — the document to present.
+**Deliverable:** [`service-builder.html`](service-builder.html)
 
-## The problem, in one line
+## How it works
 
-Eight AiR engagements signed or proposed in 2026 carry six different prices
-between $550 and $2,200/month for substantially overlapping scope, and none of
-them reference a rate card. The rate card was last updated in June 2024 and no
-longer describes what we sell.
-
-## The five decisions requested
-
-| # | Decision | Owner |
-|---|---|---|
-| D1 | Adopt three published AiR tiers at $1,200 / $1,500 / $2,500 per location | Lance |
-| D2 | Adopt a hard gross-margin floor of 50%; list prices set to clear 60% | Lance |
-| D3 | Stop bundling ad spend into the monthly fee; restore the 2024 campaign equation | Lance, Kaden |
-| D4 | Tie included build work (websites, video) to a minimum term | Lance, Max |
-| D5 | Retire the four undefined discount names; publish a discount authority matrix | Lance |
-
-## The core finding
-
-Every AiR dashboard costs Duo **$225/month** before anyone touches the account.
-Against our own team-margin model (mid Digital Strategist at $5,500/month
-carrying 8 accounts, 60% gross margin as the hire threshold):
-
-```
-accounts per rep needed = 5500 / (0.40 × price − 225)
-```
-
-| Price/mo | Accounts per rep for 60% GM |
+| Monthly services selected | Discount |
 |---:|---:|
-| $550 | not achievable at any caseload |
-| $650 | 158 |
-| $750 | 74 |
-| $1,200 | 22 |
-| $1,500 | 15 |
-| $2,500 | 8 |
+| 1 | — |
+| 2 | 5% |
+| 3 | 10% |
+| 4 | 15% |
+| 5+ | 20% |
 
-At $550 the platform fee alone exceeds the entire 40% cost allowance. The
-sub-$1,000 band cannot be delivered profitably at any volume, which is why the
-proposal removes it rather than discounting into it.
+Annual prepay adds 8%. Combined discount is capped at 28%.
 
-## Proposed tiers
+- The count uses **distinct monthly services**. Quantities inside one service
+  (three social platforms, two locations) don't raise the tier.
+- **One-time build work is never discounted** — websites, video, landing pages
+  and the visibility audit stay at list.
+- **Paid media prices are the management fee only.** Ad spend is billed
+  separately as a pass-through.
+- Minimum term derives from the selection: 12 months where a build is included,
+  6 months with Signal Sessions, otherwise month to month.
 
-| Tier | List | Hard floor | Delivery cap | Caseload | Term |
-|---|---:|---:|---:|---:|---|
-| AiR Core | $1,200 | $1,000 | 5 hrs/mo | 20–22 | monthly |
-| AiR Signal (default) | $1,500 | $1,200 | 8 hrs/mo | 14–15 | 6 months |
-| AiR Complete | $2,500 | $1,850 | 16 hrs/mo | 8 | 12 months |
+## Catalog
 
-Floors are derived: each is the price at which that tier's platform cost plus
-its delivery cap still leaves 50% gross margin.
+23 services across five categories — AI Search Visibility (AiR), Social Media,
+Paid Media, Content & Creative, and Web & Search. Each carries a "What's
+included" breakdown. Four presets (Local Presence, AI Visibility, Full Growth,
+New Launch) pre-fill common combinations.
 
-Discounts reduce to two published programs — multi-location (15% second
-location, 25% third+) and annual prepay (8%) — stacking to a maximum of 30%,
-never below the tier floor.
+Selections persist per browser via `localStorage`.
 
-## Live item
+## Branding
 
-The CMP proposal's single-office tier bundles AiR *plus a full website* at
-$1,500/month on a six-month term. Amortising the build across that term lands
-the engagement near **36% gross margin**, below the 45% line our own model marks
-as "cannot hire." The two- and three-office tiers hold up. The single-office
-tier should be repriced or the website removed before it goes out.
+From the Brand Guidelines doc (Duo Group entry):
 
-## Open inputs
+- Blue `#019ED0`, white `#FEFEFE`, black `#000000`
+- Typeface **Avenir Next LT Pro**, with Mulish substituting where it isn't installed
+- AiR purple `#9A76D6` marks the AI Search Visibility line
 
-These sharpen the numbers but do not block the decisions:
+### Adding the real logo
 
-1. **Current wage data** — the $5,500 figure and 8-account caseload come from the
-   team-margin sheet last updated in 2023. Every floor moves if that has moved.
-2. **Actual hours per account** — no time tracking against clients was found, so
-   delivery caps are budgets rather than measurements.
-3. **A complete MRR list** — this is built from the eight agreements locatable in
-   Drive; a full list would size how much revenue currently sits below floor.
+The page currently type-sets the wordmark. To use the actual artwork, open
+`service-builder.html`, find the `var LOGO = "";` line near the top of the
+script, and paste in a base64 data URI:
+
+```
+base64 -w0 Duo-Marketing-Group-Logo-2020-373px.png
+```
+
+Then `var LOGO = "data:image/png;base64,<paste>";`
+
+The artwork has to be inlined — the artifact sandbox blocks external image
+URLs. The source file is in Drive under Client logos / Duo Group, or as
+`DUOGroupLogos.pdf`.
+
+## Where the prices came from
+
+`duogroup.com` is blocked by this environment's network egress proxy, so the
+catalog was assembled from what Duo actually contracts and invoices:
+
+- Duo Pricing Sheet (June 2024)
+- AiR client agreements — Kobico, CIS Office Furniture, Mill Forest Dental
+- Santiam Hospital & Clinics services agreement
+- Lawn Doctor 2026 options breakdown
+- Monthly budget sheets, June–September 2026
+
+Two prices are reconstructions rather than quoted figures and should be
+confirmed: **Email Marketing** and the **Design Retainer**. The 2024 card lists
+email at "$3,000/month," which reads as an all-in program price and conflicts
+with the $200-per-extra-blast rate in the Santiam agreement.
+
+`data/service-catalog.csv` records every line with its source.
 
 ## Files
 
-- `pricing-plan.html` — the presentation document
-- `data/price-points-2026.csv` — the evidence table behind section 01
-
-## Sources
-
-Duo Pricing Sheet (June 2024) · Duo Team Margins & Utilisation Rates ·
-Quarterly Goals 2025 · monthly budget sheets June–September 2026 · client
-services agreements for Santiam Hospital & Clinics, Mill Forest Dental Group,
-Kobico and CIS Office Furniture · Lawn Doctor 2026 options breakdown · CMP AiR
-proposal.
+- `service-builder.html` — the menu
+- `data/service-catalog.csv` — catalog with sources
+- `data/price-points-2026.csv`, `data/unit-costs-2026.csv` — reference data
+- `archive/pricing-plan.html` — earlier pricing-rationale document, retired
