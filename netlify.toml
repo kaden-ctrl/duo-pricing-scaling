@@ -1,0 +1,11 @@
+# Only dist/ is published. The repository root holds client contract data
+# (data/*.csv) and internal margin analysis (archive/) that must never be
+# served publicly.
+[build]
+  publish = "dist"
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

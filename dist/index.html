@@ -1,0 +1,660 @@
+<title>Duo Service Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+  :root {
+    --duo-blue:   #019ED0;
+    --duo-blue-d: #0176A0;
+    --air-purple: #9A76D6;
+    --white:      #FEFEFE;
+
+    --paper:      #EFF4F7;
+    --surface:    #FEFEFE;
+    --surface-2:  #E4EDF2;
+    --ink:        #0B1116;
+    --ink-2:      #33424C;
+    --muted:      #5F717C;
+    --rule:       #D6E2E9;
+    --rule-firm:  #B4C6D1;
+    --good:       #12795A;
+
+    --shadow: 0 1px 2px rgba(11,17,22,.05), 0 10px 30px -14px rgba(11,17,22,.25);
+    --f: "Avenir Next LT Pro", "Avenir Next", Avenir, Mulish, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --duo-blue:   #3FBEE8;
+      --duo-blue-d: #7FD5F2;
+      --air-purple: #B79AE4;
+      --paper:      #0A0E12;
+      --surface:    #131A20;
+      --surface-2:  #1B242C;
+      --ink:        #EAF1F5;
+      --ink-2:      #C0CDD6;
+      --muted:      #8C9DA8;
+      --rule:       #232F38;
+      --rule-firm:  #384854;
+      --good:       #5CC49E;
+      --shadow: 0 1px 2px rgba(0,0,0,.5), 0 10px 30px -14px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --duo-blue:   #3FBEE8;
+    --duo-blue-d: #7FD5F2;
+    --air-purple: #B79AE4;
+    --paper:      #0A0E12;
+    --surface:    #131A20;
+    --surface-2:  #1B242C;
+    --ink:        #EAF1F5;
+    --ink-2:      #C0CDD6;
+    --muted:      #8C9DA8;
+    --rule:       #232F38;
+    --rule-firm:  #384854;
+    --good:       #5CC49E;
+    --shadow: 0 1px 2px rgba(0,0,0,.5), 0 10px 30px -14px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+    padding-inline: 20px;
+    padding-block: 0 64px;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums;
+  }
+  .wrap { max-width: 1120px; margin-inline: auto; }
+
+  /* ---------- masthead ---------- */
+  header.top { padding-block: 40px 24px; border-bottom: 3px solid var(--duo-blue); }
+  .wordmark {
+    display: inline-flex; align-items: baseline; gap: 9px;
+    font-weight: 800; font-size: 1.45rem; letter-spacing: -.03em; margin-bottom: 20px;
+  }
+  .wordmark .d { color: var(--duo-blue); }
+  .wordmark .tag {
+    font-size: .66rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); padding-bottom: 2px;
+  }
+  h1 {
+    font-weight: 800; font-size: clamp(1.9rem, 4.6vw, 2.9rem); line-height: 1.06;
+    letter-spacing: -.032em; margin: 0 0 14px; text-wrap: balance;
+  }
+  .sub { color: var(--muted); font-size: 1.02rem; max-width: 60ch; margin: 0; }
+  .sub b { color: var(--ink-2); font-weight: 600; }
+
+  /* ---------- presets ---------- */
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-top: 24px; }
+  .presets-lbl { font-size: .69rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+  .preset {
+    font-family: var(--f); font-size: .8rem; font-weight: 600;
+    padding: 7px 13px; border: 1px solid var(--rule-firm); background: var(--surface);
+    color: var(--ink-2); cursor: pointer; transition: all .13s;
+  }
+  .preset:hover { border-color: var(--duo-blue); color: var(--duo-blue); }
+
+  /* ---------- layout ---------- */
+  .cols { display: grid; grid-template-columns: 1fr 340px; gap: 34px; align-items: start; padding-top: 26px; }
+  @media (max-width: 920px) { .cols { grid-template-columns: 1fr; gap: 26px; } }
+
+  /* ---------- catalog ---------- */
+  .cat { margin-bottom: 24px; }
+  .cat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .cat-bar { width: 3px; height: 15px; background: var(--duo-blue); border-radius: 1px; }
+  .cat-bar.air { background: var(--air-purple); }
+  .cat-name { font-weight: 700; font-size: .78rem; letter-spacing: .13em; text-transform: uppercase; }
+  .cat-note { font-size: .77rem; color: var(--muted); margin-left: auto; text-align: right; }
+
+  .rows { border: 1px solid var(--rule); background: var(--surface); }
+  .row {
+    display: grid; grid-template-columns: 22px 1fr auto auto; gap: 3px 13px;
+    align-items: center; padding: 13px 16px; border-bottom: 1px solid var(--rule);
+    cursor: pointer; transition: background .12s;
+  }
+  .row:last-child { border-bottom: none; }
+  .row:hover { background: var(--surface-2); }
+  .row.on { background: color-mix(in srgb, var(--duo-blue) 8%, var(--surface)); }
+  .row.on.air { background: color-mix(in srgb, var(--air-purple) 10%, var(--surface)); }
+  .row input[type=checkbox] { width: 17px; height: 17px; accent-color: var(--duo-blue); margin: 0; cursor: pointer; }
+  .row.air input[type=checkbox] { accent-color: var(--air-purple); }
+  .r-name { font-weight: 600; font-size: .93rem; }
+  .r-sub { grid-column: 2; font-size: .8rem; color: var(--muted); line-height: 1.42; }
+  .r-price { font-weight: 700; font-size: .93rem; white-space: nowrap; text-align: right; }
+  .r-unit { display: block; font-weight: 400; font-size: .69rem; color: var(--muted); }
+  .r-price.once { color: var(--muted); }
+
+  .r-more {
+    grid-column: 2; justify-self: start; margin-top: 3px;
+    font-family: var(--f); font-size: .74rem; font-weight: 700; letter-spacing: .04em;
+    color: var(--duo-blue); background: none; border: 0; padding: 2px 0; cursor: pointer;
+  }
+  .row.air .r-more { color: var(--air-purple); }
+  .r-more:hover { text-decoration: underline; }
+  .r-inc { grid-column: 2 / -1; margin: 7px 0 2px; }
+  .r-inc ul {
+    margin: 0; padding: 0; list-style: none;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 4px 20px;
+    font-size: .79rem; color: var(--ink-2);
+  }
+  .r-inc li { padding-left: 14px; position: relative; line-height: 1.42; }
+  .r-inc li::before {
+    content: ""; position: absolute; left: 0; top: .58em;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--duo-blue); opacity: .55;
+  }
+  .row.air .r-inc li::before { background: var(--air-purple); }
+
+  .qty { display: flex; align-items: center; border: 1px solid var(--rule-firm); background: var(--surface); }
+  .qty button {
+    width: 26px; height: 26px; border: 0; background: transparent; color: var(--ink);
+    font-family: var(--f); font-size: 15px; font-weight: 700; cursor: pointer; line-height: 1;
+  }
+  .qty button:hover:not(:disabled) { background: var(--surface-2); color: var(--duo-blue); }
+  .qty button:disabled { opacity: .3; cursor: default; }
+  .qty span { min-width: 24px; text-align: center; font-weight: 700; font-size: .85rem; }
+  .qty-hidden { visibility: hidden; }
+
+  /* ---------- summary ---------- */
+  .panel { position: sticky; top: 18px; background: var(--surface); border: 1px solid var(--rule-firm); box-shadow: var(--shadow); }
+  @media (max-width: 920px) { .panel { position: static; } }
+  .panel-h { background: var(--ink); color: var(--white); padding: 15px 18px; }
+  :root[data-theme="dark"] .panel-h { background: var(--surface-2); color: var(--ink); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .panel-h { background: var(--surface-2); color: var(--ink); } }
+  .panel-h h2 { margin: 0; font-size: .82rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+  .panel-b { padding: 18px; }
+
+  .lines { display: grid; gap: 7px; margin-bottom: 14px; font-size: .85rem; }
+  .line { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+  .line span:first-child { color: var(--ink-2); }
+  .line span:last-child { font-weight: 600; white-space: nowrap; }
+  .line.dim span { color: var(--muted); font-weight: 400; }
+  .empty { color: var(--muted); font-size: .85rem; font-style: italic; padding: 6px 0 14px; }
+
+  .tot { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: .86rem; }
+  .tot + .tot { padding-top: 7px; border-top: none; }
+  .tot span:last-child { font-weight: 600; white-space: nowrap; }
+  .tot.save span { color: var(--good); font-weight: 700; }
+  .tot.grand { margin-top: 12px; padding-top: 13px; border-top: 2px solid var(--ink); align-items: baseline; }
+  :root[data-theme="dark"] .tot.grand { border-top-color: var(--rule-firm); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tot.grand { border-top-color: var(--rule-firm); } }
+  .tot.grand span:first-child { font-weight: 700; font-size: .95rem; }
+  .tot.grand span:last-child { font-weight: 800; font-size: 1.5rem; letter-spacing: -.025em; color: var(--duo-blue); }
+  .grand-note { font-size: .72rem; color: var(--muted); text-align: right; margin: -2px 0 0; }
+
+  /* ---------- discount ladder ---------- */
+  .ladder { background: var(--surface-2); padding: 14px 16px; margin-top: 16px; }
+  .ladder-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 9px; }
+  .ladder-lbl { font-size: .69rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .ladder-pct { font-weight: 800; font-size: 1.05rem; color: var(--duo-blue); }
+  .pips { display: flex; gap: 4px; }
+  .pip { flex: 1; height: 5px; background: var(--rule-firm); border-radius: 3px; transition: background .18s; }
+  .pip.lit { background: var(--duo-blue); }
+  .ladder-next { font-size: .77rem; color: var(--ink-2); margin: 9px 0 0; line-height: 1.4; }
+  .ladder-next b { color: var(--duo-blue); font-weight: 700; }
+
+  .toggle { display: flex; align-items: flex-start; gap: 9px; padding-top: 13px; margin-top: 13px; border-top: 1px solid var(--rule); cursor: pointer; }
+  .toggle input { width: 16px; height: 16px; accent-color: var(--duo-blue); margin: 2px 0 0; cursor: pointer; }
+  .toggle-t { font-size: .84rem; font-weight: 600; display: block; }
+  .toggle-d { font-size: .74rem; color: var(--muted); line-height: 1.4; display: block; }
+
+  .term { display: flex; justify-content: space-between; gap: 10px; font-size: .78rem; margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--rule); }
+  .term span:first-child { color: var(--muted); }
+  .term span:last-child { font-weight: 700; }
+
+  .acts { display: grid; gap: 8px; margin-top: 16px; }
+  .btn {
+    font-family: var(--f); font-size: .84rem; font-weight: 700; letter-spacing: .02em;
+    padding: 11px 14px; border: 1px solid var(--duo-blue); background: var(--duo-blue); color: var(--white);
+    cursor: pointer; transition: background .13s;
+  }
+  :root[data-theme="dark"] .btn { color: #08111A; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { color: #08111A; } }
+  .btn:hover { background: var(--duo-blue-d); border-color: var(--duo-blue-d); }
+  .btn.ghost { background: transparent; color: var(--duo-blue); }
+  .btn.ghost:hover { background: var(--surface-2); }
+
+  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: .8rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 26px; }
+  footer b { color: var(--ink-2); font-weight: 700; }
+
+  :focus-visible { outline: 2px solid var(--duo-blue); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="wordmark">
+      <img id="logo-img" alt="Duo Marketing Group" hidden>
+      <span id="logo-text"><span class="d">duo</span><span class="tag">Marketing Group</span></span>
+    </div>
+    <h1>Build a plan</h1>
+    <p class="sub">Pick the services you want. The more you add, the more comes off the monthly total — up to <b>20%</b> on the bundle, plus <b>8%</b> for paying annually.</p>
+    <div class="presets">
+      <span class="presets-lbl">Start from</span>
+      <button class="preset" type="button" data-preset="local">Local Presence</button>
+      <button class="preset" type="button" data-preset="ai">AI Visibility</button>
+      <button class="preset" type="button" data-preset="growth">Full Growth</button>
+      <button class="preset" type="button" data-preset="launch">New Launch</button>
+    </div>
+  </header>
+
+  <div class="cols">
+    <div id="catalog"></div>
+
+    <aside class="panel">
+      <div class="panel-h"><h2>Your plan</h2></div>
+      <div class="panel-b">
+        <div id="lines" class="lines"></div>
+        <p id="empty" class="empty">Nothing selected yet — check a service to start building.</p>
+
+        <div id="totals" hidden>
+          <div class="tot"><span>Monthly at list</span><span id="t-list"></span></div>
+          <div class="tot save" id="t-save-row"><span id="t-save-lbl">Bundle discount</span><span id="t-save"></span></div>
+          <div class="tot grand"><span>Per month</span><span id="t-month"></span></div>
+          <p class="grand-note" id="t-annual"></p>
+          <div class="tot" id="t-once-row"><span>One-time build work</span><span id="t-once"></span></div>
+        </div>
+
+        <div class="ladder">
+          <div class="ladder-top">
+            <span class="ladder-lbl">Bundle discount</span>
+            <span class="ladder-pct" id="l-pct">0%</span>
+          </div>
+          <div class="pips">
+            <div class="pip" data-p="1"></div><div class="pip" data-p="2"></div>
+            <div class="pip" data-p="3"></div><div class="pip" data-p="4"></div>
+            <div class="pip" data-p="5"></div>
+          </div>
+          <p class="ladder-next" id="l-next">Add your first service to get started.</p>
+
+          <label class="toggle" for="prepay">
+            <input type="checkbox" id="prepay">
+            <span>
+              <span class="toggle-t">Pay annually — save 8%</span>
+              <span class="toggle-d">Twelve months paid up front.</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="term"><span>Minimum term</span><span id="t-term">Month to month</span></div>
+
+        <div class="acts">
+          <button class="btn" id="copy" type="button">Copy quote</button>
+          <button class="btn ghost" id="reset" type="button">Clear all</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <span><b>Duo Marketing Group</b> · Logan, Utah · duogroup.com</span>
+    <span>Paid media prices are the management fee. Ad spend is billed separately.</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ------------------------------------------------------------------
+     LOGO — drop the real artwork in here.
+
+     Paste the logo as a base64 data URI between the quotes, e.g.
+       var LOGO = "data:image/png;base64,iVBORw0KGgo...";
+     or for an SVG
+       var LOGO = "data:image/svg+xml;base64,PHN2ZyB4bWxu...";
+
+     Generate it from the file in Drive (Client logos / Duo Group) with:
+       base64 -w0 Duo-Marketing-Group-Logo-2020-373px.png
+
+     External image URLs will NOT work — the artifact sandbox blocks them,
+     so the artwork has to be inlined. Leave empty to use the type-set
+     wordmark instead.
+  ------------------------------------------------------------------ */
+  var LOGO = "";
+
+  if (LOGO) {
+    var img = document.getElementById("logo-img");
+    img.src = LOGO;
+    img.hidden = false;
+    img.style.height = "34px";
+    img.style.width = "auto";
+    document.getElementById("logo-text").hidden = true;
+  }
+
+  var CATALOG = [
+    { cat: "AI Search Visibility", air: true, note: "AiR — Ai Results", items: [
+      { id: "air", name: "AiR Dashboard & Tracking", price: 1200, unit: "per location", qty: true,
+        sub: "Track how ChatGPT, Gemini, Perplexity and Google AI Overviews describe and recommend you.",
+        inc: ["Citation rate tracking", "Sentiment analysis", "Prominence scoring", "Competitor benchmarking",
+              "~170-prompt set per market", "Quarterly prompt refresh", "Monthly scorecard", "Dedicated AiR rep"] },
+      { id: "signal", name: "Signal Sessions", price: 400, unit: "per month", term: 6,
+        sub: "Two working sessions a month building the content and citations that move the answer.",
+        inc: ["2 sessions monthly, 45–60 min", "Personal social strategy per provider", "Signal content build",
+              "Third-party citations & profiles", "Structured data on your site", "Corrections where you're described wrong"] },
+      { id: "audit", name: "AI Visibility Audit", price: 1500, once: true,
+        sub: "A baseline scan across all four engines before anything else starts.",
+        inc: ["Full prompt-set run", "Who's being recommended instead", "Sentiment baseline", "Gap analysis", "Written findings report"] },
+      { id: "airmulti", name: "Multi-Location Reporting", price: 350, unit: "per month",
+        sub: "Roll-up view across every location with side-by-side benchmarking.",
+        inc: ["Cross-location dashboard", "League table by market", "Consolidated monthly report", "Shared prompt library"] }
+    ]},
+
+    { cat: "Social Media", items: [
+      { id: "social", name: "Social Media Management", price: 750, unit: "per platform", qty: true,
+        sub: "Facebook, Instagram, LinkedIn, X or TikTok — fully managed.",
+        inc: ["3–4 unique posts per week", "Content planning & copywriting", "Creative and graphics", "Scheduling & publishing",
+              "Comment and message management", "Follower growth", "Monthly performance report"] },
+      { id: "gbp", name: "Google Business Profile", price: 750, unit: "per location", qty: true,
+        sub: "The listing that decides whether you show up in local search.",
+        inc: ["Listing optimisation", "Photo & FAQ optimisation", "Bing Places sync", "Website schema integration",
+              "Review monitoring & response", "Monthly posts"] },
+      { id: "shortform", name: "Short-Form Video", price: 900, unit: "per month",
+        sub: "Four edited vertical videos a month for Reels, Shorts and TikTok.",
+        inc: ["4 edited videos monthly", "Hooks and captions written", "Trending audio selection", "Vertical format delivery"] },
+      { id: "capture", name: "Content Capture Day", price: 1500, once: true,
+        sub: "An on-site day shooting photo and video to stock the content calendar.",
+        inc: ["Half-day on site", "Photography and video capture", "Team and facility b-roll", "Edited and organised library"] },
+      { id: "group", name: "Facebook Group Management", price: 250, unit: "per group",
+        sub: "Moderation and engagement for internal or community groups.",
+        inc: ["Member and post approval", "Moderation", "Question response", "Engagement prompts"] }
+    ]},
+
+    { cat: "Paid Media", note: "Management fee — ad spend billed separately", items: [
+      { id: "meta", name: "Meta Ads Management", price: 1500, unit: "per account",
+        sub: "Facebook and Instagram campaigns built, tested and optimised.",
+        inc: ["Audience research & targeting", "Campaign strategy and build", "Ad creative and copy", "A/B testing",
+              "Conversion tracking", "Ongoing optimisation", "Monthly reporting"] },
+      { id: "google", name: "Google Ads Management", price: 1500, unit: "per account",
+        sub: "Search and display campaigns against the terms that convert.",
+        inc: ["Keyword research", "Search and display campaigns", "Ad copy and extensions", "Landing page guidance",
+              "Conversion tracking", "Ongoing optimisation", "Monthly reporting"] },
+      { id: "linkedin", name: "LinkedIn Ads Management", price: 1500, unit: "per account",
+        sub: "B2B and recruitment campaigns to a targeted professional audience.",
+        inc: ["Audience and firmographic targeting", "Campaign build", "Creative and copy", "Conversion tracking", "Monthly reporting"] },
+      { id: "jobs", name: "LinkedIn Job Posting", price: 400, unit: "per month",
+        sub: "Up to three live job listings posted and boosted at a time.",
+        inc: ["3 concurrent listings", "Listing copy", "Boosting to reach", "Applicant flow reporting"] },
+      { id: "retarget", name: "Retargeting & Dark Posts", price: 350, unit: "per month",
+        sub: "Unpublished ads and audience retargeting alongside the main campaigns.",
+        inc: ["Dark post creation", "Audience segment building", "Retargeting pools", "Sequenced creative"] }
+    ]},
+
+    { cat: "Content & Creative", items: [
+      { id: "blog", name: "Blog Content", price: 600, unit: "per month",
+        sub: "Two posts a month written to build site authority and support search.",
+        inc: ["2 posts monthly", "Keyword-led topics", "Internal and external linking", "On-page SEO", "Publishing to your site"] },
+      { id: "email", name: "Email Marketing", price: 500, unit: "per month",
+        sub: "One campaign a month, built and sent. Extra blasts $200 each.",
+        inc: ["Campaign strategy", "Copy and design", "List segmentation", "Send and deliverability", "Open and click reporting"] },
+      { id: "design", name: "Design Retainer", price: 625, unit: "per month",
+        sub: "Five hours a month of design for collateral, print and campaign assets.",
+        inc: ["5 design hours monthly", "Print and digital collateral", "Campaign creative", "Brand-consistent templates", "Extra hours $125"] },
+      { id: "video", name: "Video Production", price: 4000, once: true, term: 12,
+        sub: "A full produced brand or company introduction video.",
+        inc: ["Pre-production planning", "On-site production day", "Professional videography", "Team interviews and b-roll",
+              "Professional edit", "Licensed music", "60–90s cut plus 30s social version", "Horizontal and vertical formats"] }
+    ]},
+
+    { cat: "Web & Search", items: [
+      { id: "web", name: "Website Build", price: 4000, once: true, term: 12,
+        sub: "A full custom site — designed, built, migrated and launched.",
+        inc: ["Custom design and development", "Mobile responsive", "Content migration", "Service and location pages",
+              "On-page SEO implementation", "Structured data", "Launch and QA"] },
+      { id: "landing", name: "Landing Page Build", price: 1200, once: true,
+        sub: "A single conversion-focused page for one campaign or offer.",
+        inc: ["Custom page design", "Copywriting", "Form and tracking setup", "Mobile responsive", "A/B variant option"] },
+      { id: "hosting", name: "Website Management & Hosting", price: 350, unit: "per month",
+        sub: "Hosting plus the ongoing upkeep that keeps the site fast and secure.",
+        inc: ["Hosting included", "Security management", "Performance monitoring", "Plugin and platform updates", "Minor content updates"] },
+      { id: "seo", name: "SEO", price: 1500, unit: "per month",
+        sub: "Technical and on-page work to earn traditional search rankings.",
+        inc: ["Technical site audit", "On-page optimisation", "Keyword strategy", "Internal linking", "Backlink development", "Monthly rank reporting"] },
+      { id: "calls", name: "Call Tracking & Attribution", price: 450, unit: "per month",
+        sub: "Know which campaign produced which phone call.",
+        inc: ["Tracking numbers", "Call recording", "Source attribution", "First-time caller flagging", "Platform cost included"] },
+      { id: "ada", name: "ADA Compliance Monitoring", price: 95, unit: "per month",
+        sub: "Ongoing accessibility scanning and remediation for your site.",
+        inc: ["Automated accessibility scanning", "Remediation widget", "Compliance statement", "Annual audit"] }
+    ]}
+  ];
+
+  var PRESETS = {
+    local:  { social: 2, gbp: 1, meta: 1, hosting: 1 },
+    ai:     { air: 1, signal: 1, audit: 1, social: 1 },
+    growth: { air: 1, signal: 1, social: 2, gbp: 1, meta: 1, google: 1, seo: 1, blog: 1, hosting: 1 },
+    launch: { web: 1, video: 1, social: 2, gbp: 1, hosting: 1, meta: 1 }
+  };
+
+  var TIERS = [0, 0, .05, .10, .15, .20];
+  var PREPAY = .08, CAP = .28;
+
+  var byId = {}, state = {}, prepay = false;
+  CATALOG.forEach(function (g) { g.items.forEach(function (it) { byId[it.id] = it; state[it.id] = 0; }); });
+
+  var $ = function (id) { return document.getElementById(id); };
+  var money = function (n) { return "$" + Math.round(n).toLocaleString("en-US"); };
+
+  try {
+    var saved = JSON.parse(localStorage.getItem("duo-builder") || "null");
+    if (saved && saved.state) {
+      Object.keys(saved.state).forEach(function (k) { if (k in state) state[k] = saved.state[k]; });
+      prepay = !!saved.prepay;
+    }
+  } catch (e) { /* storage unavailable — start empty */ }
+
+  function save() {
+    try { localStorage.setItem("duo-builder", JSON.stringify({ state: state, prepay: prepay })); } catch (e) {}
+  }
+
+  /* ---------- build catalog ---------- */
+  var cat = $("catalog");
+  CATALOG.forEach(function (g) {
+    var sec = document.createElement("section");
+    sec.className = "cat";
+    var head = document.createElement("div");
+    head.className = "cat-head";
+    head.innerHTML = '<span class="cat-bar' + (g.air ? " air" : "") + '"></span>' +
+                     '<span class="cat-name">' + g.cat + "</span>" +
+                     (g.note ? '<span class="cat-note">' + g.note + "</span>" : "");
+    sec.appendChild(head);
+
+    var rows = document.createElement("div");
+    rows.className = "rows";
+
+    g.items.forEach(function (it) {
+      var row = document.createElement("div");
+      row.className = "row" + (g.air ? " air" : "");
+      row.innerHTML =
+        '<input type="checkbox" id="chk-' + it.id + '" aria-label="' + it.name + '">' +
+        '<span class="r-name">' + it.name + "</span>" +
+        '<span class="r-price' + (it.once ? " once" : "") + '">' + money(it.price) +
+          '<span class="r-unit">' + (it.once ? "one-time" : (it.unit || "per month")) + "</span></span>" +
+        (it.qty
+          ? '<span class="qty"><button type="button" data-act="dec" aria-label="Fewer">−</button>' +
+            '<span id="q-' + it.id + '">1</span>' +
+            '<button type="button" data-act="inc" aria-label="More">+</button></span>'
+          : '<span class="qty qty-hidden" aria-hidden="true"><button type="button" tabindex="-1">−</button><span>1</span><button type="button" tabindex="-1">+</button></span>') +
+        '<span class="r-sub">' + it.sub + "</span>" +
+        '<button class="r-more" type="button" aria-expanded="false" aria-controls="inc-' + it.id + '">What’s included</button>' +
+        '<div class="r-inc" id="inc-' + it.id + '" hidden><ul>' +
+          it.inc.map(function (x) { return "<li>" + x + "</li>"; }).join("") +
+        "</ul></div>";
+
+      var chk = row.querySelector("input");
+
+      function toggle() {
+        state[it.id] = state[it.id] > 0 ? 0 : 1;
+        render();
+      }
+
+      row.addEventListener("click", function (ev) {
+        if (ev.target.closest("button")) return;      // qty steppers and the includes toggle
+        if (ev.target === chk) { state[it.id] = chk.checked ? 1 : 0; render(); return; }
+        toggle();
+      });
+
+      row.querySelector(".r-more").addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        var panel = row.querySelector(".r-inc");
+        var open = !panel.hidden;
+        panel.hidden = open;
+        this.setAttribute("aria-expanded", String(!open));
+        this.textContent = open ? "What’s included" : "Hide details";
+      });
+
+      if (it.qty) {
+        row.querySelectorAll(".qty button").forEach(function (b) {
+          b.addEventListener("click", function (ev) {
+            ev.stopPropagation();
+            var d = b.dataset.act === "inc" ? 1 : -1;
+            if (state[it.id] > 0) {
+              state[it.id] = Math.max(1, Math.min(20, state[it.id] + d));
+              render();
+            }
+          });
+        });
+      }
+
+      rows.appendChild(row);
+    });
+
+    sec.appendChild(rows);
+    cat.appendChild(sec);
+  });
+
+  /* ---------- calculate ---------- */
+  function calc() {
+    var monthlyList = 0, onceList = 0, count = 0, minTerm = 1;
+    Object.keys(state).forEach(function (id) {
+      var q = state[id]; if (!q) return;
+      var it = byId[id];
+      if (it.once) { onceList += it.price * q; }
+      else { monthlyList += it.price * q; count++; }
+      if (it.term && it.term > minTerm) minTerm = it.term;
+    });
+    var bundle = TIERS[Math.min(count, 5)];
+    var total = Math.min(bundle + (prepay ? PREPAY : 0), CAP);
+    return { monthlyList: monthlyList, onceList: onceList, count: count,
+             bundle: bundle, total: total, monthly: monthlyList * (1 - total), minTerm: minTerm };
+  }
+
+  /* ---------- render ---------- */
+  function render() {
+    var r = calc();
+
+    Object.keys(state).forEach(function (id) {
+      var on = state[id] > 0;
+      var chk = $("chk-" + id); if (!chk) return;
+      chk.checked = on;
+      var row = chk.closest(".row");
+      if (row) row.classList.toggle("on", on);
+      var q = $("q-" + id); if (q) q.textContent = state[id] || 1;
+      if (byId[id].qty && row) {
+        var btns = row.querySelectorAll(".qty button");
+        btns[0].disabled = !on || state[id] <= 1;
+        btns[1].disabled = !on;
+      }
+    });
+
+    var lines = $("lines"); lines.innerHTML = "";
+    var any = false;
+    CATALOG.forEach(function (g) {
+      g.items.forEach(function (it) {
+        var q = state[it.id]; if (!q) return;
+        any = true;
+        var d = document.createElement("div");
+        d.className = "line" + (it.once ? " dim" : "");
+        d.innerHTML = "<span>" + it.name + (q > 1 ? " ×" + q : "") + (it.once ? " (one-time)" : "") +
+                      "</span><span>" + money(it.price * q) + "</span>";
+        lines.appendChild(d);
+      });
+    });
+
+    $("empty").hidden = any;
+    $("totals").hidden = !any;
+
+    $("t-list").textContent = money(r.monthlyList);
+    var savedAmt = r.monthlyList * r.total;
+    $("t-save-row").hidden = savedAmt <= 0;
+    $("t-save-lbl").textContent = prepay && r.bundle > 0
+      ? "Bundle " + Math.round(r.bundle * 100) + "% + annual 8%"
+      : (prepay ? "Annual prepay 8%" : "Bundle discount " + Math.round(r.bundle * 100) + "%");
+    $("t-save").textContent = "−" + money(savedAmt);
+    $("t-month").textContent = money(r.monthly);
+    $("t-annual").textContent = r.monthly > 0 ? money(r.monthly * 12) + " a year" : "";
+    $("t-once-row").hidden = r.onceList <= 0;
+    $("t-once").textContent = money(r.onceList);
+
+    $("l-pct").textContent = Math.round(r.total * 100) + "%";
+    document.querySelectorAll(".pip").forEach(function (p) {
+      p.classList.toggle("lit", r.count >= parseInt(p.dataset.p, 10));
+    });
+
+    var next = $("l-next");
+    if (r.count === 0) next.textContent = "Add your first service to get started.";
+    else if (r.count >= 5) next.innerHTML = "Top tier reached — <b>20% off</b> everything monthly.";
+    else next.innerHTML = "Add <b>one more service</b> to unlock <b>" +
+        Math.round(TIERS[r.count + 1] * 100) + "% off</b> the monthly total.";
+
+    $("t-term").textContent = r.minTerm >= 12 ? "12 months" : (r.minTerm >= 6 ? "6 months" : "Month to month");
+    save();
+  }
+
+  /* ---------- actions ---------- */
+  document.querySelectorAll(".preset").forEach(function (b) {
+    b.addEventListener("click", function () {
+      Object.keys(state).forEach(function (k) { state[k] = 0; });
+      var p = PRESETS[b.dataset.preset] || {};
+      Object.keys(p).forEach(function (k) { if (k in state) state[k] = p[k]; });
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
+  $("prepay").checked = prepay;
+  $("prepay").addEventListener("change", function (e) { prepay = e.target.checked; render(); });
+
+  $("reset").addEventListener("click", function () {
+    Object.keys(state).forEach(function (k) { state[k] = 0; });
+    prepay = false; $("prepay").checked = false; render();
+  });
+
+  $("copy").addEventListener("click", function () {
+    var r = calc(), out = ["DUO MARKETING GROUP — PROPOSED PLAN", ""];
+    CATALOG.forEach(function (g) {
+      var head = false;
+      g.items.forEach(function (it) {
+        var q = state[it.id]; if (!q) return;
+        if (!head) { out.push(g.cat.toUpperCase()); head = true; }
+        out.push("  " + it.name + (q > 1 ? " x" + q : "") + "  " +
+                 money(it.price * q) + (it.once ? " (one-time)" : "/mo"));
+      });
+      if (head) out.push("");
+    });
+    if (out.length === 2) out.push("  (nothing selected)", "");
+
+    out.push("Monthly at list      " + money(r.monthlyList));
+    if (r.total > 0) out.push("Discount             −" + money(r.monthlyList * r.total) + "  (" + Math.round(r.total * 100) + "%)");
+    out.push("MONTHLY              " + money(r.monthly));
+    out.push("Annual               " + money(r.monthly * 12));
+    if (r.onceList > 0) out.push("One-time build       " + money(r.onceList));
+    out.push("Minimum term         " + (r.minTerm >= 12 ? "12 months" : r.minTerm >= 6 ? "6 months" : "Month to month"));
+    out.push("", "Paid media prices are the management fee. Ad spend is billed separately.");
+
+    var text = out.join("\n"), btn = $("copy"), old = btn.textContent;
+    var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = old; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () {
+        btn.textContent = "Press ⌘C"; setTimeout(function () { btn.textContent = old; }, 2200);
+      });
+    } else { done(); }
+  });
+
+  render();
+})();
+</script>
