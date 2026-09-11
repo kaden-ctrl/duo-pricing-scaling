@@ -232,7 +232,7 @@
       <span id="logo-text"><span class="d">duo</span><span class="tag">Marketing Group</span></span>
     </div>
     <h1>Build a plan</h1>
-    <p class="sub">Pick the services you want. The more you add, the more comes off the monthly total — up to <b>20%</b> on the bundle, plus <b>8%</b> for paying annually.</p>
+    <p class="sub">Pick the services you want. The more you add, the more comes off the monthly total — up to <b>15%</b> on the bundle, plus <b>10%</b> for paying annually.</p>
     <div class="presets">
       <span class="presets-lbl">Start from</span>
       <button class="preset" type="button" data-preset="local">Local Presence</button>
@@ -274,7 +274,7 @@
           <label class="toggle" for="prepay">
             <input type="checkbox" id="prepay">
             <span>
-              <span class="toggle-t">Pay annually — save 8%</span>
+              <span class="toggle-t">Pay annually — save 10%</span>
               <span class="toggle-d">Twelve months paid up front.</span>
             </span>
           </label>
@@ -430,8 +430,8 @@
     launch: { web: 1, video: 1, social: 2, gbp: 1, hosting: 1, meta: 1 }
   };
 
-  var TIERS = [0, 0, .05, .10, .15, .20];
-  var PREPAY = .08, CAP = .28;
+  var TIERS = [0, 0, .05, .08, .12, .15];
+  var PREPAY = .10, CAP = .25;
 
   var byId = {}, state = {}, prepay = false;
   CATALOG.forEach(function (g) { g.items.forEach(function (it) { byId[it.id] = it; state[it.id] = 0; }); });
@@ -582,8 +582,8 @@
     var savedAmt = r.monthlyList * r.total;
     $("t-save-row").hidden = savedAmt <= 0;
     $("t-save-lbl").textContent = prepay && r.bundle > 0
-      ? "Bundle " + Math.round(r.bundle * 100) + "% + annual 8%"
-      : (prepay ? "Annual prepay 8%" : "Bundle discount " + Math.round(r.bundle * 100) + "%");
+      ? "Bundle " + Math.round(r.bundle * 100) + "% + annual 10%"
+      : (prepay ? "Annual prepay 10%" : "Bundle discount " + Math.round(r.bundle * 100) + "%");
     $("t-save").textContent = "−" + money(savedAmt);
     $("t-month").textContent = money(r.monthly);
     $("t-annual").textContent = r.monthly > 0 ? money(r.monthly * 12) + " a year" : "";
@@ -597,7 +597,7 @@
 
     var next = $("l-next");
     if (r.count === 0) next.textContent = "Add your first service to get started.";
-    else if (r.count >= 5) next.innerHTML = "Top tier reached — <b>20% off</b> everything monthly.";
+    else if (r.count >= 5) next.innerHTML = "Top tier reached — <b>15% off</b> everything monthly.";
     else next.innerHTML = "Add <b>one more service</b> to unlock <b>" +
         Math.round(TIERS[r.count + 1] * 100) + "% off</b> the monthly total.";
 

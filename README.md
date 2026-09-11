@@ -11,11 +11,11 @@ more are added.
 |---:|---:|
 | 1 | — |
 | 2 | 5% |
-| 3 | 10% |
-| 4 | 15% |
-| 5+ | 20% |
+| 3 | 8% |
+| 4 | 12% |
+| 5+ | 15% |
 
-Annual prepay adds 8%. Combined discount is capped at 28%.
+Annual prepay (paid upfront) adds 10%. Combined discount is capped at 25%.
 
 - The count uses **distinct monthly services**. Quantities inside one service
   (three social platforms, two locations) don't raise the tier.
