@@ -158,6 +158,25 @@
   .qty span { min-width: 24px; text-align: center; font-weight: 700; font-size: .85rem; }
   .qty-hidden { visibility: hidden; }
 
+  .spend { display: flex; align-items: center; gap: 1px; border: 1px solid var(--rule-firm); background: var(--surface); padding: 0 8px; }
+  .spend-cur { font-size: .82rem; font-weight: 700; color: var(--muted); }
+  .spend input {
+    width: 64px; border: 0; background: transparent; color: var(--ink); text-align: right;
+    font-family: var(--f); font-size: .85rem; font-weight: 700; padding: 5px 0; -moz-appearance: textfield;
+  }
+  .spend input::-webkit-outer-spin-button, .spend input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .spend input:focus-visible { outline: none; }
+  .spend:focus-within { border-color: var(--duo-blue); }
+  .spend.off { opacity: .4; }
+
+  .tiers { margin: 11px 0 2px; }
+  .tiers table { border-collapse: collapse; font-size: .78rem; max-width: 330px; }
+  .tiers th, .tiers td { text-align: left; padding: 3px 22px 3px 0; color: var(--ink-2); white-space: nowrap; }
+  .tiers th { font-size: .67rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .tiers td:last-child { font-weight: 700; }
+  .tiers tr.now td { color: var(--duo-blue); }
+  .tiers-foot { font-size: .74rem; color: var(--muted); margin: 7px 0 0; line-height: 1.45; max-width: 460px; }
+
   /* ---------- summary ---------- */
   .panel { position: sticky; top: 18px; background: var(--surface); border: 1px solid var(--rule-firm); box-shadow: var(--shadow); }
   @media (max-width: 920px) { .panel { position: static; } }
@@ -292,7 +311,7 @@
 
   <footer>
     <span><b>Duo Marketing Group</b> · Logan, Utah · duogroup.com</span>
-    <span>Paid media prices are the management fee. Ad spend is billed separately.</span>
+    <span>Paid media is a management fee that scales with spend. Ad spend is billed separately.</span>
   </footer>
 </div>
 
@@ -328,20 +347,14 @@
 
   var CATALOG = [
     { cat: "AI Search Visibility", air: true, note: "AiR — Ai Results", items: [
-      { id: "air", name: "AiR Dashboard & Tracking", price: 1200, unit: "per location", qty: true,
-        sub: "Track how ChatGPT, Gemini, Perplexity and Google AI Overviews describe and recommend you.",
-        inc: ["Citation rate tracking", "Sentiment analysis", "Prominence scoring", "Competitor benchmarking",
-              "~170-prompt set per market", "Quarterly prompt refresh", "Monthly scorecard", "Dedicated AiR rep"] },
-      { id: "signal", name: "Signal Sessions", price: 400, unit: "per month", term: 6,
-        sub: "Two working sessions a month building the content and citations that move the answer.",
-        inc: ["2 sessions monthly, 45–60 min", "Personal social strategy per provider", "Signal content build",
-              "Third-party citations & profiles", "Structured data on your site", "Corrections where you're described wrong"] },
-      { id: "audit", name: "AI Visibility Audit", price: 1500, once: true,
-        sub: "A baseline scan across all four engines before anything else starts.",
-        inc: ["Full prompt-set run", "Who's being recommended instead", "Sentiment baseline", "Gap analysis", "Written findings report"] },
-      { id: "airmulti", name: "Multi-Location Reporting", price: 350, unit: "per month",
-        sub: "Roll-up view across every location with side-by-side benchmarking.",
-        inc: ["Cross-location dashboard", "League table by market", "Consolidated monthly report", "Shared prompt library"] }
+      { id: "air", name: "AiR Programme", price: 1600, unit: "per location", qty: true, term: 6,
+        sub: "The whole AI search visibility programme — tracking, monthly working sessions, the baseline audit and multi-location roll-up, across ChatGPT, Gemini, Perplexity and Google AI Overviews.",
+        inc: ["Baseline audit across all four engines at kickoff", "Citation rate tracking", "Sentiment analysis",
+              "Prominence scoring", "Competitor benchmarking", "~170-prompt set per market",
+              "Quarterly prompt refresh", "Monthly scorecard", "Dedicated AiR rep",
+              "2 working sessions monthly, 45–60 min", "Personal social strategy per provider",
+              "Signal content build", "Third-party citations & profiles", "Structured data on your site",
+              "Corrections where you're described wrong", "Multi-location roll-up and league table"] }
     ]},
 
     { cat: "Social Media", items: [
@@ -358,24 +371,16 @@
         inc: ["4 edited videos monthly", "Hooks and captions written", "Trending audio selection", "Vertical format delivery"] },
       { id: "capture", name: "Content Capture Day", price: 1500, once: true,
         sub: "An on-site day shooting photo and video to stock the content calendar.",
-        inc: ["Half-day on site", "Photography and video capture", "Team and facility b-roll", "Edited and organised library"] },
-      { id: "group", name: "Facebook Group Management", price: 250, unit: "per group",
-        sub: "Moderation and engagement for internal or community groups.",
-        inc: ["Member and post approval", "Moderation", "Question response", "Engagement prompts"] }
+        inc: ["Half-day on site", "Photography and video capture", "Team and facility b-roll", "Edited and organised library"] }
     ]},
 
-    { cat: "Paid Media", note: "Management fee — ad spend billed separately", items: [
-      { id: "meta", name: "Meta Ads Management", price: 1500, unit: "per account",
-        sub: "Facebook and Instagram campaigns built, tested and optimised.",
-        inc: ["Audience research & targeting", "Campaign strategy and build", "Ad creative and copy", "A/B testing",
-              "Conversion tracking", "Ongoing optimisation", "Monthly reporting"] },
-      { id: "google", name: "Google Ads Management", price: 1500, unit: "per account",
-        sub: "Search and display campaigns against the terms that convert.",
-        inc: ["Keyword research", "Search and display campaigns", "Ad copy and extensions", "Landing page guidance",
-              "Conversion tracking", "Ongoing optimisation", "Monthly reporting"] },
-      { id: "linkedin", name: "LinkedIn Ads Management", price: 1500, unit: "per account",
-        sub: "B2B and recruitment campaigns to a targeted professional audience.",
-        inc: ["Audience and firmographic targeting", "Campaign build", "Creative and copy", "Conversion tracking", "Monthly reporting"] },
+    { cat: "Paid Media", note: "Management fee scales with spend — ad spend billed separately", items: [
+      { id: "ads", name: "Paid Media Management", spend: true,
+        sub: "Meta, Google and LinkedIn campaigns built, tested and optimised. The management rate drops as spend grows — set the monthly ad spend to price it.",
+        inc: ["Meta, Google and LinkedIn campaigns", "Audience and keyword research", "Firmographic B2B targeting",
+              "Campaign strategy and build", "Search and display campaigns", "Ad creative and copy",
+              "A/B testing", "Landing page guidance", "Conversion tracking",
+              "Ongoing optimisation", "Monthly reporting"] },
       { id: "jobs", name: "LinkedIn Job Posting", price: 400, unit: "per month",
         sub: "Up to three live job listings posted and boosted at a time.",
         inc: ["3 concurrent listings", "Listing copy", "Boosting to reach", "Applicant flow reporting"] },
@@ -424,16 +429,40 @@
   ];
 
   var PRESETS = {
-    local:  { social: 2, gbp: 1, meta: 1, hosting: 1 },
-    ai:     { air: 1, signal: 1, audit: 1, social: 1 },
-    growth: { air: 1, signal: 1, social: 2, gbp: 1, meta: 1, google: 1, seo: 1, blog: 1, hosting: 1 },
-    launch: { web: 1, video: 1, social: 2, gbp: 1, hosting: 1, meta: 1 }
+    local:  { social: 2, gbp: 1, ads: 1, hosting: 1, $spend: 1500 },
+    ai:     { air: 1, social: 1, $spend: 2500 },
+    growth: { air: 1, social: 2, gbp: 1, ads: 1, seo: 1, blog: 1, hosting: 1, $spend: 6000 },
+    launch: { web: 1, video: 1, social: 2, gbp: 1, hosting: 1, ads: 1, $spend: 3000 }
   };
 
   var TIERS = [0, 0, .05, .08, .12, .15];
   var PREPAY = .10, CAP = .25;
 
-  var byId = {}, state = {}, prepay = false;
+  /* ---------- paid media rate card ----------
+     The rate applies to the whole spend, so crossing a tier lowers the fee
+     outright: $4,999 at 40% costs more to manage than $5,000 at 35%. That is
+     deliberate — it pays to move up a tier. Below $2,000 the percentage would
+     fall under the floor, so AD_MIN carries it: $1,000 of spend costs $1,000
+     to manage. */
+  var AD_TIERS = [
+    { under: 2000,     rate: .50 },
+    { under: 5000,     rate: .40 },
+    { under: 10000,    rate: .35 },
+    { under: 25000,    rate: .32 },
+    { under: Infinity, rate: .30 }
+  ];
+  var AD_MIN = 1000, AD_FLOOR = 1000, AD_DEFAULT = 2500;
+
+  function adRate(spend) {
+    for (var i = 0; i < AD_TIERS.length; i++) if (spend < AD_TIERS[i].under) return AD_TIERS[i].rate;
+    return AD_TIERS[AD_TIERS.length - 1].rate;
+  }
+  function adFee(spend) {
+    if (!(spend > 0)) return 0;
+    return Math.max(AD_MIN, Math.round(spend * adRate(spend)));
+  }
+
+  var byId = {}, state = {}, prepay = false, adSpend = AD_DEFAULT;
   CATALOG.forEach(function (g) { g.items.forEach(function (it) { byId[it.id] = it; state[it.id] = 0; }); });
 
   var $ = function (id) { return document.getElementById(id); };
@@ -444,11 +473,41 @@
     if (saved && saved.state) {
       Object.keys(saved.state).forEach(function (k) { if (k in state) state[k] = saved.state[k]; });
       prepay = !!saved.prepay;
+      if (saved.adSpend > 0) adSpend = saved.adSpend;
     }
   } catch (e) { /* storage unavailable — start empty */ }
 
   function save() {
-    try { localStorage.setItem("duo-builder", JSON.stringify({ state: state, prepay: prepay })); } catch (e) {}
+    try {
+      localStorage.setItem("duo-builder", JSON.stringify({ state: state, prepay: prepay, adSpend: adSpend }));
+    } catch (e) {}
+  }
+
+  /* ---------- per-item price, unit label and rate card ---------- */
+  function priceOf(it) { return it.spend ? adFee(adSpend) : it.price; }
+
+  function unitOf(it) {
+    if (it.once) return "one-time";
+    if (it.spend) return adSpend > 0 ? Math.round(adRate(adSpend) * 100) + "% of spend" : "of ad spend";
+    return it.unit || "per month";
+  }
+
+  function tierTable() {
+    var rows = "", prev = 0, active = adSpend > 0;
+    AD_TIERS.forEach(function (t) {
+      var label = t.under === Infinity ? money(prev) + " and up"
+                : prev === 0           ? "Under " + money(t.under)
+                :                        money(prev) + " – " + money(t.under - 1);
+      var on = active && adSpend >= prev && adSpend < t.under;
+      rows += "<tr" + (on ? ' class="now"' : "") + "><td>" + label + "</td><td>" +
+              Math.round(t.rate * 100) + "%</td></tr>";
+      prev = t.under;
+    });
+    return '<table><thead><tr><th>Monthly ad spend</th><th>Management</th></tr></thead><tbody>' +
+           rows + "</tbody></table>" +
+           '<p class="tiers-foot">Minimum management fee ' + money(AD_MIN) +
+           ' a month. The rate applies to the whole spend, so moving up a tier lowers the fee outright. ' +
+           "Ad spend is paid to the platforms and billed as a pass-through.</p>";
   }
 
   /* ---------- build catalog ---------- */
@@ -472,9 +531,12 @@
       row.innerHTML =
         '<input type="checkbox" id="chk-' + it.id + '" aria-label="' + it.name + '">' +
         '<span class="r-name">' + it.name + "</span>" +
-        '<span class="r-price' + (it.once ? " once" : "") + '">' + money(it.price) +
-          '<span class="r-unit">' + (it.once ? "one-time" : (it.unit || "per month")) + "</span></span>" +
-        (it.qty
+        '<span class="r-price' + (it.once ? " once" : "") + '" id="p-' + it.id + '">' + money(priceOf(it)) +
+          '<span class="r-unit">' + unitOf(it) + "</span></span>" +
+        (it.spend
+          ? '<span class="spend"><span class="spend-cur">$</span>' +
+            '<input type="number" id="s-' + it.id + '" min="' + AD_FLOOR + '" step="250" aria-label="Monthly ad spend"></span>'
+          : it.qty
           ? '<span class="qty"><button type="button" data-act="dec" aria-label="Fewer">−</button>' +
             '<span id="q-' + it.id + '">1</span>' +
             '<button type="button" data-act="inc" aria-label="More">+</button></span>'
@@ -483,7 +545,7 @@
         '<button class="r-more" type="button" aria-expanded="false" aria-controls="inc-' + it.id + '">What’s included</button>' +
         '<div class="r-inc" id="inc-' + it.id + '" hidden><ul>' +
           it.inc.map(function (x) { return "<li>" + x + "</li>"; }).join("") +
-        "</ul></div>";
+        "</ul>" + (it.spend ? '<div class="tiers" id="tiers-' + it.id + '"></div>' : "") + "</div>";
 
       var chk = row.querySelector("input");
 
@@ -494,6 +556,7 @@
 
       row.addEventListener("click", function (ev) {
         if (ev.target.closest("button")) return;      // qty steppers and the includes toggle
+        if (ev.target.closest(".spend")) return;      // ad-spend field
         if (ev.target === chk) { state[it.id] = chk.checked ? 1 : 0; render(); return; }
         toggle();
       });
@@ -506,6 +569,20 @@
         this.setAttribute("aria-expanded", String(!open));
         this.textContent = open ? "What’s included" : "Hide details";
       });
+
+      if (it.spend) {
+        var si = row.querySelector(".spend input");
+        si.value = adSpend || "";
+        si.addEventListener("input", function () {
+          var v = parseInt(si.value, 10);
+          adSpend = isFinite(v) && v > 0 ? v : 0;
+          if (adSpend > 0 && !state[it.id]) state[it.id] = 1;
+          render();
+        });
+        si.addEventListener("blur", function () {
+          if (!(adSpend >= AD_FLOOR)) { adSpend = AD_FLOOR; si.value = AD_FLOOR; render(); }
+        });
+      }
 
       if (it.qty) {
         row.querySelectorAll(".qty button").forEach(function (b) {
@@ -534,7 +611,7 @@
       var q = state[id]; if (!q) return;
       var it = byId[id];
       if (it.once) { onceList += it.price * q; }
-      else { monthlyList += it.price * q; count++; }
+      else { monthlyList += priceOf(it) * q; count++; }
       if (it.term && it.term > minTerm) minTerm = it.term;
     });
     var bundle = TIERS[Math.min(count, 5)];
@@ -554,6 +631,17 @@
       var row = chk.closest(".row");
       if (row) row.classList.toggle("on", on);
       var q = $("q-" + id); if (q) q.textContent = state[id] || 1;
+      if (byId[id].spend) {
+        var si = $("s-" + id);
+        if (si) {
+          if (document.activeElement !== si) si.value = adSpend || "";
+          si.parentNode.classList.toggle("off", !on);
+        }
+        var pc = $("p-" + id);
+        if (pc) pc.innerHTML = money(priceOf(byId[id])) + '<span class="r-unit">' + unitOf(byId[id]) + "</span>";
+        var tt = $("tiers-" + id);
+        if (tt) tt.innerHTML = tierTable();
+      }
       if (byId[id].qty && row) {
         var btns = row.querySelectorAll(".qty button");
         btns[0].disabled = !on || state[id] <= 1;
@@ -570,7 +658,10 @@
         var d = document.createElement("div");
         d.className = "line" + (it.once ? " dim" : "");
         d.innerHTML = "<span>" + it.name + (q > 1 ? " ×" + q : "") + (it.once ? " (one-time)" : "") +
-                      "</span><span>" + money(it.price * q) + "</span>";
+                      (it.spend && adSpend > 0
+                        ? " · " + Math.round(adRate(adSpend) * 100) + "% of " + money(adSpend) + " spend"
+                        : "") +
+                      "</span><span>" + money(priceOf(it) * q) + "</span>";
         lines.appendChild(d);
       });
     });
@@ -610,7 +701,10 @@
     b.addEventListener("click", function () {
       Object.keys(state).forEach(function (k) { state[k] = 0; });
       var p = PRESETS[b.dataset.preset] || {};
-      Object.keys(p).forEach(function (k) { if (k in state) state[k] = p[k]; });
+      Object.keys(p).forEach(function (k) {
+        if (k === "$spend") { adSpend = p[k]; return; }
+        if (k in state) state[k] = p[k];
+      });
       render();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -621,7 +715,7 @@
 
   $("reset").addEventListener("click", function () {
     Object.keys(state).forEach(function (k) { state[k] = 0; });
-    prepay = false; $("prepay").checked = false; render();
+    prepay = false; $("prepay").checked = false; adSpend = AD_DEFAULT; render();
   });
 
   $("copy").addEventListener("click", function () {
@@ -632,7 +726,11 @@
         var q = state[it.id]; if (!q) return;
         if (!head) { out.push(g.cat.toUpperCase()); head = true; }
         out.push("  " + it.name + (q > 1 ? " x" + q : "") + "  " +
-                 money(it.price * q) + (it.once ? " (one-time)" : "/mo"));
+                 money(priceOf(it) * q) + (it.once ? " (one-time)" : "/mo"));
+        if (it.spend && adSpend > 0) {
+          out.push("    " + Math.round(adRate(adSpend) * 100) + "% of " + money(adSpend) +
+                   "/mo ad spend (spend billed separately)");
+        }
       });
       if (head) out.push("");
     });
@@ -644,7 +742,9 @@
     out.push("Annual               " + money(r.monthly * 12));
     if (r.onceList > 0) out.push("One-time build       " + money(r.onceList));
     out.push("Minimum term         " + (r.minTerm >= 12 ? "12 months" : r.minTerm >= 6 ? "6 months" : "Month to month"));
-    out.push("", "Paid media prices are the management fee. Ad spend is billed separately.");
+    out.push("", "Paid media is a management fee only — ad spend is billed separately as a",
+                 "pass-through. The management rate falls as spend rises: 50% under $2,000",
+                 "(min $1,000/mo), 40% to $5,000, 35% to $10,000, 32% to $25,000, 30% above.");
 
     var text = out.join("\n"), btn = $("copy"), old = btn.textContent;
     var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = old; }, 1600); };
