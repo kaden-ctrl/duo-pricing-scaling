@@ -1,5 +1,5 @@
 category,service,unit,list_price,billing,platform_cost_monthly,delivery_hours_monthly,min_term_months,source
-AI Search Visibility,AiR Programme,per location,1600,monthly,225,9,6,"Dashboard 1200 + Signal Sessions 400 combined; baseline audit (was 1500 one-time) and multi-location roll-up (was 350/mo) now included. AiR agreements (Kobico/CIS/Mill Forest) + CMP AiR proposal"
+AI Search Visibility,AiR Dashboard and AEO Management,per location,1600,monthly,225,9,6,"Dashboard 1200 + Signal Sessions 400 combined; baseline audit (was 1500 one-time) and multi-location roll-up (was 350/mo) now included. AiR agreements (Kobico/CIS/Mill Forest) + CMP AiR proposal"
 Social Media,Social Media Management,per platform,750,monthly,0,6,1,Lawn Doctor breakdown (extra IG page $700/mo)
 Social Media,Google Business Profile,per location,750,monthly,0,3,1,Duo Pricing Sheet June 2024
 Paid Media,Paid Media Management (Meta/Google/LinkedIn),% of ad spend,,monthly,0,,1,"Tiered 50%-30% of monthly ad spend, min $1,000/mo — see data/paid-media-tiers.csv. Replaces the flat $1,500/account fee from the 2024 campaign equation base fee M0"
@@ -9,5 +9,3 @@ Content & Creative,Design Retainer (5 hrs/mo),per month,625,monthly,0,5,1,Santia
 Content & Creative,Video Production,one-time,4000,one-time,0,40,12,Duo Pricing Sheet June 2024
 Web & Search,Website Build,one-time,4000,one-time,0,45,12,Duo Pricing Sheet June 2024
 Web & Search,Website Management & Hosting,per month,350,monthly,30,2,1,Santiam agreement
-Web & Search,SEO,per month,1500,monthly,65,6,1,Duo Pricing Sheet 2024 + Seona cost
-Web & Search,Call Tracking & Attribution,per month,450,monthly,263,1,1,CallRail costs Jun-Sep 2026 budgets
