@@ -2,10 +2,11 @@ category,service,unit,list_price,billing,platform_cost_monthly,delivery_hours_mo
 AI Search Visibility,AiR Dashboard and AEO Management,per location,1600,monthly,225,9,6,"Dashboard 1200 + Signal Sessions 400 combined; baseline audit (was 1500 one-time) and multi-location roll-up (was 350/mo) now included. AiR agreements (Kobico/CIS/Mill Forest) + CMP AiR proposal"
 Social Media,Social Media Management,per platform,750,monthly,0,6,1,Lawn Doctor breakdown (extra IG page $700/mo)
 Social Media,Google Business Profile,per location,750,monthly,0,3,1,Duo Pricing Sheet June 2024
-Paid Media,Paid Media Management (Meta/Google/LinkedIn),% of ad spend,,monthly,0,,1,"Tiered 50%-30% of monthly ad spend, min $1,000/mo — see data/paid-media-tiers.csv. Replaces the flat $1,500/account fee from the 2024 campaign equation base fee M0"
-Content & Creative,Blog Content (2/mo),per month,600,monthly,0,5,1,Santiam Hospital agreement
+Paid Media,Google Ads,% of ad spend,,monthly,0,,1,"Tiered 50%-30% of COMBINED monthly ad spend across all channels, min $1,000/mo across paid media as a whole. See data/paid-media-tiers.csv"
+Paid Media,Meta Ads,% of ad spend,,monthly,0,,1,"Same combined-spend ladder as Google Ads"
+Paid Media,LinkedIn Ads,% of ad spend,,monthly,0,,1,"Same combined-spend ladder as Google Ads"
+Paid Media,TikTok Ads,% of ad spend,,monthly,0,,1,"Same combined-spend ladder as Google Ads. New channel, no prior Duo pricing"
 Content & Creative,Email Marketing (1 campaign/mo),per month,500,monthly,0,3,1,Santiam agreement (extra blasts $200 each)
-Content & Creative,Design Retainer (5 hrs/mo),per month,625,monthly,0,5,1,Santiam agreement design rate $125/hr list
-Content & Creative,Video Production,one-time,4000,one-time,0,40,12,Duo Pricing Sheet June 2024
+Content & Creative,Video Production,per production hour,100,one-time,0,,12,"$100/hr from the retired $4,000 flat price over its 40 recorded delivery hours. Range $2,000 (20 hrs) to $50,000 (500 hrs)"
 Web & Search,Website Build,one-time,4000,one-time,0,45,12,Duo Pricing Sheet June 2024
-Web & Search,Website Management & Hosting,per month,350,monthly,30,2,1,Santiam agreement
+Web & Search,Website Management & Hosting,per month,100,monthly,30,2,1,"Repriced 350 -> 100 by request. MARGIN CHECK: $30 platform cost and 2 delivery hours leaves ~$35/hr of contribution. Was Santiam agreement at 350"

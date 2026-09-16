@@ -1,3 +1,6 @@
+# Bands key off COMBINED monthly ad spend across every selected channel
+# (Google, Meta, LinkedIn, TikTok). The resulting rate is then applied to
+# each channel's own spend. min_fee applies once across paid media, not per channel.
 spend_from,spend_to,management_rate,min_fee_monthly,fee_at_band_floor,fee_at_band_ceiling,note
 0,1999,0.50,1000,1000,1000,"Minimum fee carries the band: $1,000 of spend costs $1,000 to manage"
 2000,4999,0.40,1000,1000,2000,"Minimum still applies below $2,500 of spend"
