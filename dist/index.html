@@ -72,15 +72,18 @@
 
   /* ---------- masthead ---------- */
   header.top { padding-block: 40px 24px; border-bottom: 3px solid var(--duo-blue); }
-  .wordmark {
-    display: inline-flex; align-items: baseline; gap: 9px;
-    font-weight: 800; font-size: 1.45rem; letter-spacing: -.03em; margin-bottom: 20px;
-  }
-  .wordmark .d { color: var(--duo-blue); }
-  .wordmark .tag {
-    font-size: .66rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--muted); padding-bottom: 2px;
-  }
+  .wordmark { display: block; margin-bottom: 20px; }
+  .wordmark img, .wordmark svg { height: 88px; width: auto; display: block; }
+
+  /* The mark is drawn rather than embedded so it stays crisp at any size and
+     picks up the theme: the black half of the ring and the letterforms follow
+     --ink, so they invert in dark mode instead of vanishing. */
+  #logo-mark .ring-blue { fill: none; stroke: var(--duo-blue); stroke-width: 14; stroke-linecap: round; }
+  #logo-mark .ring-ink  { fill: none; stroke: var(--ink);      stroke-width: 14; stroke-linecap: round; }
+  #logo-mark .mark-d    { fill: var(--ink); }
+  /* The wordmark is drawn as outlines, not <text>, so it cannot shift with
+     whichever font happens to load. */
+  #logo-mark .mark-word { fill: var(--ink); }
   h1 {
     font-weight: 800; font-size: clamp(1.9rem, 4.6vw, 2.9rem); line-height: 1.06;
     letter-spacing: -.032em; margin: 0 0 14px; text-wrap: balance;
@@ -249,8 +252,21 @@
 
   <header class="top">
     <div class="wordmark">
-      <img id="logo-img" alt="Duo Marketing Group" hidden>
-      <span id="logo-text"><span class="d">duo</span><span class="tag">Marketing Group</span></span>
+      <img id="logo-img" alt="Duo Group" hidden>
+      <svg id="logo-mark" viewBox="324 273 382 508" role="img" aria-label="Duo Group">
+        <title>Duo Group</title>
+        <path class="ring-blue" d="M 496.4 286 A 178 178 0 0 0 496.4 640"/>
+        <path class="ring-ink"  d="M 533.6 286 A 178 178 0 0 1 533.6 640"/>
+        <path class="mark-d" fill-rule="evenodd"
+              d="M 468 396 H 516 A 64 64 0 0 1 516 524 H 468 Z
+                 M 488 416 H 516 A 44 44 0 0 1 516 504 H 488 Z"/>
+        <path class="mark-word" fill-rule="evenodd"
+              d="M 378 685 H 418 A 45 45 0 0 1 418 775 H 378 Z
+                 M 403 710 H 418 A 20 20 0 0 1 418 750 H 403 Z
+                 M 476 685 V 733 A 42.5 42.5 0 0 0 561 733 V 685 H 536 V 733 A 17.5 17.5 0 0 1 501 733 V 685 Z
+                 M 574 730 A 42.5 45 0 1 0 659 730 A 42.5 45 0 1 0 574 730 Z
+                 M 599 730 A 17.5 20 0 1 0 634 730 A 17.5 20 0 1 0 599 730 Z"/>
+      </svg>
     </div>
     <h1>Build a plan</h1>
     <p class="sub">Pick the services you want. The more you add, the more comes off the monthly total, up to <b>15%</b> on the bundle, plus <b>10%</b> for paying annually.</p>
@@ -313,7 +329,7 @@
   </div>
 
   <footer>
-    <span><b>Duo Marketing Group</b> · Logan, Utah · duogroup.com</span>
+    <span><b>Duo Group</b> · Logan, Utah · duogroup.com</span>
     <span>The monthly total includes ad spend, passed through at cost and never discounted.</span>
   </footer>
 </div>
@@ -323,19 +339,21 @@
   "use strict";
 
   /* ------------------------------------------------------------------
-     LOGO. Drop the real artwork in here.
+     LOGO. Optional override for the drawn mark below.
 
-     Paste the logo as a base64 data URI between the quotes, e.g.
+     The header draws the Duo Group mark as inline SVG (#logo-mark), which
+     stays crisp at any size and follows the light/dark theme. To use the
+     official artwork file instead, paste it here as a base64 data URI:
        var LOGO = "data:image/png;base64,iVBORw0KGgo...";
      or for an SVG
        var LOGO = "data:image/svg+xml;base64,PHN2ZyB4bWxu...";
 
      Generate it from the file in Drive (Client logos / Duo Group) with:
-       base64 -w0 Duo-Marketing-Group-Logo-2020-373px.png
+       base64 -w0 <logo file>
 
      External image URLs will NOT work, the artifact sandbox blocks them,
-     so the artwork has to be inlined. Leave empty to use the type-set
-     wordmark instead.
+     so the artwork has to be inlined. Setting this hides the drawn mark.
+     Note that a flat image will not invert in dark mode.
   ------------------------------------------------------------------ */
   var LOGO = "";
 
@@ -343,9 +361,7 @@
     var img = document.getElementById("logo-img");
     img.src = LOGO;
     img.hidden = false;
-    img.style.height = "34px";
-    img.style.width = "auto";
-    document.getElementById("logo-text").hidden = true;
+    document.getElementById("logo-mark").hidden = true;
   }
 
   var CATALOG = [
@@ -395,8 +411,9 @@
         sub: "One campaign a month, built and sent. Extra blasts $200 each.",
         inc: ["Campaign strategy", "Copy and design", "List segmentation", "Send and deliverability", "Open and click reporting"] },
       { id: "video", name: "Video Production", once: true, term: 12,
-        hours: true, rate: 100, minHrs: 20, maxHrs: 500, defHrs: 20,
-        sub: "Scoped by production hours at $100 an hour, from $2,000 for a single short edit up to $50,000 for a multi-shoot production. Set the hours to price it.",
+        hours: true, rate: 150, minHrs: 13, maxHrs: 334, defHrs: 20,
+        minPrice: 2000, maxPrice: 50000,
+        sub: "Scoped by production hours at $150 an hour. Minimum project $2,000, capped at $50,000. Set the hours to price it.",
         inc: ["Pre-production planning", "On-site production days", "Professional videography", "Team interviews and b-roll",
               "Professional edit", "Licensed music", "Social cutdowns", "Horizontal and vertical formats"] }
     ]},
@@ -512,8 +529,11 @@
   function priceOf(it) {
     if (it.spend) return Math.round((adSpend[it.id] > 0 ? adSpend[it.id] : 0) * adRateInfo(it).rate);
     if (it.hours) {
-      var h = hrs[it.id] > 0 ? hrs[it.id] : it.minHrs;
-      return Math.min(it.maxHrs, Math.max(it.minHrs, h)) * it.rate;
+      var h = Math.min(it.maxHrs, Math.max(it.minHrs, hrs[it.id] > 0 ? hrs[it.id] : it.minHrs));
+      /* The hour bounds bracket the quoted range but do not land on it exactly
+         at $150/hr, so the price range itself is the hard rule: a minimum
+         project fee and a ceiling. */
+      return Math.min(it.maxPrice, Math.max(it.minPrice, h * it.rate));
     }
     return it.price;
   }
@@ -792,7 +812,7 @@
   });
 
   $("copy").addEventListener("click", function () {
-    var r = calc(), out = ["DUO MARKETING GROUP: PROPOSED PLAN", ""];
+    var r = calc(), out = ["DUO GROUP: PROPOSED PLAN", ""];
     CATALOG.forEach(function (g) {
       var head = false;
       g.items.forEach(function (it) {

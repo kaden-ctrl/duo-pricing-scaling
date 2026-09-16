@@ -96,10 +96,11 @@ Sessions ($400/mo), the baseline AI Visibility Audit (was $1,500 one-time) and
 Multi-Location Reporting (was $350/mo). The audit and the roll-up are now
 included rather than billed.
 
-**Video Production is scoped by hours** rather than sold at a flat $4,000. It
-runs $100 an hour with a 20-hour floor and a 500-hour ceiling, so $2,000 to
-$50,000. The $100 rate is the old flat price divided by the 40 delivery hours
-recorded for it, so a 40-hour job still prices at $4,000.
+**Video Production is scoped by hours** rather than sold at a flat $4,000, at
+**$150 an hour**. The quoted range is the hard rule: a $2,000 minimum project
+fee and a $50,000 ceiling, with hours free to move between (13 to 334). At
+$150 the rate does not land on those bounds exactly, so the price is clamped to
+them at the extremes.
 
 Retired from the menu: Short-Form Video, Content Capture Day, SEO, Call
 Tracking & Attribution, ADA Compliance Monitoring, LinkedIn Job Posting,
@@ -116,21 +117,28 @@ From the Brand Guidelines doc (Duo Group entry):
 - Typeface **Avenir Next LT Pro**, with Mulish substituting where it isn't installed
 - AiR purple `#9A76D6` marks the AI Search Visibility line
 
-### Adding the real logo
+### The logo
 
-The page currently type-sets the wordmark. To use the actual artwork, open
-`service-builder.html`, find the `var LOGO = "";` line near the top of the
-script, and paste in a base64 data URI:
+The header draws the Duo Group mark (split ring, inner D, DUO wordmark) as
+inline SVG, in `#logo-mark`. It is a **redraw**, not the official artwork file:
+the logo was supplied as an image in conversation and never reached disk, so it
+was rebuilt from what was visible. Two upsides fell out of that: it stays sharp
+at any size, and the black half of the ring and the letterforms follow `--ink`,
+so they invert in dark mode instead of disappearing. The wordmark is outlines
+rather than `<text>`, so no font needs to load for it to render correctly.
+
+**Check it against the real artwork before this goes to clients.** To swap in
+the official file, open `service-builder.html`, find `var LOGO = "";` near the
+top of the script, and paste a base64 data URI:
 
 ```
-base64 -w0 Duo-Marketing-Group-Logo-2020-373px.png
+base64 -w0 <logo file>
 ```
 
-Then `var LOGO = "data:image/png;base64,<paste>";`
-
-The artwork has to be inlined, the artifact sandbox blocks external image
-URLs. The source file is in Drive under Client logos / Duo Group, or as
-`DUOGroupLogos.pdf`.
+Then `var LOGO = "data:image/png;base64,<paste>";`. Setting it hides the drawn
+mark. Note a flat image will not invert in dark mode. The artwork has to be
+inlined, the artifact sandbox blocks external image URLs. The source file is in
+Drive under Client logos / Duo Group, or as `DUOGroupLogos.pdf`.
 
 ## Where the prices came from
 
@@ -162,9 +170,10 @@ agreement. They are pricing decisions, not sourced rates:
   multi-channel accounts (three channels was $4,500 flat; $15,000 of combined
   spend is now $4,800, and $6,000 is $2,100). Worth checking against the
   delivery hours in `data/service-catalog.csv` before it goes to clients.
-- The **$100/hr video rate** is the retired $4,000 flat price divided by the 40
-  delivery hours recorded against it. The $2,000 floor and $50,000 ceiling are
-  scoping decisions, not quoted jobs.
+- The **$150/hr video rate** is a set rate, not derived from a past job. For
+  reference the retired $4,000 flat price over its 40 recorded delivery hours
+  worked out at $100/hr, so this is a 50% increase on that implied rate. The
+  $2,000 floor and $50,000 ceiling are scoping decisions, not quoted jobs.
 
 `data/service-catalog.csv` records every line with its source.
 
