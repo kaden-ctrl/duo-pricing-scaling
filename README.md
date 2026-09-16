@@ -33,39 +33,61 @@ Annual prepay (paid upfront) adds 10%. Combined discount is capped at 25%.
 
 ## Paid media management
 
-The management fee is a percentage of monthly ad spend rather than a flat
-per-account retainer. The more a client spends, the lower the rate.
+Management is priced **in bands on combined ad spend**, like tax brackets.
+Each band applies only to the part of the spend that falls inside it, never to
+the whole amount.
 
-| Monthly ad spend | Management |
+| Part of combined monthly spend | Rate on that part |
 |---|---:|
-| Under $2,000 | 50% |
-| $2,000 to $4,999 | 40% |
-| $5,000 to $9,999 | 35% |
-| $10,000 to $24,999 | 32% |
-| $25,000 and up | 30% |
+| First $2,000 | 50% |
+| $2,000 to $5,000 | 40% |
+| $5,000 to $10,000 | 35% |
+| $10,000 to $25,000 | 32% |
+| Above $25,000 | 30% |
 
-Minimum management fee is **$1,000 a month**, which is what carries the bottom
-band: $1,000 of spend costs $1,000 to manage, and 50% doesn't start biting
-until $2,000.
+Minimum management fee is **$1,000 a month**, which carries everything below
+$2,000 of spend.
+
+Two properties follow from banding, and both are the point:
+
+- **The fee always rises with spend.** Every extra dollar of spend adds fee at
+  its band's rate, so there is no spend level where spending more costs less to
+  manage. More spend means more work, and the fee reflects it.
+- **The overall rate always falls.** Each new dollar is charged at a lower rate
+  than the one before it. That is the volume discount.
+
+A whole-spend tier table cannot do both at once, which is why this replaced
+one. Dropping the rate on the *entire* amount at a threshold makes the fee fall
+as spend rises: under the old table $4,999 of spend cost $2,000 to manage and
+$5,000 cost $1,750.
+
+What it works out to:
+
+| Combined ad spend | Management | Overall rate |
+|---:|---:|---:|
+| $1,000 | $1,000 | minimum |
+| $2,000 | $1,000 | 50% |
+| $5,000 | $2,200 | 44% |
+| $10,000 | $3,950 | 40% |
+| $25,000 | $8,750 | 35% |
+| $50,000 | $16,250 | 33% |
 
 Ad spend is added into the monthly total alongside the fee, so the headline
 number is what the client actually pays each month. The panel breaks it out:
 
 ```
-Monthly at list          $7,400     services + management fee
-Bundle discount 15%     −$1,110     applies to the fee, not the spend
+Monthly at list          $7,000     services + management fee
+Bundle discount 15%     −$1,050     applies to the fee, not the spend
 Ad spend (pass-through)  +$6,000     at cost, never discounted
-Per month               $12,290     of which $6,290 is revenue to Duo
+Per month               $11,950     of which $5,950 is revenue to Duo
 ```
 
-Two properties worth knowing before quoting it:
+(That is the Full Growth preset: $6,000 of combined ad spend across Google and
+Meta, managed at 43% overall.)
 
-- The rate applies to the **whole spend**, not marginally. Crossing a tier
-  lowers the fee outright: $4,999 of spend costs $2,000 to manage, $5,000
-  costs $1,750. That's deliberate: it pays the client to move up.
-- The fee **is** subject to the bundle and annual-prepay discounts, same as
-  any other monthly service. The spend is not. Discounting a pass-through
-  would come straight out of margin.
+The fee **is** subject to the bundle and annual-prepay discounts, same as any
+other monthly service. The spend is not. Discounting a pass-through would come
+straight out of margin.
 
 Paid media is four separate line items: Google Ads, Meta Ads, LinkedIn Ads and
 TikTok Ads. Each carries its own monthly ad spend, but **the rate is set by
@@ -76,9 +98,15 @@ penalised the client for diversifying.
 
 The $1,000 minimum also applies once across paid media as a whole, not per
 channel, so four channels do not stack four minimums. Where the minimum is what
-is binding rather than the percentage, the row says "minimum fee" instead of
-quoting an effective rate that would read alarmingly high (the floor on $1,500
-of spend is 67%).
+is binding rather than the bands, the row says "minimum fee" instead of quoting
+an overall rate that would read alarmingly high (the floor on $1,500 of spend
+is 67%).
+
+The fee is worked out once on combined spend and then apportioned back to the
+channels by share. Rounding each channel independently let the line items miss
+the real fee by a dollar or two, so each channel takes the difference between
+the running total rounded at its own cumulative spend and at the previous one.
+The lines sum to the fee exactly.
 
 `data/paid-media-tiers.csv` holds the ladder with the fee at each band edge.
 
@@ -162,14 +190,14 @@ agreement. They are pricing decisions, not sourced rates:
 - The **$1,600 AiR Dashboard and AEO Management** price is the two monthly
   components added together ($1,200 + $400). Bundling the audit and the roll-up in gives away
   $1,500 of one-time revenue and $350/mo on multi-location accounts.
-- The **paid media tier ladder** is new. It was built to two anchors: $1,000
-  of spend costs $1,000 to manage, $5,000 of spend is managed at 35%, with
-  the rate starting at 50% and bottoming out at 30%.
-- Against the old flat fee, the tiers cut revenue on small single-channel
-  accounts (a $2,000 Meta-only client goes from $1,500 to $1,000) and on
-  multi-channel accounts (three channels was $4,500 flat; $15,000 of combined
-  spend is now $4,800, and $6,000 is $2,100). Worth checking against the
-  delivery hours in `data/service-catalog.csv` before it goes to clients.
+- The **paid media band ladder** is new. The band rates (50/40/35/32/30) came
+  from the earlier whole-spend table; banding them keeps those rates while
+  making the fee rise and the overall rate fall at every point.
+- Against the old flat $1,500/account fee, this cuts revenue on small accounts
+  (a $2,000 Meta-only client goes from $1,500 to $1,000) and on mid-size
+  multi-channel ones (three channels was $4,500 flat; $10,000 of combined spend
+  is $3,950). Worth checking against the delivery hours in
+  `data/service-catalog.csv` before it goes to clients.
 - The **$150/hr video rate** is a set rate, not derived from a past job. For
   reference the retired $4,000 flat price over its 40 recorded delivery hours
   worked out at $100/hr, so this is a 50% increase on that implied rate. The

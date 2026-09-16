@@ -1,9 +1,11 @@
-# Bands key off COMBINED monthly ad spend across every selected channel
-# (Google, Meta, LinkedIn, TikTok). The resulting rate is then applied to
-# each channel's own spend. min_fee applies once across paid media, not per channel.
-spend_from,spend_to,management_rate,min_fee_monthly,fee_at_band_floor,fee_at_band_ceiling,note
-0,1999,0.50,1000,1000,1000,"Minimum fee carries the band: $1,000 of spend costs $1,000 to manage"
-2000,4999,0.40,1000,1000,2000,"Minimum still applies below $2,500 of spend"
-5000,9999,0.35,1000,1750,3500,"$5,000 of spend = $1,750 management"
-10000,24999,0.32,1000,3200,8000,
-25000,,0.30,1000,7500,,"Floor rate — the fee stays 30% of spend above this point"
+# Management is priced in BANDS on COMBINED monthly ad spend across every
+# selected channel (Google, Meta, LinkedIn, TikTok), like tax brackets: each
+# band applies only to the part of the spend inside it, never to the whole
+# amount. The fee therefore always rises with spend while the overall rate
+# always falls. min_fee applies once across paid media, not per channel.
+band_from,band_to,rate_on_this_band,min_fee_monthly,cumulative_fee_at_band_top,overall_rate_at_band_top,note
+0,2000,0.50,1000,1000,0.50,"Minimum fee carries this band: any spend up to $2,000 costs $1,000 to manage"
+2000,5000,0.40,1000,2200,0.44,
+5000,10000,0.35,1000,3950,0.395,
+10000,25000,0.32,1000,8750,0.35,
+25000,,0.30,1000,,0.30,"Overall rate approaches 30% from above: $50,000 of spend is 32.5%, $100,000 is 31.3%"

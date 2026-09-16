@@ -387,9 +387,9 @@
               "Review monitoring & response", "Monthly posts"] }
     ]},
 
-    { cat: "Paid Media", note: "Rate set by combined spend. Spend passed through at cost", items: [
+    { cat: "Paid Media", note: "Banded on combined spend. Spend passed through at cost", items: [
       { id: "google", name: "Google Ads", spend: true, defSpend: 2500,
-        sub: "Search and display campaigns against the terms that convert. Set the monthly ad spend; the management rate is set by your combined spend across every channel.",
+        sub: "Search and display campaigns against the terms that convert. Set the monthly ad spend; management is banded on your combined spend across every channel, so the fee rises and the rate falls as you spend more.",
         inc: ["Keyword research", "Search and display campaigns", "Ad copy and extensions",
               "Landing page guidance", "Conversion tracking", "Ongoing optimisation", "Monthly reporting"] },
       { id: "meta", name: "Meta Ads", spend: true, defSpend: 2500,
@@ -441,26 +441,44 @@
   var PREPAY = .10, CAP = .25;
 
   /* ---------- paid media rate card ----------
-     The rate is set by COMBINED spend across every channel selected, then
-     applied to each channel's own spend. Splitting a budget over four
-     channels therefore costs no more to manage than putting it all in one.
-     The rate applies to the whole spend, so crossing a tier lowers the fee
-     outright: $4,999 at 40% costs more to manage than $5,000 at 35%. That is
-     deliberate, it pays to move up a tier. Below $2,000 the percentage would
-     fall under the floor, so AD_MIN carries it: $1,000 of spend costs $1,000
-     to manage. */
-  var AD_TIERS = [
-    { under: 2000,     rate: .50 },
-    { under: 5000,     rate: .40 },
-    { under: 10000,    rate: .35 },
-    { under: 25000,    rate: .32 },
-    { under: Infinity, rate: .30 }
+     Priced in bands, like tax brackets: each band applies only to the part of
+     the spend that falls inside it, never to the whole amount. Two properties
+     fall out of that, and both are the point:
+
+       the FEE always rises with spend, because every extra dollar adds fee at
+       its band's rate, so there is no spend level where spending more costs
+       less to manage;
+
+       the OVERALL RATE always falls, because each new dollar is charged at a
+       lower rate than the one before it, which is the volume discount.
+
+     A whole-spend tier table cannot do both at once: dropping the rate on the
+     entire amount at a threshold makes the fee fall as spend rises.
+
+     The bands run on COMBINED spend across every channel selected, then the
+     resulting fee is apportioned back to each channel by its share of spend,
+     so splitting a budget over four channels costs no more than putting it
+     all in one. AD_MIN is a floor on the whole paid media block, not per
+     channel: under $2,000 of spend it is what is charged. */
+  var AD_BANDS = [
+    { upTo: 2000,     rate: .50 },
+    { upTo: 5000,     rate: .40 },
+    { upTo: 10000,    rate: .35 },
+    { upTo: 25000,    rate: .32 },
+    { upTo: Infinity, rate: .30 }
   ];
   var AD_MIN = 1000, AD_FLOOR = 250;
 
-  function adRate(spend) {
-    for (var i = 0; i < AD_TIERS.length; i++) if (spend < AD_TIERS[i].under) return AD_TIERS[i].rate;
-    return AD_TIERS[AD_TIERS.length - 1].rate;
+  /* Banded fee before the minimum is applied. */
+  function adFeeRaw(spend) {
+    var fee = 0, prev = 0;
+    for (var i = 0; i < AD_BANDS.length; i++) {
+      var b = AD_BANDS[i];
+      if (spend <= prev) break;
+      fee += (Math.min(spend, b.upTo) - prev) * b.rate;
+      prev = b.upTo;
+    }
+    return fee;
   }
   /* Combined spend across the channels actually selected. */
   function adTotal() {
@@ -478,14 +496,38 @@
   function adRateInfo(it) {
     var t = adTotal();
     if (it && !state[it.id]) t += adSpend[it.id] > 0 ? adSpend[it.id] : 0;
-    if (!(t > 0)) return { rate: 0, floor: false };
-    var pct = t * adRate(t);
-    return { rate: Math.max(AD_MIN, pct) / t, floor: pct < AD_MIN };
+    if (!(t > 0)) return { rate: 0, floor: false, spend: 0, fee: 0 };
+    var raw = adFeeRaw(t), fee = Math.max(AD_MIN, raw);
+    return { rate: fee / t, floor: raw < AD_MIN, spend: t, fee: fee };
   }
   function adRateLabel(it) {
     var i = adRateInfo(it);
     return i.rate <= 0 ? "" : i.floor ? "minimum fee" : Math.round(i.rate * 100) + "% of spend";
   }
+  /* Apportion the banded fee back across the channels by share of spend.
+     Rounding each channel on its own lets the line items miss the real fee by
+     a dollar or two (four channels at $2,500 summed to $3,952 against a $3,950
+     fee), so each channel instead takes the difference between the running
+     total rounded at its own cumulative spend and at the previous one. The
+     lines then sum to the fee exactly. */
+  function adChannelFee(it) {
+    var info = adRateInfo(it);
+    if (!(info.spend > 0)) return 0;
+    var before = 0, mine = 0;
+    CATALOG.forEach(function (g) {
+      g.items.forEach(function (x) {
+        if (!x.spend) return;
+        if (!state[x.id] && x.id !== it.id) return;   // unselected rows preview themselves only
+        var sp = adSpend[x.id] > 0 ? adSpend[x.id] : 0;
+        if (x.id === it.id) {
+          mine = Math.round((before + sp) * info.rate) - Math.round(before * info.rate);
+        }
+        before += sp;
+      });
+    });
+    return mine;
+  }
+
   function adRateShort(it) {
     var i = adRateInfo(it);
     return i.rate <= 0 ? "" : i.floor ? "minimum fee" : Math.round(i.rate * 100) + "%";
@@ -527,7 +569,7 @@
 
   /* ---------- per-item price, unit label and rate card ---------- */
   function priceOf(it) {
-    if (it.spend) return Math.round((adSpend[it.id] > 0 ? adSpend[it.id] : 0) * adRateInfo(it).rate);
+    if (it.spend) return adChannelFee(it);
     if (it.hours) {
       var h = Math.min(it.maxHrs, Math.max(it.minHrs, hrs[it.id] > 0 ? hrs[it.id] : it.minHrs));
       /* The hour bounds bracket the quoted range but do not land on it exactly
@@ -547,21 +589,32 @@
 
   function tierTable() {
     var rows = "", prev = 0, total = adTotal();
-    AD_TIERS.forEach(function (t) {
-      var label = t.under === Infinity ? money(prev) + " and up"
-                : prev === 0           ? "Under " + money(t.under)
-                :                        money(prev) + " to " + money(t.under - 1);
-      var on = total > 0 && total >= prev && total < t.under;
+    AD_BANDS.forEach(function (b) {
+      var label = b.upTo === Infinity ? "Above " + money(prev)
+                : prev === 0          ? "First " + money(b.upTo)
+                :                       money(prev) + " to " + money(b.upTo);
+      var on = total > prev && (b.upTo === Infinity || total <= b.upTo);
       rows += "<tr" + (on ? ' class="now"' : "") + "><td>" + label + "</td><td>" +
-              Math.round(t.rate * 100) + "%</td></tr>";
-      prev = t.under;
+              Math.round(b.rate * 100) + "%</td></tr>";
+      prev = b.upTo;
     });
-    return '<table><thead><tr><th>Monthly ad spend</th><th>Management</th></tr></thead><tbody>' +
+
+    var i = adRateInfo(null), live = "";
+    if (i.spend > 0) {
+      live = i.floor
+        ? "At " + money(i.spend) + " of combined spend the " + money(AD_MIN) +
+          " minimum applies, which is " + Math.round(i.rate * 100) + "% of spend."
+        : "At " + money(i.spend) + " of combined spend that is " + money(i.fee) +
+          ", or " + Math.round(i.rate * 100) + "% overall.";
+    }
+
+    return '<table><thead><tr><th>Part of combined monthly spend</th><th>Rate on that part</th></tr></thead><tbody>' +
            rows + "</tbody></table>" +
-           '<p class="tiers-foot">Set by your <b>combined</b> spend across every channel, then applied to ' +
-           'each channel. Minimum management fee ' + money(AD_MIN) + ' a month across paid media as a whole. ' +
-           'The rate applies to the whole spend, so moving up a tier lowers the fee outright. ' +
-           "Ad spend is paid to the platforms at cost and is not discounted.</p>";
+           '<p class="tiers-foot">Each band applies only to the part of your spend inside it, so management ' +
+           '<b>always rises</b> as you spend more while the overall rate <b>always falls</b>. Bands run on your ' +
+           'combined spend across every channel, then the fee is split back across them. Minimum ' +
+           money(AD_MIN) + ' a month across paid media as a whole. ' + live +
+           " Ad spend is paid to the platforms at cost and is not discounted.</p>";
   }
 
   /* ---------- build catalog ---------- */
@@ -841,9 +894,13 @@
     if (r.onceList > 0) out.push("One-time build       " + money(r.onceList));
     out.push("Minimum term         " + (r.minTerm >= 12 ? "12 months" : r.minTerm >= 6 ? "6 months" : "Month to month"));
     out.push("", "The monthly total is management fees plus ad spend. Ad spend is a",
-                 "pass-through to the platforms and is never discounted. The management",
-                 "rate falls as spend rises: 50% under $2,000 (min $1,000/mo), 40% to",
-                 "$5,000, 35% to $10,000, 32% to $25,000, 30% above.");
+                 "pass-through to the platforms and is never discounted.",
+                 "",
+                 "Management is priced in bands on combined ad spend, each band applying",
+                 "only to the part of the spend inside it: the first $2,000 at 50%, then",
+                 "40% to $5,000, 35% to $10,000, 32% to $25,000 and 30% above, with a",
+                 "$1,000/mo minimum. Management always rises as spend rises, while the",
+                 "overall rate falls.");
 
     var text = out.join("\n"), btn = $("copy"), old = btn.textContent;
     var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = old; }, 1600); };

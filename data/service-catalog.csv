@@ -2,10 +2,10 @@ category,service,unit,list_price,billing,platform_cost_monthly,delivery_hours_mo
 AI Search Visibility,AiR Dashboard and AEO Management,per location,1600,monthly,225,9,6,"Dashboard 1200 + Signal Sessions 400 combined; baseline audit (was 1500 one-time) and multi-location roll-up (was 350/mo) now included. AiR agreements (Kobico/CIS/Mill Forest) + CMP AiR proposal"
 Social Media,Social Media Management,per platform,750,monthly,0,6,1,Lawn Doctor breakdown (extra IG page $700/mo)
 Social Media,Google Business Profile,per location,750,monthly,0,3,1,Duo Pricing Sheet June 2024
-Paid Media,Google Ads,% of ad spend,,monthly,0,,1,"Tiered 50%-30% of COMBINED monthly ad spend across all channels, min $1,000/mo across paid media as a whole. See data/paid-media-tiers.csv"
-Paid Media,Meta Ads,% of ad spend,,monthly,0,,1,"Same combined-spend ladder as Google Ads"
-Paid Media,LinkedIn Ads,% of ad spend,,monthly,0,,1,"Same combined-spend ladder as Google Ads"
-Paid Media,TikTok Ads,% of ad spend,,monthly,0,,1,"Same combined-spend ladder as Google Ads. New channel, no prior Duo pricing"
+Paid Media,Google Ads,% of ad spend,,monthly,0,,1,"Banded 50/40/35/32/30 on COMBINED monthly ad spend across all channels, each band applying only to the part of spend inside it. Min $1,000/mo across paid media as a whole. See data/paid-media-tiers.csv"
+Paid Media,Meta Ads,% of ad spend,,monthly,0,,1,"Same combined-spend band ladder as Google Ads"
+Paid Media,LinkedIn Ads,% of ad spend,,monthly,0,,1,"Same combined-spend band ladder as Google Ads"
+Paid Media,TikTok Ads,% of ad spend,,monthly,0,,1,"Same combined-spend band ladder as Google Ads. New channel, no prior Duo pricing"
 Content & Creative,Email Marketing (1 campaign/mo),per month,500,monthly,0,3,1,Santiam agreement (extra blasts $200 each)
 Content & Creative,Video Production,per production hour,150,one-time,0,,12,"Set rate, not derived from a past job. The retired $4,000 flat price over its 40 recorded delivery hours implied $100/hr, so this is +50% on that. Minimum project $2,000, capped at $50,000 (13 to 334 hrs)"
 Web & Search,Website Build,one-time,4000,one-time,0,45,12,Duo Pricing Sheet June 2024
