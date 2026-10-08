@@ -31,13 +31,19 @@ Add-ons sit under the base package and cannot be quoted without it.
 | Local monthly filming (under Instagram) | +$200/mo |
 | LinkedIn | $500/mo |
 | Google Business Profile | $500/mo |
+| Reddit | $250/mo |
 
 Each of the four social add-ons includes **$100 a month of boosting budget**.
 That budget is inside the price, not billed on top, so the plan panel reports
 it as "of which social boosting budget" rather than adding it to the total.
 
 **Social add-ons are three static graphics a week.** If the client films a
-video and wants it edited and posted, that is covered at the same price.
+video and wants it edited and posted, that is covered at the same price. That
+covers Facebook, Instagram, LinkedIn and Google Business Profile.
+
+**Reddit is different:** two relevant threads a week found and contributed to,
+written in the client's voice. No graphics and no boosting budget, which is why
+it is $250 rather than $500.
 
 ### Standalone services
 
