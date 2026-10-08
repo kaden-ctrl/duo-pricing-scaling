@@ -1,7 +1,8 @@
 # Duo Service Builder
 
-A base package with add-ons priced on top. Pick the add-ons, and the bundle
-discount grows as more are added.
+A base package with add-ons underneath it, plus standalone services that can be
+bought on their own. The bundle discount applies to the standalone services
+only.
 
 **Deliverable:** [`service-builder.html`](service-builder.html)
 
@@ -28,16 +29,51 @@ Add-ons sit under the base package and cannot be quoted without it.
 | Facebook | $600/mo |
 | Instagram | $600/mo |
 | Local monthly filming (under Instagram) | +$200/mo |
-| LinkedIn | $600/mo |
-| Google Business Profile | $600/mo |
+| LinkedIn | $500/mo |
+| Google Business Profile | $500/mo |
 
 Each of the four social add-ons includes **$100 a month of boosting budget**.
-That budget is inside the $600, not billed on top, so the plan panel reports it
-as "of which boosting budget" rather than adding it to the total.
+That budget is inside the price, not billed on top, so the plan panel reports
+it as "of which social boosting budget" rather than adding it to the total.
+
+**Social add-ons are three static graphics a week.** If the client films a
+video and wants it edited and posted, that is covered at the same price.
+
+### Standalone services
+
+These are their own services and do not need the base package.
+
+| Service | Price |
+|---|---:|
+| Google Ads, Meta Ads, LinkedIn Ads, TikTok Ads | banded on combined ad spend, see below |
+| Email Marketing | $500/mo |
+| Video Production | $150/hr, $2,000 minimum, $50,000 cap |
+| Website Build | $4,000 one-time |
+| Website Management & Hosting | $100/mo |
+
+The base package already carries a website and its upkeep, so Website Build and
+Website Management & Hosting are there for clients who are not on the package.
+
+### Paid media
+
+Management is priced **in bands on combined ad spend**, like tax brackets. Each
+band applies only to the part of the spend inside it, never the whole amount.
+
+| Part of combined monthly spend | Rate on that part |
+|---|---:|
+| First $2,000 | 50% |
+| $2,000 to $5,000 | 40% |
+| $5,000 to $10,000 | 35% |
+| $10,000 to $25,000 | 32% |
+| Above $25,000 | 30% |
+
+Minimum $1,000 a month, once across paid media rather than per channel. The fee
+always rises with spend and the overall rate always falls. Ad spend itself is a
+pass-through: it lands in the monthly total but is never discounted.
 
 ## How it works
 
-| Monthly services selected | Discount |
+| Standalone services selected | Discount |
 |---:|---:|
 | 1 | none |
 | 2 | 5% |
@@ -45,44 +81,30 @@ as "of which boosting budget" rather than adding it to the total.
 | 4 | 12% |
 | 5+ | 15% |
 
-Annual prepay (paid upfront) adds 10%. Combined discount is capped at 25%. The
-base package counts as one of the services.
+**The bundle discount does not apply to the base package or any of its
+add-ons.** They are quoted as a package at list. Two consequences, both
+deliberate:
+
+- The discount comes off the **standalone services only**.
+- Package add-ons **do not count toward the tier** either. Stacking add-ons
+  cannot unlock a discount on the standalone services, which would otherwise be
+  a way to buy the ladder cheaply.
+
+Annual prepay is **10% off everything**, package included, applied after the
+bundle discount. It was not excluded, so it still runs across the whole plan.
+Say the word if it should skip the package too.
+
+One-time work (Website Build, Video Production) is never discounted.
 
 - **Add-ons require the base package.** Selecting an add-on pulls the base in;
   turning the base off drops every add-on with it. Local monthly filming sits
   under Instagram the same way, so selecting it pulls in Instagram and, through
-  Instagram, the base.
-- **Minimum term is 12 months**, because the base package includes a new
-  website build.
+  Instagram, the base. Standalone services need none of this.
+- **Minimum term is 12 months** whenever the base package, a website build or
+  video production is in the plan.
 - Selections persist per browser via `localStorage`. Saved state from an older
   version of the menu is reconciled on load, so an add-on whose parent is no
   longer selected is dropped rather than quoted on its own.
-
-## Open questions
-
-Two things were assumed when this was built and should be confirmed:
-
-- **Instagram, LinkedIn and Google Business Profile are priced at $600**, the
-  same as Facebook. Only Facebook carried a stated price; the others were
-  listed with their boosting budget but no number.
-- **The bundle discount and annual prepay were kept** from the previous
-  version. Neither was mentioned in the current spec. With everything selected
-  the plan reaches the 15% tier, which takes $4,350 of list down to $3,698.
-
-## What this replaced
-
-The previous build was a flat a la carte menu of 11 services with a banded
-paid media calculator. Retired in this rebuild:
-
-- **Paid media** as separate Google, Meta, LinkedIn and TikTok Ads line items,
-  along with the whole banded management-fee engine (50/40/35/32/30 on combined
-  ad spend, $1,000 minimum) and the ad-spend pass-through in the total. Social
-  boosting budget replaces it at a much smaller scale.
-- **Video Production** priced by production hours at $150/hr.
-- **Email Marketing**, **Website Build** and **Website Management & Hosting**
-  as standalone lines. The website is now inside the base package.
-
-All of it is in git history if any piece needs to come back.
 
 ## Branding
 
@@ -118,7 +140,8 @@ Drive under Client logos / Duo Group, or as `DUOGroupLogos.pdf`.
 ## Where the prices came from
 
 The current menu is a pricing decision, not a reconstruction from past
-invoices. `data/service-catalog.csv` records each line as it now stands.
+invoices. Every package and add-on price is now stated rather than assumed.
+`data/service-catalog.csv` records each line as it now stands.
 `data/price-points-2026.csv` and `data/unit-costs-2026.csv` keep the older
 reference data from when the catalog was assembled out of signed agreements
 (Duo Pricing Sheet June 2024, AiR client agreements, the Santiam Hospital and
