@@ -161,24 +161,14 @@
   .qty span { min-width: 24px; text-align: center; font-weight: 700; font-size: .85rem; }
   .qty-hidden { visibility: hidden; }
 
-  .spend { display: flex; align-items: center; gap: 1px; border: 1px solid var(--rule-firm); background: var(--surface); padding: 0 8px; }
-  .spend-cur { font-size: .82rem; font-weight: 700; color: var(--muted); }
-  .spend input {
-    width: 64px; border: 0; background: transparent; color: var(--ink); text-align: right;
-    font-family: var(--f); font-size: .85rem; font-weight: 700; padding: 5px 0; -moz-appearance: textfield;
+  /* A sub add-on sits under its parent (filming under Instagram) and is
+     indented so the dependency reads at a glance. */
+  .row.nested { padding-left: 40px; }
+  .row.nested .r-name::before {
+    content: "\21b3"; color: var(--muted); font-weight: 400; margin-right: 8px;
   }
-  .spend input::-webkit-outer-spin-button, .spend input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .spend input:focus-visible { outline: none; }
-  .spend:focus-within { border-color: var(--duo-blue); }
-  .spend.off { opacity: .4; }
 
-  .tiers { margin: 11px 0 2px; }
-  .tiers table { border-collapse: collapse; font-size: .78rem; max-width: 330px; }
-  .tiers th, .tiers td { text-align: left; padding: 3px 22px 3px 0; color: var(--ink-2); white-space: nowrap; }
-  .tiers th { font-size: .67rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-  .tiers td:last-child { font-weight: 700; }
-  .tiers tr.now td { color: var(--duo-blue); }
-  .tiers-foot { font-size: .74rem; color: var(--muted); margin: 7px 0 0; line-height: 1.45; max-width: 460px; }
+  .req { grid-column: 2 / -1; font-size: .73rem; color: var(--muted); margin-top: 2px; }
 
   /* ---------- summary ---------- */
   .panel { position: sticky; top: 18px; background: var(--surface); border: 1px solid var(--rule-firm); box-shadow: var(--shadow); }
@@ -269,13 +259,13 @@
       </svg>
     </div>
     <h1>Build a plan</h1>
-    <p class="sub">Pick the services you want. The more you add, the more comes off the monthly total, up to <b>15%</b> on the bundle, plus <b>10%</b> for paying annually.</p>
+    <p class="sub">Every plan starts with the <b>AiR Dashboard</b> base package. Add what you need on top. The more you add, the more comes off the monthly total, up to <b>15%</b> on the bundle, plus <b>10%</b> for paying annually.</p>
     <div class="presets">
       <span class="presets-lbl">Start from</span>
+      <button class="preset" type="button" data-preset="base">Base only</button>
       <button class="preset" type="button" data-preset="local">Local Presence</button>
-      <button class="preset" type="button" data-preset="ai">AI Visibility</button>
-      <button class="preset" type="button" data-preset="growth">Full Growth</button>
-      <button class="preset" type="button" data-preset="launch">New Launch</button>
+      <button class="preset" type="button" data-preset="social">Full Social</button>
+      <button class="preset" type="button" data-preset="all">Everything</button>
     </div>
   </header>
 
@@ -291,7 +281,7 @@
         <div id="totals" hidden>
           <div class="tot"><span>Monthly at list</span><span id="t-list"></span></div>
           <div class="tot save" id="t-save-row"><span id="t-save-lbl">Bundle discount</span><span id="t-save"></span></div>
-          <div class="tot" id="t-spend-row"><span>Ad spend (pass-through)</span><span id="t-spend"></span></div>
+          <div class="tot" id="t-boost-row"><span>Of which boosting budget</span><span id="t-boost"></span></div>
           <div class="tot grand"><span>Per month</span><span id="t-month"></span></div>
           <p class="grand-note" id="t-annual"></p>
           <div class="tot" id="t-once-row"><span>One-time build work</span><span id="t-once"></span></div>
@@ -330,7 +320,7 @@
 
   <footer>
     <span><b>Duo Group</b> · Logan, Utah · duogroup.com</span>
-    <span>The monthly total includes ad spend, passed through at cost and never discounted.</span>
+    <span>Each social add-on includes $100 a month of boosting budget.</span>
   </footer>
 </div>
 
@@ -365,257 +355,107 @@
   }
 
   var CATALOG = [
-    { cat: "AI Search Visibility", air: true, note: "AiR, Ai Results", items: [
-      { id: "air", name: "AiR Dashboard and AEO Management", price: 1600, unit: "per location", qty: true, term: 6,
-        sub: "The whole AI search visibility programme: tracking, monthly working sessions, the baseline audit and multi-location roll-up, across ChatGPT, Gemini, Perplexity and Google AI Overviews.",
-        inc: ["Baseline audit across all four engines at kickoff", "Citation rate tracking", "Sentiment analysis",
-              "Prominence scoring", "Competitor benchmarking", "~170-prompt set per market",
-              "Quarterly prompt refresh", "Monthly scorecard", "Dedicated AiR rep",
-              "2 working sessions monthly, 45-60 min", "Personal social strategy per provider",
-              "Signal content build", "Third-party citations & profiles", "Structured data on your site",
-              "Corrections where you're described wrong", "Multi-location roll-up and league table"] }
+    { cat: "Base package", air: true, note: "Every plan starts here", items: [
+      { id: "base", name: "AiR Dashboard", price: 1500, unit: "per month", term: 12,
+        sub: "The core programme: the dashboard, a new website kept updated and optimised, the weekly opportunities that come out of it, and content to act on them.",
+        inc: ["Dashboard access", "New website", "Website updates and optimisation",
+              "Weekly opportunities", "2 blog posts a month", "Signal Sessions or weekly email"] }
     ]},
 
-    { cat: "Social Media", items: [
-      { id: "social", name: "Social Media Management", price: 750, unit: "per platform", qty: true,
-        sub: "Facebook, Instagram, LinkedIn, X or TikTok, fully managed.",
-        inc: ["3-4 unique posts per week", "Content planning & copywriting", "Creative and graphics", "Scheduling & publishing",
-              "Comment and message management", "Follower growth", "Monthly performance report"] },
-      { id: "gbp", name: "Google Business Profile", price: 750, unit: "per location", qty: true,
-        sub: "The listing that decides whether you show up in local search.",
-        inc: ["Listing optimisation", "Photo & FAQ optimisation", "Bing Places sync", "Website schema integration",
-              "Review monitoring & response", "Monthly posts"] }
+    { cat: "Search", note: "Requires the base package", items: [
+      { id: "seo", name: "SEO", price: 250, unit: "per month", requires: "base",
+        sub: "Technical and on-page work to earn traditional search rankings alongside the AI visibility work.",
+        inc: ["Technical site audit", "On-page optimisation", "Keyword strategy",
+              "Internal linking", "Monthly rank reporting"] }
     ]},
 
-    { cat: "Paid Media", note: "Banded on combined spend. Spend passed through at cost", items: [
-      { id: "google", name: "Google Ads", spend: true, defSpend: 2500,
-        sub: "Search and display campaigns against the terms that convert. Set the monthly ad spend; management is banded on your combined spend across every channel, so the fee rises and the rate falls as you spend more.",
-        inc: ["Keyword research", "Search and display campaigns", "Ad copy and extensions",
-              "Landing page guidance", "Conversion tracking", "Ongoing optimisation", "Monthly reporting"] },
-      { id: "meta", name: "Meta Ads", spend: true, defSpend: 2500,
-        sub: "Facebook and Instagram campaigns built, tested and optimised.",
-        inc: ["Audience research and targeting", "Campaign strategy and build", "Ad creative and copy",
-              "A/B testing", "Conversion tracking", "Ongoing optimisation", "Monthly reporting"] },
-      { id: "linkedin", name: "LinkedIn Ads", spend: true, defSpend: 2000,
-        sub: "B2B and recruitment campaigns to a targeted professional audience.",
-        inc: ["Audience and firmographic targeting", "Campaign build", "Creative and copy",
-              "Conversion tracking", "Monthly reporting"] },
-      { id: "tiktok", name: "TikTok Ads", spend: true, defSpend: 1500,
-        sub: "Short vertical video campaigns built for reach and discovery.",
-        inc: ["Audience and interest targeting", "Vertical video ad creative", "Trend and sound selection",
-              "Campaign build and testing", "Conversion tracking", "Monthly reporting"] }
-    ]},
-
-    { cat: "Content & Creative", items: [
-      { id: "email", name: "Email Marketing", price: 500, unit: "per month",
-        sub: "One campaign a month, built and sent. Extra blasts $200 each.",
-        inc: ["Campaign strategy", "Copy and design", "List segmentation", "Send and deliverability", "Open and click reporting"] },
-      { id: "video", name: "Video Production", once: true, term: 12,
-        hours: true, rate: 150, minHrs: 13, maxHrs: 334, defHrs: 20,
-        minPrice: 2000, maxPrice: 50000,
-        sub: "Scoped by production hours at $150 an hour. Minimum project $2,000, capped at $50,000. Set the hours to price it.",
-        inc: ["Pre-production planning", "On-site production days", "Professional videography", "Team interviews and b-roll",
-              "Professional edit", "Licensed music", "Social cutdowns", "Horizontal and vertical formats"] }
-    ]},
-
-    { cat: "Web & Search", items: [
-      { id: "web", name: "Website Build", price: 4000, once: true, term: 12,
-        sub: "A full custom site, designed, built, migrated and launched.",
-        inc: ["Custom design and development", "Mobile responsive", "Content migration", "Service and location pages",
-              "On-page SEO implementation", "Structured data", "Launch and QA"] },
-      { id: "hosting", name: "Website Management & Hosting", price: 100, unit: "per month",
-        sub: "Hosting plus the ongoing upkeep that keeps the site fast and secure.",
-        inc: ["Hosting included", "Security management", "Performance monitoring", "Plugin and platform updates", "Minor content updates"] }
+    { cat: "Social Media", note: "Each includes $100 of boosting budget", items: [
+      { id: "fb", name: "Facebook", price: 600, unit: "per month", requires: "base", boost: 100,
+        sub: "Fully managed Facebook presence, with boosting budget included.",
+        inc: ["Content planning and copywriting", "Creative and graphics", "Scheduling and publishing",
+              "Comment and message management", "$100 boosting budget included", "Monthly performance report"] },
+      { id: "ig", name: "Instagram", price: 600, unit: "per month", requires: "base", boost: 100,
+        sub: "Fully managed Instagram presence, with boosting budget included.",
+        inc: ["Content planning and copywriting", "Creative and graphics", "Stories and Reels publishing",
+              "Comment and message management", "$100 boosting budget included", "Monthly performance report"] },
+      { id: "igfilm", name: "Local monthly filming", price: 200, unit: "per month", requires: "ig", nested: true,
+        sub: "A monthly local shoot to keep the Instagram feed stocked with original footage.",
+        inc: ["Monthly on-site filming", "Vertical video capture", "Edited clips for Reels and Stories"] },
+      { id: "li", name: "LinkedIn", price: 600, unit: "per month", requires: "base", boost: 100,
+        sub: "Fully managed LinkedIn presence, with boosting budget included.",
+        inc: ["Content planning and copywriting", "Creative and graphics", "Scheduling and publishing",
+              "Comment and message management", "$100 boosting budget included", "Monthly performance report"] },
+      { id: "gbp", name: "Google Business Profile", price: 600, unit: "per month", requires: "base", boost: 100,
+        sub: "The listing that decides whether you show up in local search, with boosting budget included.",
+        inc: ["Listing optimisation", "Photo and FAQ optimisation", "Review monitoring and response",
+              "Monthly posts", "$100 boosting budget included", "Bing Places sync"] }
     ]}
   ];
 
   var PRESETS = {
-    local:  { social: 2, gbp: 1, google: 1, hosting: 1, $spend: { google: 1500 } },
-    ai:     { air: 1, social: 1 },
-    growth: { air: 1, social: 2, gbp: 1, google: 1, meta: 1, email: 1, hosting: 1,
-              $spend: { google: 4000, meta: 2000 } },
-    launch: { web: 1, video: 1, social: 2, gbp: 1, hosting: 1, meta: 1, $spend: { meta: 3000 } }
+    base:   { base: 1 },
+    local:  { base: 1, gbp: 1, fb: 1 },
+    social: { base: 1, fb: 1, ig: 1, li: 1, gbp: 1 },
+    all:    { base: 1, seo: 1, fb: 1, ig: 1, igfilm: 1, li: 1, gbp: 1 }
   };
 
   var TIERS = [0, 0, .05, .08, .12, .15];
   var PREPAY = .10, CAP = .25;
 
-  /* ---------- paid media rate card ----------
-     Priced in bands, like tax brackets: each band applies only to the part of
-     the spend that falls inside it, never to the whole amount. Two properties
-     fall out of that, and both are the point:
-
-       the FEE always rises with spend, because every extra dollar adds fee at
-       its band's rate, so there is no spend level where spending more costs
-       less to manage;
-
-       the OVERALL RATE always falls, because each new dollar is charged at a
-       lower rate than the one before it, which is the volume discount.
-
-     A whole-spend tier table cannot do both at once: dropping the rate on the
-     entire amount at a threshold makes the fee fall as spend rises.
-
-     The bands run on COMBINED spend across every channel selected, then the
-     resulting fee is apportioned back to each channel by its share of spend,
-     so splitting a budget over four channels costs no more than putting it
-     all in one. AD_MIN is a floor on the whole paid media block, not per
-     channel: under $2,000 of spend it is what is charged. */
-  var AD_BANDS = [
-    { upTo: 2000,     rate: .50 },
-    { upTo: 5000,     rate: .40 },
-    { upTo: 10000,    rate: .35 },
-    { upTo: 25000,    rate: .32 },
-    { upTo: Infinity, rate: .30 }
-  ];
-  var AD_MIN = 1000, AD_FLOOR = 250;
-
-  /* Banded fee before the minimum is applied. */
-  function adFeeRaw(spend) {
-    var fee = 0, prev = 0;
-    for (var i = 0; i < AD_BANDS.length; i++) {
-      var b = AD_BANDS[i];
-      if (spend <= prev) break;
-      fee += (Math.min(spend, b.upTo) - prev) * b.rate;
-      prev = b.upTo;
-    }
-    return fee;
-  }
-  /* Combined spend across the channels actually selected. */
-  function adTotal() {
-    var t = 0;
-    Object.keys(state).forEach(function (id) {
-      if (state[id] && byId[id].spend && adSpend[id] > 0) t += adSpend[id];
-    });
-    return t;
-  }
-  /* What to SHOW on one channel's row. For a selected channel this is the live
-     rate. For an unselected one it prices as if the channel were added, so the
-     row previews what it would cost instead of reading $0. `floor` is true when
-     the $1,000 minimum is what is binding rather than the percentage, so the
-     row can say so instead of quoting an alarming effective rate. */
-  function adRateInfo(it) {
-    var t = adTotal();
-    if (it && !state[it.id]) t += adSpend[it.id] > 0 ? adSpend[it.id] : 0;
-    if (!(t > 0)) return { rate: 0, floor: false, spend: 0, fee: 0 };
-    var raw = adFeeRaw(t), fee = Math.max(AD_MIN, raw);
-    return { rate: fee / t, floor: raw < AD_MIN, spend: t, fee: fee };
-  }
-  function adRateLabel(it) {
-    var i = adRateInfo(it);
-    return i.rate <= 0 ? "" : i.floor ? "minimum fee" : Math.round(i.rate * 100) + "% of spend";
-  }
-  /* Apportion the banded fee back across the channels by share of spend.
-     Rounding each channel on its own lets the line items miss the real fee by
-     a dollar or two (four channels at $2,500 summed to $3,952 against a $3,950
-     fee), so each channel instead takes the difference between the running
-     total rounded at its own cumulative spend and at the previous one. The
-     lines then sum to the fee exactly. */
-  function adChannelFee(it) {
-    var info = adRateInfo(it);
-    if (!(info.spend > 0)) return 0;
-    var before = 0, mine = 0;
-    CATALOG.forEach(function (g) {
-      g.items.forEach(function (x) {
-        if (!x.spend) return;
-        if (!state[x.id] && x.id !== it.id) return;   // unselected rows preview themselves only
-        var sp = adSpend[x.id] > 0 ? adSpend[x.id] : 0;
-        if (x.id === it.id) {
-          mine = Math.round((before + sp) * info.rate) - Math.round(before * info.rate);
-        }
-        before += sp;
-      });
-    });
-    return mine;
-  }
-
-  function adRateShort(it) {
-    var i = adRateInfo(it);
-    return i.rate <= 0 ? "" : i.floor ? "minimum fee" : Math.round(i.rate * 100) + "%";
-  }
-
-  var byId = {}, state = {}, prepay = false, adSpend = {}, hrs = {};
+  var byId = {}, state = {}, prepay = false;
   CATALOG.forEach(function (g) {
-    g.items.forEach(function (it) {
-      byId[it.id] = it;
-      state[it.id] = 0;
-      if (it.spend) adSpend[it.id] = it.defSpend;
-      if (it.hours) hrs[it.id] = it.defHrs;
-    });
+    g.items.forEach(function (it) { byId[it.id] = it; state[it.id] = 0; });
   });
 
   var $ = function (id) { return document.getElementById(id); };
   var money = function (n) { return "$" + Math.round(n).toLocaleString("en-US"); };
+
+  /* ---------- dependencies ----------
+     Add-ons sit under the base package, and filming sits under Instagram, so
+     a selection is only ever valid with its parent. Turning an add-on on pulls
+     its parent in; turning a parent off drops everything hanging from it. */
+  function enable(id) {
+    state[id] = state[id] || 1;
+    var req = byId[id].requires;
+    if (req) enable(req);
+  }
+  function disable(id) {
+    state[id] = 0;
+    Object.keys(state).forEach(function (k) {
+      if (state[k] && byId[k].requires === id) disable(k);
+    });
+  }
+  /* Saved state can predate a catalog change, so drop anything orphaned. */
+  function reconcile() {
+    var changed = true;
+    while (changed) {
+      changed = false;
+      Object.keys(state).forEach(function (k) {
+        var req = byId[k].requires;
+        if (state[k] && req && !state[req]) { state[k] = 0; changed = true; }
+      });
+    }
+  }
 
   try {
     var saved = JSON.parse(localStorage.getItem("duo-builder") || "null");
     if (saved && saved.state) {
       Object.keys(saved.state).forEach(function (k) { if (k in state) state[k] = saved.state[k]; });
       prepay = !!saved.prepay;
-      if (saved.adSpend) Object.keys(saved.adSpend).forEach(function (k) {
-        if (k in adSpend && saved.adSpend[k] > 0) adSpend[k] = saved.adSpend[k];
-      });
-      if (saved.hrs) Object.keys(saved.hrs).forEach(function (k) {
-        if (k in hrs && saved.hrs[k] > 0) hrs[k] = saved.hrs[k];
-      });
+    } else {
+      state.base = 1;                      // first visit starts on the base package
     }
-  } catch (e) { /* storage unavailable, start empty */ }
+  } catch (e) { state.base = 1; }
+  reconcile();
 
   function save() {
     try {
-      localStorage.setItem("duo-builder",
-        JSON.stringify({ state: state, prepay: prepay, adSpend: adSpend, hrs: hrs }));
+      localStorage.setItem("duo-builder", JSON.stringify({ state: state, prepay: prepay }));
     } catch (e) {}
   }
 
-  /* ---------- per-item price, unit label and rate card ---------- */
-  function priceOf(it) {
-    if (it.spend) return adChannelFee(it);
-    if (it.hours) {
-      var h = Math.min(it.maxHrs, Math.max(it.minHrs, hrs[it.id] > 0 ? hrs[it.id] : it.minHrs));
-      /* The hour bounds bracket the quoted range but do not land on it exactly
-         at $150/hr, so the price range itself is the hard rule: a minimum
-         project fee and a ceiling. */
-      return Math.min(it.maxPrice, Math.max(it.minPrice, h * it.rate));
-    }
-    return it.price;
-  }
-
-  function unitOf(it) {
-    if (it.spend) return adRateLabel(it) || "of ad spend";
-    if (it.hours) return "one-time, " + (hrs[it.id] || it.minHrs) + " hrs";
-    if (it.once) return "one-time";
-    return it.unit || "per month";
-  }
-
-  function tierTable() {
-    var rows = "", prev = 0, total = adTotal();
-    AD_BANDS.forEach(function (b) {
-      var label = b.upTo === Infinity ? "Above " + money(prev)
-                : prev === 0          ? "First " + money(b.upTo)
-                :                       money(prev) + " to " + money(b.upTo);
-      var on = total > prev && (b.upTo === Infinity || total <= b.upTo);
-      rows += "<tr" + (on ? ' class="now"' : "") + "><td>" + label + "</td><td>" +
-              Math.round(b.rate * 100) + "%</td></tr>";
-      prev = b.upTo;
-    });
-
-    var i = adRateInfo(null), live = "";
-    if (i.spend > 0) {
-      live = i.floor
-        ? "At " + money(i.spend) + " of combined spend the " + money(AD_MIN) +
-          " minimum applies, which is " + Math.round(i.rate * 100) + "% of spend."
-        : "At " + money(i.spend) + " of combined spend that is " + money(i.fee) +
-          ", or " + Math.round(i.rate * 100) + "% overall.";
-    }
-
-    return '<table><thead><tr><th>Part of combined monthly spend</th><th>Rate on that part</th></tr></thead><tbody>' +
-           rows + "</tbody></table>" +
-           '<p class="tiers-foot">Each band applies only to the part of your spend inside it, so management ' +
-           '<b>always rises</b> as you spend more while the overall rate <b>always falls</b>. Bands run on your ' +
-           'combined spend across every channel, then the fee is split back across them. Minimum ' +
-           money(AD_MIN) + ' a month across paid media as a whole. ' + live +
-           " Ad spend is paid to the platforms at cost and is not discounted.</p>";
-  }
+  function priceOf(it) { return it.price; }
+  function unitOf(it) { return it.once ? "one-time" : (it.unit || "per month"); }
 
   /* ---------- build catalog ---------- */
   var cat = $("catalog");
@@ -634,41 +474,36 @@
 
     g.items.forEach(function (it) {
       var row = document.createElement("div");
-      row.className = "row" + (g.air ? " air" : "");
+      row.className = "row" + (g.air ? " air" : "") + (it.nested ? " nested" : "");
       row.innerHTML =
         '<input type="checkbox" id="chk-' + it.id + '" aria-label="' + it.name + '">' +
         '<span class="r-name">' + it.name + "</span>" +
-        '<span class="r-price' + (it.once ? " once" : "") + '" id="p-' + it.id + '">' + money(priceOf(it)) +
+        '<span class="r-price' + (it.once ? " once" : "") + '" id="p-' + it.id + '">' +
+          (it.nested ? "+" : "") + money(priceOf(it)) +
           '<span class="r-unit">' + unitOf(it) + "</span></span>" +
-        (it.spend
-          ? '<span class="spend"><span class="spend-cur">$</span>' +
-            '<input type="number" id="s-' + it.id + '" min="' + AD_FLOOR + '" step="250" aria-label="Monthly ad spend"></span>'
-          : it.hours
-          ? '<span class="spend"><input type="number" id="h-' + it.id + '" min="' + it.minHrs + '" max="' + it.maxHrs +
-            '" step="5" aria-label="Production hours"><span class="spend-cur">hrs</span></span>'
-          : it.qty
+        (it.qty
           ? '<span class="qty"><button type="button" data-act="dec" aria-label="Fewer">−</button>' +
             '<span id="q-' + it.id + '">1</span>' +
             '<button type="button" data-act="inc" aria-label="More">+</button></span>'
           : '<span class="qty qty-hidden" aria-hidden="true"><button type="button" tabindex="-1">−</button><span>1</span><button type="button" tabindex="-1">+</button></span>') +
         '<span class="r-sub">' + it.sub + "</span>" +
+        (it.requires ? '<span class="req">Adds ' + byId[it.requires].name + " if it is not already in the plan.</span>" : "") +
         '<button class="r-more" type="button" aria-expanded="false" aria-controls="inc-' + it.id + '">What’s included</button>' +
         '<div class="r-inc" id="inc-' + it.id + '" hidden><ul>' +
           it.inc.map(function (x) { return "<li>" + x + "</li>"; }).join("") +
-        "</ul>" + (it.spend ? '<div class="tiers" id="tiers-' + it.id + '"></div>' : "") + "</div>";
+        "</ul></div>";
 
       var chk = row.querySelector("input");
 
-      function toggle() {
-        state[it.id] = state[it.id] > 0 ? 0 : 1;
+      function set(on) {
+        if (on) enable(it.id); else disable(it.id);
         render();
       }
 
       row.addEventListener("click", function (ev) {
         if (ev.target.closest("button")) return;      // qty steppers and the includes toggle
-        if (ev.target.closest(".spend")) return;      // ad-spend field
-        if (ev.target === chk) { state[it.id] = chk.checked ? 1 : 0; render(); return; }
-        toggle();
+        if (ev.target === chk) { set(chk.checked); return; }
+        set(!(state[it.id] > 0));
       });
 
       row.querySelector(".r-more").addEventListener("click", function (ev) {
@@ -679,35 +514,6 @@
         this.setAttribute("aria-expanded", String(!open));
         this.textContent = open ? "What’s included" : "Hide details";
       });
-
-      if (it.spend) {
-        var si = row.querySelector(".spend input");
-        si.value = adSpend[it.id] || "";
-        si.addEventListener("input", function () {
-          var v = parseInt(si.value, 10);
-          adSpend[it.id] = isFinite(v) && v > 0 ? v : 0;
-          if (adSpend[it.id] > 0 && !state[it.id]) state[it.id] = 1;
-          render();
-        });
-        si.addEventListener("blur", function () {
-          if (!(adSpend[it.id] >= AD_FLOOR)) { adSpend[it.id] = AD_FLOOR; si.value = AD_FLOOR; render(); }
-        });
-      }
-
-      if (it.hours) {
-        var hi = row.querySelector(".spend input");
-        hi.value = hrs[it.id] || "";
-        hi.addEventListener("input", function () {
-          var v = parseInt(hi.value, 10);
-          hrs[it.id] = isFinite(v) && v > 0 ? v : 0;
-          if (hrs[it.id] > 0 && !state[it.id]) state[it.id] = 1;
-          render();
-        });
-        hi.addEventListener("blur", function () {
-          var v = Math.min(it.maxHrs, Math.max(it.minHrs, hrs[it.id] || it.minHrs));
-          if (v !== hrs[it.id]) { hrs[it.id] = v; hi.value = v; render(); }
-        });
-      }
 
       if (it.qty) {
         row.querySelectorAll(".qty button").forEach(function (b) {
@@ -731,23 +537,22 @@
 
   /* ---------- calculate ---------- */
   function calc() {
-    var monthlyList = 0, onceList = 0, count = 0, minTerm = 1, spend = 0;
+    reconcile();
+    var monthlyList = 0, onceList = 0, count = 0, minTerm = 1, boost = 0;
     Object.keys(state).forEach(function (id) {
       var q = state[id]; if (!q) return;
       var it = byId[id];
       if (it.once) { onceList += priceOf(it) * q; }
       else { monthlyList += priceOf(it) * q; count++; }
-      if (it.spend) spend += adSpend[id] > 0 ? adSpend[id] : 0;
+      /* Boosting budget is already inside the add-on price, so it is reported
+         rather than added. It is the part of the fee that leaves as ad spend. */
+      if (it.boost) boost += it.boost * q;
       if (it.term && it.term > minTerm) minTerm = it.term;
     });
     var bundle = TIERS[Math.min(count, 5)];
     var total = Math.min(bundle + (prepay ? PREPAY : 0), CAP);
-    /* Ad spend is a pass-through to the platforms. It lands in the monthly
-       total the client pays, but it is never discounted. Only the fee Duo
-       earns takes the bundle and prepay discounts. */
-    var fees = monthlyList * (1 - total);
-    return { monthlyList: monthlyList, onceList: onceList, count: count, spend: spend,
-             bundle: bundle, total: total, fees: fees, monthly: fees + spend, minTerm: minTerm };
+    return { monthlyList: monthlyList, onceList: onceList, count: count, boost: boost,
+             bundle: bundle, total: total, monthly: monthlyList * (1 - total), minTerm: minTerm };
   }
 
   /* ---------- render ---------- */
@@ -761,18 +566,6 @@
       var row = chk.closest(".row");
       if (row) row.classList.toggle("on", on);
       var q = $("q-" + id); if (q) q.textContent = state[id] || 1;
-      if (byId[id].spend || byId[id].hours) {
-        var fld = $((byId[id].spend ? "s-" : "h-") + id);
-        var val = byId[id].spend ? adSpend[id] : hrs[id];
-        if (fld) {
-          if (document.activeElement !== fld) fld.value = val || "";
-          fld.parentNode.classList.toggle("off", !on);
-        }
-        var pc = $("p-" + id);
-        if (pc) pc.innerHTML = money(priceOf(byId[id])) + '<span class="r-unit">' + unitOf(byId[id]) + "</span>";
-        var tt = $("tiers-" + id);
-        if (tt) tt.innerHTML = tierTable();
-      }
       if (byId[id].qty && row) {
         var btns = row.querySelectorAll(".qty button");
         btns[0].disabled = !on || state[id] <= 1;
@@ -789,10 +582,6 @@
         var d = document.createElement("div");
         d.className = "line" + (it.once ? " dim" : "");
         d.innerHTML = "<span>" + it.name + (q > 1 ? " ×" + q : "") + (it.once ? " (one-time)" : "") +
-                      (it.spend && adSpend[it.id] > 0
-                        ? " · " + adRateShort(it) + " on " + money(adSpend[it.id]) + " spend"
-                        : "") +
-                      (it.hours ? " · " + (hrs[it.id] || it.minHrs) + " hrs" : "") +
                       "</span><span>" + money(priceOf(it) * q) + "</span>";
         lines.appendChild(d);
       });
@@ -808,12 +597,12 @@
       ? "Bundle " + Math.round(r.bundle * 100) + "% + annual 10%"
       : (prepay ? "Annual prepay 10%" : "Bundle discount " + Math.round(r.bundle * 100) + "%");
     $("t-save").textContent = "−" + money(savedAmt);
-    $("t-spend-row").hidden = r.spend <= 0;
-    $("t-spend").textContent = "+" + money(r.spend);
+    /* Boosting budget is inside the add-on prices already, so this line
+       reports it rather than adding to the total. */
+    $("t-boost-row").hidden = r.boost <= 0;
+    $("t-boost").textContent = money(r.boost);
     $("t-month").textContent = money(r.monthly);
-    $("t-annual").textContent = r.monthly > 0
-      ? money(r.monthly * 12) + " a year" + (r.spend > 0 ? " · " + money(r.fees) + " a month to Duo" : "")
-      : "";
+    $("t-annual").textContent = r.monthly > 0 ? money(r.monthly * 12) + " a year" : "";
     $("t-once-row").hidden = r.onceList <= 0;
     $("t-once").textContent = money(r.onceList);
 
@@ -823,7 +612,7 @@
     });
 
     var next = $("l-next");
-    if (r.count === 0) next.textContent = "Add your first service to get started.";
+    if (r.count === 0) next.textContent = "Start with the base package.";
     else if (r.count >= 5) next.innerHTML = "Top tier reached. <b>15% off</b> everything monthly.";
     else next.innerHTML = "Add <b>one more service</b> to unlock <b>" +
         Math.round(TIERS[r.count + 1] * 100) + "% off</b> the monthly total.";
@@ -837,13 +626,7 @@
     b.addEventListener("click", function () {
       Object.keys(state).forEach(function (k) { state[k] = 0; });
       var p = PRESETS[b.dataset.preset] || {};
-      Object.keys(p).forEach(function (k) {
-        if (k === "$spend") {
-          Object.keys(p[k]).forEach(function (c) { if (c in adSpend) adSpend[c] = p[k][c]; });
-          return;
-        }
-        if (k in state) state[k] = p[k];
-      });
+      Object.keys(p).forEach(function (k) { if (k in state) state[k] = p[k]; });
       render();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -855,12 +638,6 @@
   $("reset").addEventListener("click", function () {
     Object.keys(state).forEach(function (k) { state[k] = 0; });
     prepay = false; $("prepay").checked = false;
-    CATALOG.forEach(function (g) {
-      g.items.forEach(function (it) {
-        if (it.spend) adSpend[it.id] = it.defSpend;
-        if (it.hours) hrs[it.id] = it.defHrs;
-      });
-    });
     render();
   });
 
@@ -871,13 +648,11 @@
       g.items.forEach(function (it) {
         var q = state[it.id]; if (!q) return;
         if (!head) { out.push(g.cat.toUpperCase()); head = true; }
-        out.push("  " + it.name + (q > 1 ? " x" + q : "") + "  " +
+        out.push("  " + (it.nested ? "+ " : "") + it.name + (q > 1 ? " x" + q : "") + "  " +
                  money(priceOf(it) * q) + (it.once ? " (one-time)" : "/mo"));
-        if (it.spend && adSpend[it.id] > 0) {
-          out.push("    " + adRateShort(it) + " on " + money(adSpend[it.id]) +
-                   "/mo ad spend, passed through below at cost");
+        if (it.id === "base") {
+          it.inc.forEach(function (x) { out.push("      " + x); });
         }
-        if (it.hours) out.push("    " + (hrs[it.id] || it.minHrs) + " production hours at $" + it.rate + "/hr");
       });
       if (head) out.push("");
     });
@@ -885,22 +660,15 @@
 
     out.push("Monthly at list      " + money(r.monthlyList));
     if (r.total > 0) out.push("Discount             −" + money(r.monthlyList * r.total) + "  (" + Math.round(r.total * 100) + "%)");
-    if (r.spend > 0) {
-      out.push("Fees to Duo          " + money(r.fees));
-      out.push("Ad spend             +" + money(r.spend) + "  (pass-through, not discounted)");
-    }
     out.push("MONTHLY              " + money(r.monthly));
     out.push("Annual               " + money(r.monthly * 12));
-    if (r.onceList > 0) out.push("One-time build       " + money(r.onceList));
+    if (r.onceList > 0) out.push("One-time           " + money(r.onceList));
     out.push("Minimum term         " + (r.minTerm >= 12 ? "12 months" : r.minTerm >= 6 ? "6 months" : "Month to month"));
-    out.push("", "The monthly total is management fees plus ad spend. Ad spend is a",
-                 "pass-through to the platforms and is never discounted.",
-                 "",
-                 "Management is priced in bands on combined ad spend, each band applying",
-                 "only to the part of the spend inside it: the first $2,000 at 50%, then",
-                 "40% to $5,000, 35% to $10,000, 32% to $25,000 and 30% above, with a",
-                 "$1,000/mo minimum. Management always rises as spend rises, while the",
-                 "overall rate falls.");
+    if (r.boost > 0) {
+      out.push("", "Includes " + money(r.boost) + "/mo of social boosting budget, already inside the",
+                   "add-on prices above rather than billed on top.");
+    }
+    out.push("", "Add-ons sit under the AiR Dashboard base package and are quoted with it.");
 
     var text = out.join("\n"), btn = $("copy"), old = btn.textContent;
     var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = old; }, 1600); };

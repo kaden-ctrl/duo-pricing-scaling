@@ -1,12 +1,8 @@
-category,service,unit,list_price,billing,platform_cost_monthly,delivery_hours_monthly,min_term_months,source
-AI Search Visibility,AiR Dashboard and AEO Management,per location,1600,monthly,225,9,6,"Dashboard 1200 + Signal Sessions 400 combined; baseline audit (was 1500 one-time) and multi-location roll-up (was 350/mo) now included. AiR agreements (Kobico/CIS/Mill Forest) + CMP AiR proposal"
-Social Media,Social Media Management,per platform,750,monthly,0,6,1,Lawn Doctor breakdown (extra IG page $700/mo)
-Social Media,Google Business Profile,per location,750,monthly,0,3,1,Duo Pricing Sheet June 2024
-Paid Media,Google Ads,% of ad spend,,monthly,0,,1,"Banded 50/40/35/32/30 on COMBINED monthly ad spend across all channels, each band applying only to the part of spend inside it. Min $1,000/mo across paid media as a whole. See data/paid-media-tiers.csv"
-Paid Media,Meta Ads,% of ad spend,,monthly,0,,1,"Same combined-spend band ladder as Google Ads"
-Paid Media,LinkedIn Ads,% of ad spend,,monthly,0,,1,"Same combined-spend band ladder as Google Ads"
-Paid Media,TikTok Ads,% of ad spend,,monthly,0,,1,"Same combined-spend band ladder as Google Ads. New channel, no prior Duo pricing"
-Content & Creative,Email Marketing (1 campaign/mo),per month,500,monthly,0,3,1,Santiam agreement (extra blasts $200 each)
-Content & Creative,Video Production,per production hour,150,one-time,0,,12,"Set rate, not derived from a past job. The retired $4,000 flat price over its 40 recorded delivery hours implied $100/hr, so this is +50% on that. Minimum project $2,000, capped at $50,000 (13 to 334 hrs)"
-Web & Search,Website Build,one-time,4000,one-time,0,45,12,Duo Pricing Sheet June 2024
-Web & Search,Website Management & Hosting,per month,100,monthly,30,2,1,"Repriced 350 -> 100 by request. MARGIN CHECK: $30 platform cost and 2 delivery hours leaves ~$35/hr of contribution. Was Santiam agreement at 350"
+category,service,price,billing,requires,boosting_budget_included,min_term_months,note
+Base package,AiR Dashboard,1500,monthly,,,12,"Dashboard access; new website; website updates and optimisation; weekly opportunities; 2 blog posts a month; Signal Sessions or weekly email. 12 month term because it includes a website build"
+Search,SEO,250,monthly,AiR Dashboard,,1,
+Social Media,Facebook,600,monthly,AiR Dashboard,100,1,"Only stated social price"
+Social Media,Instagram,600,monthly,AiR Dashboard,100,1,"ASSUMED equal to Facebook, no price was stated"
+Social Media,Local monthly filming,200,monthly,Instagram,,1,"Add-on to Instagram, not available on its own"
+Social Media,LinkedIn,600,monthly,AiR Dashboard,100,1,"ASSUMED equal to Facebook, no price was stated"
+Social Media,Google Business Profile,600,monthly,AiR Dashboard,100,1,"ASSUMED equal to Facebook, no price was stated"
