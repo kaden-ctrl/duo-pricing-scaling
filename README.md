@@ -95,6 +95,12 @@ deliberate:
 - Package add-ons **do not count toward the tier** either. Stacking add-ons
   cannot unlock a discount on the standalone services, which would otherwise be
   a way to buy the ladder cheaply.
+- The ladder widget **stays out of the panel entirely** until a standalone
+  service is in the plan, rather than sitting at 0% on a package-only quote.
+  The prepay toggle shares that box and remains reachable either way.
+- Where both are in play, the discount carries an asterisk: *add-on services
+  within the base package are already discounted for being bundled with the
+  base package, and do not contribute to the bundle discount*.
 
 Annual prepay is **10% off everything**, package included, applied after the
 bundle discount. It was not excluded, so it still runs across the whole plan.

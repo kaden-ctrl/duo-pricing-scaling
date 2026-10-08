@@ -229,6 +229,10 @@
   .pip.lit { background: var(--duo-blue); }
   .ladder-next { font-size: .77rem; color: var(--ink-2); margin: 9px 0 0; line-height: 1.4; }
   .ladder-next b { color: var(--duo-blue); font-weight: 700; }
+  .ladder-note { font-size: .71rem; color: var(--muted); margin: 9px 0 0; line-height: 1.45; }
+  /* With the bundle block hidden the prepay toggle is alone in the box, so it
+     should not carry the rule that separates it from the block above. */
+  .ladder.solo .toggle { border-top: 0; margin-top: 0; padding-top: 0; }
 
   .toggle { display: flex; align-items: flex-start; gap: 9px; padding-top: 13px; margin-top: 13px; border-top: 1px solid var(--rule); cursor: pointer; }
   .toggle input { width: 16px; height: 16px; accent-color: var(--duo-blue); margin: 2px 0 0; cursor: pointer; }
@@ -311,17 +315,22 @@
           <div class="tot sub-note" id="t-boost-row"><span>Of which social boosting budget</span><span id="t-boost"></span></div>
         </div>
 
-        <div class="ladder">
-          <div class="ladder-top">
-            <span class="ladder-lbl">Bundle discount</span>
-            <span class="ladder-pct" id="l-pct">0%</span>
+        <div class="ladder" id="ladder">
+          <div id="bundle-block">
+            <div class="ladder-top">
+              <span class="ladder-lbl">Bundle discount<span id="l-star">*</span></span>
+              <span class="ladder-pct" id="l-pct">0%</span>
+            </div>
+            <div class="pips">
+              <div class="pip" data-p="1"></div><div class="pip" data-p="2"></div>
+              <div class="pip" data-p="3"></div><div class="pip" data-p="4"></div>
+              <div class="pip" data-p="5"></div>
+            </div>
+            <p class="ladder-next" id="l-next"></p>
+            <p class="ladder-note" id="l-note">* Add-on services within the base package are
+              already discounted for being bundled with the base package, and do not contribute
+              to the bundle discount.</p>
           </div>
-          <div class="pips">
-            <div class="pip" data-p="1"></div><div class="pip" data-p="2"></div>
-            <div class="pip" data-p="3"></div><div class="pip" data-p="4"></div>
-            <div class="pip" data-p="5"></div>
-          </div>
-          <p class="ladder-next" id="l-next">Add your first service to get started.</p>
 
           <label class="toggle" for="prepay">
             <input type="checkbox" id="prepay">
@@ -887,7 +896,7 @@
 
     $("t-save-row").hidden = r.bundleAmt <= 0;
     $("t-save-lbl").textContent = "Bundle discount " + Math.round(r.bundle * 100) +
-                                 "% (other services)";
+                                 "% (other services)" + (state.base > 0 ? "*" : "");
     $("t-save").textContent = "−" + money(r.bundleAmt);
 
     $("t-prepay-row").hidden = r.prepayAmt <= 0;
@@ -910,14 +919,23 @@
     $("t-once-row").hidden = r.onceList <= 0;
     $("t-once").textContent = money(r.onceList);
 
+    /* The ladder only applies to services outside the base package, so it stays
+       out of the panel entirely until one of those is in the plan. The prepay
+       toggle shares the box and has to stay reachable either way. */
+    var showBundle = r.count > 0;
+    var showNote = showBundle && state.base > 0;
+    $("bundle-block").hidden = !showBundle;
+    $("ladder").classList.toggle("solo", !showBundle);
+    $("l-note").hidden = !showNote;
+    $("l-star").hidden = !showNote;
+
     $("l-pct").textContent = Math.round(r.bundle * 100) + "%";
     document.querySelectorAll(".pip").forEach(function (p) {
       p.classList.toggle("lit", r.count >= parseInt(p.dataset.p, 10));
     });
 
     var next = $("l-next");
-    if (r.count === 0) next.textContent = "Counts services outside the base package. Add one to start the ladder.";
-    else if (r.count >= 5) next.innerHTML = "Top tier reached. <b>15% off</b> the other services.";
+    if (r.count >= 5) next.innerHTML = "Top tier reached. <b>15% off</b> the other services.";
     else next.innerHTML = "Add <b>one more service</b> outside the package to unlock <b>" +
         Math.round(TIERS[r.count + 1] * 100) + "% off</b> those services.";
 
